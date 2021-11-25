@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "React"
+		},
+		{
+			"path": "Api"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": ["Api"]
+	},
+	"extensions": {
+		"recommendations": [
+			"hediet.vscode-drawio"
+		]
+	}
+}
