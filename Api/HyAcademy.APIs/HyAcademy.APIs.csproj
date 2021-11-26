@@ -9,7 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="12.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HyAcademy.GraphQL\HyAcademy.GraphQL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.APIs", "HyAcademy
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "MocPOS.React", "..\react\MocPOS.React.esproj", "{8ED6CE02-6BF0-437D-9583-82781A6164FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyAcademy.GraphQL", "HyAcademy.GraphQL\HyAcademy.GraphQL.csproj", "{1BD9569A-55D6-4F98-A5A5-788C5DAAFB7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{8ED6CE02-6BF0-437D-9583-82781A6164FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ED6CE02-6BF0-437D-9583-82781A6164FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8ED6CE02-6BF0-437D-9583-82781A6164FE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1BD9569A-55D6-4F98-A5A5-788C5DAAFB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BD9569A-55D6-4F98-A5A5-788C5DAAFB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BD9569A-55D6-4F98-A5A5-788C5DAAFB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BD9569A-55D6-4F98-A5A5-788C5DAAFB7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
