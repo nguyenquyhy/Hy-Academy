@@ -48,7 +48,7 @@ jobs:
           path: ./build
           
       - name: azure login
-        uses: azure/login@v1
+        uses: azure/login@v1.4.2
         with:
           creds: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIAL }}
           
