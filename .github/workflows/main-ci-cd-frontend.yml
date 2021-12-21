@@ -15,6 +15,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Test
+        env:
+          TEST_CLIENTID: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+        run: |
+          echo ${#TEST_CLIENTID}
+          
       - name: 'Az CLI login'
         uses: azure/login@v1.4.2
         with:
