@@ -49,7 +49,7 @@ jobs:
       - name: azure login
         uses: azure/login@v1.4.2
         with:
-          creds: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIAL }}
+          creds: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIALS }}
           
       - name: Upload to Storage Account
         uses: azure/CLI@1.0.4
