@@ -21,7 +21,13 @@ jobs:
           client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
           tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
           subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
-        
+        env:
+          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          creds: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIALS }}
+          cred: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIAL }}
+          react: ${{ env.REACT_STORAGE_ACCOUNT_NAME }}
       - name: azure logout
         run: |
               az logout
