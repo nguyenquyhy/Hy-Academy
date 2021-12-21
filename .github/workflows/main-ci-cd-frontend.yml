@@ -41,6 +41,10 @@ jobs:
     needs: [build-test-archive]
     steps:
       - name: Download artifacts
+        env:
+          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
         uses: actions/download-artifact@v2
         with:
           name: package-deployment
