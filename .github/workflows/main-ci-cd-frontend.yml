@@ -41,18 +41,13 @@ jobs:
     needs: [build-test-archive]
     steps:
       - name: Download artifacts
-        env:
-          tenant-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-          client-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-          subscription-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
-          cre: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIALS }}
         uses: actions/download-artifact@v2
         with:
           name: package-deployment
           path: ./build
           
       - name: azure login
-        uses: azure/login@v1
+        uses: azure/login@v1.4.2
         with:
           client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
           tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
