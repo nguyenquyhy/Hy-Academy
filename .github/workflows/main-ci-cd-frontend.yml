@@ -45,6 +45,7 @@ jobs:
           tenant-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
           client-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
           subscription-id: ${{ env.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          cre: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CREDENTIALS }}
         uses: actions/download-artifact@v2
         with:
           name: package-deployment
