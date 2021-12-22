@@ -42,6 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     steps: 
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
       - name: azure login
         uses: azure/login@v1.4.2
         with:
@@ -53,7 +56,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: Production
-          template: ./.bicep/hyacedamy_react.bicep
+          template: /.bicep/hyacedamy_react.bicep
           parameters: storageAccountName=hyacademy_react
       
       - name: azure logout
