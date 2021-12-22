@@ -57,7 +57,7 @@ jobs:
         with:
           resourceGroupName: Production
           template: ./.bicep/hyacedamy_react.bicep
-          parameters: storageAccountName=hyacademy_react
+          parameters: storageAccountName=hyacademyreact
       
       - name: azure logout
         run: |
