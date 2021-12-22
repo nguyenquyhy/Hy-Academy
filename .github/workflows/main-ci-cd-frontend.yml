@@ -56,7 +56,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: Production
-          template: /.bicep/hyacedamy_react.bicep
+          template: ./.bicep/hyacedamy_react.bicep
           parameters: storageAccountName=hyacademy_react
       
       - name: azure logout
