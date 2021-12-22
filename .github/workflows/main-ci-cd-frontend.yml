@@ -38,10 +38,32 @@ jobs:
         with:
           name: package-deployment
           path: ./React/build
-
+  create-resource:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps: 
+      - name: azure login
+        uses: azure/login@v1.4.2
+        with:
+          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          
+      - name: create storage account by bicep
+        uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: Production
+          template: ./.bicep/hyacedamy_react.bicep
+          parameters: storageAccountName=hyacademy_react
+      
+      - name: azure logout
+        run: |
+              az logout
+        if: always()
+      
   deploy:
     runs-on: ubuntu-latest	  
-    needs: [build-test-archive]
+    needs: [build-test-archive, create-resource]
     environment: Production
     steps:
       - name: Download artifacts
