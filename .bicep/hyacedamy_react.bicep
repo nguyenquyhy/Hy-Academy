@@ -13,24 +13,19 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' =
   kind:'StorageV2'
 }
 
+var storageAccountContributorRoleDefinitionId  = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab') // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: 'DeploymentScript'
   location: location
 }
 
-resource contributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: subscription()
-  // This is the Storage Account Contributor role, which is the minimum role permission we can give. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#:~:text=17d1049b-9a84-46fb-8f53-869881c3d3ab
-  name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
-}
-
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: storageAccountResource
-  name: guid(resourceGroup().id, managedIdentity.id, contributorRoleDefinition.id)
+  name: guid(resourceGroup().id, managedIdentity.id, storageAccountContributorRoleDefinitionId)
   properties: {
-    roleDefinitionId: contributorRoleDefinition.id
+    roleDefinitionId: storageAccountContributorRoleDefinitionId
     principalId: managedIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
   }
 }
 
