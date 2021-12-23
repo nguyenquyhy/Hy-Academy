@@ -30,12 +30,12 @@ resource storageAccountName_storageAccountName 'Microsoft.Cdn/profiles/endpoints
   name: storageAccountName
   location: location
   properties: {
-    originHostHeader: replace(replace(storageAccountResource.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+    originHostHeader: replace(replace(storageAccountResource.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
     origins: [
       {
         name: 'storage'
         properties: {
-          hostName: replace(replace(storageAccountResource.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+          hostName: replace(replace(storageAccountResource.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
         }
       }
     ]
