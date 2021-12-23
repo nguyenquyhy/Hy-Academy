@@ -13,7 +13,7 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' =
 }
 
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccountResource.name}/default/$web'
+  name: '${storageAccountResource.name}/default/web'
 }
 
 resource Cdn_StorageAccount 'Microsoft.Cdn/profiles@2020-09-01' = {
@@ -62,7 +62,7 @@ resource storageAccountName_storageAccountName 'Microsoft.Cdn/profiles/endpoints
             {
               name: 'UrlRewrite'
               parameters: {
-                destination: '/index.html'
+                destination: '/web/index.html'
                 sourcePattern: '/'
                 preserveUnmatchedPath:false
                 '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
