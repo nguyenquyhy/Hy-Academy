@@ -57,7 +57,7 @@ jobs:
         with:
           resourceGroupName: Production
           template: ./.bicep/hyacedamy_react.bicep
-          parameters: storageAccountName=hyacademyreact
+          parameters: storageAccountName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}
       
       - name: azure logout
         run: |
@@ -87,7 +87,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob upload-batch --account-name '${{ env.REACT_STORAGE_ACCOUNT_NAME }}' --auth-mode key -s './build' -d '$web'
+            az storage blob upload-batch --account-name '${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}' --auth-mode key -s './build' -d '$web'
             
       - name: azure logout
         run: |
