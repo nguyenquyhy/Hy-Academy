@@ -12,14 +12,14 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' =
   kind:'StorageV2'
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+resource storageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
   name: '${storageAccountResource.name}/default/web'
   properties:{
     publicAccess: 'Blob'
   }
 }
 
-resource Cdn_StorageAccount 'Microsoft.Cdn/profiles@2020-09-01' = {
+resource storageAccountCdn 'Microsoft.Cdn/profiles@2020-09-01' = {
   name: storageAccountName
   location: location
   sku: {
@@ -28,8 +28,8 @@ resource Cdn_StorageAccount 'Microsoft.Cdn/profiles@2020-09-01' = {
   properties: {}
 }
 
-resource storageAccountName_storageAccountName 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
-  parent: Cdn_StorageAccount
+resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
+  parent: storageAccountCdn
   name: storageAccountName
   location: location
   properties: {
