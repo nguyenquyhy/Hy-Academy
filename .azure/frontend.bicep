@@ -75,7 +75,7 @@ resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = 
         }
         {
           name: 'SpaStaticFile'
-          order: 1
+          order: 2
           conditions:[
             {
               name: 'UrlFileExtension'
