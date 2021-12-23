@@ -73,6 +73,35 @@ resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = 
             }
           ]          
         }
+        {
+          name: 'SpaStaticFile'
+          order: 1
+          conditions:[
+            {
+              name: 'UrlFileExtension'
+              parameters: {
+                operator: 'GreaterThan'
+                negateCondition: false
+                matchValues: [
+                  '0'
+                ]
+                transforms: []
+                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters'
+              }
+            }
+          ]
+          actions: [
+            {
+              name: 'UrlRewrite'
+              parameters: {
+                destination: '/web/'
+                sourcePattern: '/'
+                preserveUnmatchedPath:false
+                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
+              }
+            }
+          ]          
+        }
       ]
     }
   }
