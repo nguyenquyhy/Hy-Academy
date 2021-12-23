@@ -55,8 +55,8 @@ jobs:
       - name: create storage account by bicep
         uses: azure/arm-deploy@v1
         with:
-          resourceGroupName: Production
-          template: ./.bicep/hyacedamy_react.bicep
+          resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+          template: ./.azure/frontend.bicep
           parameters: storageAccountName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}
       
       - name: azure logout
