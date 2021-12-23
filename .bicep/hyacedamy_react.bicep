@@ -12,6 +12,10 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' =
   kind:'StorageV2'
 }
 
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: '${storageAccountResource.name}/default/$web'
+}
+
 resource Cdn_StorageAccount 'Microsoft.Cdn/profiles@2020-09-01' = {
   name: storageAccountName
   location: location
