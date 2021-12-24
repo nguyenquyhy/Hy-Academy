@@ -10,4 +10,8 @@
     <PackageReference Include="HotChocolate.Abstractions" Version="12.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HyAcademy.Data\HyAcademy.Data.csproj" />
+  </ItemGroup>
+
 </Project>
