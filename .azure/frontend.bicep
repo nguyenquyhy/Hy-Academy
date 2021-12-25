@@ -46,6 +46,22 @@ resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01'
     deliveryPolicy: {
       rules: [
         {
+          name: 'Global'
+          order: 0
+          conditions:[]
+          actions: [
+            {
+              name: 'UrlRewrite'
+              parameters: {
+                destination: '/web'
+                sourcePattern: '/'
+                preserveUnmatchedPath:false
+                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
+              }
+            }
+          ]          
+        }
+        {
           name: 'Spa'
           order: 1
           conditions:[
@@ -69,35 +85,6 @@ resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01'
                 destination: '/web/index.html'
                 sourcePattern: '/'
                 preserveUnmatchedPath:false
-                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
-              }
-            }
-          ]          
-        }
-        {
-          name: 'SpaStaticFile'
-          order: 2
-          conditions:[
-            {
-              name: 'UrlFileExtension'
-              parameters: {
-                operator: 'GreaterThan'
-                negateCondition: false
-                matchValues: [
-                  '0'
-                ]
-                transforms: []
-                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters'
-              }
-            }
-          ]
-          actions: [
-            {
-              name: 'UrlRewrite'
-              parameters: {
-                destination: '/web/static'
-                sourcePattern: '/static'
-                preserveUnmatchedPath:true
                 '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
               }
             }
