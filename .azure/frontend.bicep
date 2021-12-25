@@ -1,7 +1,8 @@
 @minLength(3)
 @maxLength(24)
-param location string = resourceGroup().location
 param storageAccountName string
+
+param location string = resourceGroup().location
 
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: storageAccountName
@@ -28,7 +29,7 @@ resource storageAccountCdn 'Microsoft.Cdn/profiles@2020-09-01' = {
   properties: {}
 }
 
-resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
+resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
   parent: storageAccountCdn
   name: storageAccountName
   location: location
@@ -94,9 +95,9 @@ resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = 
             {
               name: 'UrlRewrite'
               parameters: {
-                destination: '/web/'
-                sourcePattern: '/'
-                preserveUnmatchedPath:false
+                destination: '/web/static'
+                sourcePattern: '/static'
+                preserveUnmatchedPath:true
                 '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
               }
             }
@@ -106,3 +107,4 @@ resource storageAccountEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = 
     }
   }
 }
+output hostName string = storageAccountCdnEndpoint.properties.hostName

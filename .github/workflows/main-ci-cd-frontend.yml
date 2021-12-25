@@ -38,6 +38,7 @@ jobs:
         with:
           name: package-deployment
           path: ./React/build
+
   create-resource:
     runs-on: ubuntu-latest
     environment: Production
@@ -45,21 +46,21 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         
-      - name: azure login
+      - name: Azure login
         uses: azure/login@v1.4.2
         with:
           client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
           tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
           subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
           
-      - name: create storage account by bicep
+      - name: Create Azure resources
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
           template: ./.azure/frontend.bicep
           parameters: storageAccountName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}
       
-      - name: azure logout
+      - name: Azure logout
         run: |
               az logout
         if: always()
@@ -75,7 +76,7 @@ jobs:
           name: package-deployment
           path: ./build
           
-      - name: azure login
+      - name: Azure login
         uses: azure/login@v1.4.2
         with:
           client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
@@ -89,7 +90,7 @@ jobs:
           inlineScript: |
             az storage blob upload-batch --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}'  --account-name '${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}' --auth-mode key -s './build' -d 'web'
             
-      - name: azure logout
+      - name: Azure logout
         run: |
               az logout
         if: always()
