@@ -55,7 +55,7 @@ resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01'
               parameters: {
                 destination: '/web'
                 sourcePattern: '/'
-                preserveUnmatchedPath:false
+                preserveUnmatchedPath:true
                 '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
               }
             }
