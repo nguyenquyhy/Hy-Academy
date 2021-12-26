@@ -3,7 +3,6 @@ name: Deploy a new site for each pull request
 on:
   pull_request:
     branches: [ main ]
-    paths: 'React/**'
 
 env:
   PRNUMNER: 'academy${{github.event.pull_request.number}}'
