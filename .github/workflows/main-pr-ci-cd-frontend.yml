@@ -18,48 +18,7 @@ jobs:
                 client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
                 tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
                 subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
-
-          - name: Check Storage Account Exist
-            id: checkAccount
-            uses: azure/CLI@1.0.4
-            with:
-              inlineScript: |
-                  echo "::set-output name=isNew::`az storage account check-name --name ${PRNUMNER} --query nameAvailable`"
-
-          - name: Create Storage Account
-            if: ${{ steps.checkAccount.outputs.isNew == 'true'}}
-            uses: azure/CLI@1.0.4
-            with:
-              inlineScript: |
-                  az storage account create -n ${PRNUMNER} -g '${{ secrets.RESOURCE_GROUP_NAME }}' -l SoutheastAsia --sku Standard_LRS --kind StorageV2
-
-          - name: Enable Static Site
-            if: ${{ steps.checkAccount.outputs.isNew == 'true'}}
-            uses: azure/CLI@1.0.4
-            with:
-              inlineScript: |
-                  az storage blob service-properties update --account-name ${PRNUMNER} --static-website --404-document index.html --index-document index.html
-
-          - name: Get static site URL
-            if: ${{ steps.checkAccount.outputs.isNew == 'true'}}
-            id: geturl
-            uses: azure/CLI@1.0.4
-            with:
-              inlineScript: |
-                echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web'`"          
-
-          - name: Add URL to PR comment
-            if: ${{ steps.checkAccount.outputs.isNew == 'true'}}
-            uses: actions/github-script@v5
-            with:
-                script: |
-                  github.rest.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: ${{ steps.geturl.outputs.url }}
-                  })                    
-
+          
           - name: Azure logout
             run: |
                   az logout
