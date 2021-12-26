@@ -4,16 +4,16 @@ on:
   pull_request:
     branches: [ main ]
 env:
-  PRNUMNER: 'academy${{github.event.pull_request.number}}'
+  PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
   
-permissions:
-    id-token: write
-    contents: read
-  
-jobs:
+jobs:    
   Azure-Storage-Account:
      runs-on: ubuntu-latest
      environment: Pull Requests
+     permissions:
+      id-token: write
+      contents: read
+      issues: write
      steps:
           - name: Azure Login
             uses: Azure/login@v1.4.2
@@ -21,6 +21,7 @@ jobs:
                 client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
                 tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
                 subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          
           - name: Check Storage Account Exist
             id: checkAccountExist
             uses: azure/CLI@1.0.4
@@ -41,6 +42,7 @@ jobs:
             with:
               inlineScript: |
                   az storage blob service-properties update --account-name ${PRNUMNER} --static-website --404-document index.html --index-document index.html
+          
           - name: Get static site URL
             if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
             id: geturl
