@@ -13,7 +13,7 @@ jobs:
      permissions:
       id-token: write
       contents: read
-      issues: write
+      pull-requests: write
      steps:
           - name: Azure Login
             uses: Azure/login@v1.4.2
@@ -52,7 +52,6 @@ jobs:
                 echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web'`"          
 
           - name: Add URL to PR comment
-            if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
             uses: actions/github-script@v5
             with:
                 script: |
