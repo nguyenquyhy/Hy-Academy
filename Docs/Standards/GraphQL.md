@@ -16,8 +16,13 @@
 
 ## Server
 
-- When changing GraphQL schema, make sure the following steps are done:
-  1. Generate GraphQL schema file by opening the following URL `https://{API_URL}/graphql?sdl`
-  1. Save the generated schema file into `React` folder
+When changing GraphQL schema, the following steps are **automatically** executed on build:
+  1. `HyAcademy.GraphQL.Tools` is built (via PostBuild task of `HyAcademy.APIs`).
+  1. `React/schema.graphql` is updated.
+
+The following steps need to be executed **manually**:
   1. Run `npm run generate` and `npm run build` in `React` folder to ensure there is no breaking changes
   1. Commit the GraphQL changes along with the updated `schema.graphql` and `src/types.ts`
+
+Notes:
+- GraphQL schema can be downloaded manually by opening the following URL `https://{API_URL}/graphql?sdl`

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -15,7 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HyAcademy.GraphQL.Extensions\HyAcademy.GraphQL.Extensions.csproj" />
     <ProjectReference Include="..\HyAcademy.GraphQL\HyAcademy.GraphQL.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MSBuild Projects="../HyAcademy.GraphQL.Tools/HyAcademy.GraphQL.Tools.csproj" Targets="Build" />
+  </Target>
 
 </Project>

@@ -13,10 +13,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  UUID: any;
+};
+
+export type Course = {
+  __typename?: 'Course';
+  id: Scalars['UUID'];
+  title: Scalars['String'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  courses: Array<Course>;
   value: Scalars['Int'];
 };
 
