@@ -3,9 +3,12 @@ name: Deploy a new site for each pull request
 on:
   pull_request:
     branches: [ main ]
-
 env:
   PRNUMNER: 'academy${{github.event.pull_request.number}}'
+  
+permissions:
+    id-token: write
+    contents: read
   
 jobs:
   Azure-Storage-Account:
