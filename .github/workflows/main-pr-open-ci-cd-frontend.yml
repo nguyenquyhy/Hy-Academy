@@ -91,6 +91,7 @@ jobs:
   Deployment:
     runs-on: ubuntu-latest
     needs: [Azure-Storage-Account, Build-Upload-Package]
+    environment: Pull Requests
     permissions:
       id-token: write
       contents: read
@@ -106,7 +107,7 @@ jobs:
         with: 
           client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
           tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}          
           
       - name: Upload to blob storage
         uses: azure/CLI@1.0.4
