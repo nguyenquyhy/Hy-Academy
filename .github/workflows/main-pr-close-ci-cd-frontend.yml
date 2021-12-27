@@ -1,0 +1,42 @@
+name: Delete the site when close pull request
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [closed, locked]
+env:
+  PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
+  
+jobs:    
+  Delete-Storage-Account:
+     runs-on: ubuntu-latest
+     environment: Pull Requests
+     permissions:
+      id-token: write
+      contents: read
+     steps:
+          - name: Azure Login
+            uses: Azure/login@v1.4.2
+            with: 
+                client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+                tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+                subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+          
+          - name: Check Storage Account Exist
+            id: checkAccountExist
+            uses: azure/CLI@1.0.4
+            with:
+              inlineScript: |
+                  echo "::set-output name=isNew::`az storage account check-name --name ${PRNUMNER} --query nameAvailable`"
+
+          - name: Delete Storage Account
+            if: ${{ steps.checkAccountExist.outputs.isNew == 'false'}}
+            uses: azure/CLI@1.0.4
+            with:
+              inlineScript: |
+                  az storage account delete -n ${PRNUMNER} -g '${{ secrets.RESOURCE_GROUP_NAME }}' --yes                            
+          
+          - name: Azure logout
+            run: |
+                  az logout
+            if: always()
