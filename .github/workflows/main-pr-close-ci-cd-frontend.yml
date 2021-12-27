@@ -30,7 +30,7 @@ jobs:
                   echo "::set-output name=isNew::`az storage account check-name --name ${PRNUMNER} --query nameAvailable`"
 
           - name: Delete Storage Account
-            if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
+            if: ${{ steps.checkAccountExist.outputs.isNew == 'false'}}
             uses: azure/CLI@1.0.4
             with:
               inlineScript: |
