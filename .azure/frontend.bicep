@@ -2,6 +2,8 @@
 @maxLength(24)
 param storageAccountName string
 
+param customDomain string = ''
+
 param location string = resourceGroup().location
 
 resource storageAccountResource 'Microsoft.Storage/storageAccounts@2021-06-01' = {
@@ -26,7 +28,6 @@ resource storageAccountCdn 'Microsoft.Cdn/profiles@2020-09-01' = {
   sku: {
     name: 'Standard_Microsoft'
   }
-  properties: {}
 }
 
 resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
@@ -59,7 +60,7 @@ resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01'
                 '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters'
               }
             }
-          ]          
+          ]        
         }
         {
           name: 'Spa'
@@ -94,4 +95,14 @@ resource storageAccountCdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01'
     }
   }
 }
-output hostName string = storageAccountCdnEndpoint.properties.hostName
+
+resource storageAccountCdnEndpointDomain 'Microsoft.Cdn/profiles/endpoints/customDomains@2020-09-01' = if (!empty(customDomain)) {
+  parent: storageAccountCdnEndpoint
+  name: '${storageAccountName}-domain'
+  properties: {
+    hostName: customDomain
+  }
+}
+
+output cdnHostName string = storageAccountCdnEndpoint.properties.hostName
+output hostName string = empty(customDomain) ? storageAccountCdnEndpoint.properties.hostName : customDomain
