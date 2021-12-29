@@ -89,7 +89,7 @@ jobs:
           inlineScript: |
             az storage blob upload-batch --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}'  --account-name '${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}' --auth-mode key -s './build' -d 'web'
 
-      - name: Azure Purge Pre-loaded 
+      - name: Azure Purge CDN Cache
         uses: azure/CLI@1.0.4
         with:
           azcliversion: 2.30.0
