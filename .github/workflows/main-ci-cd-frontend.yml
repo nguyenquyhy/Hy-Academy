@@ -4,7 +4,9 @@ on:
   # Triggers the workflow on push request events but only for the main branch
   push:
     branches: [ main ]
-    paths: 'React/**'  
+    paths: 
+      - '.github/workflows/main-ci-cd-frontend.yml'
+      - 'React/**'
     
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -56,7 +58,7 @@ jobs:
         with:
           resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
           template: ./.azure/frontend.bicep
-          parameters: storageAccountName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}
+          parameters: storageAccountName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }} customDomain=${{ secrets.CUSTOM_DOMAIN }}
       
       - name: Azure logout
         run: |
