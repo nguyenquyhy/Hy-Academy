@@ -7,7 +7,6 @@ on:
     paths: 
       - '.github/workflows/main-ci-cd-frontend.yml'
       - 'React/**'
-      
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -95,7 +94,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az cdn endpoint purge --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}' -g ${{ secrets.RESOURCE_GROUP_NAME }} -n endpoint --profile-name ${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}  --content-paths '/*'
+            az cdn endpoint purge --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}' -g ${{ secrets.RESOURCE_GROUP_NAME }} -n ${{ secrets.REACT_STORAGE_ACCOUNT_NAME }} --profile-name ${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}  --content-paths '/*'
             
       - name: Azure logout
         run: |
