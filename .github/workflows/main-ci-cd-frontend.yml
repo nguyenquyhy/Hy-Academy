@@ -89,6 +89,13 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az storage blob upload-batch --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}'  --account-name '${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}' --auth-mode key -s './build' -d 'web'
+
+      - name: Azure Purge Pre-loaded 
+        uses: azure/CLI@1.0.4
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az cdn endpoint purge --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}' -g ${{ secrets.RESOURCE_GROUP_NAME }} -n endpoint --profile-name ${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}  --content-paths '/*'
             
       - name: Azure logout
         run: |
