@@ -1,20 +1,19 @@
-import TopMenu from 'layouts/TopMenu';
-import TempGraphQLComponent from 'modules/temp/TempGraphQLComponent';
-import Button from 'controls/Button';
+import { Route, Routes } from 'react-router-dom';
+
+import Layout from 'layouts/Layout';
+import NotFound from 'modules/notfound';
+import Home from 'modules/home';
+import About from 'modules/about';
 
 const App = () => (
     <div className="App">
-        <TopMenu />
-        <header className="App-header">
-            <p>
-                Welcome!
-            </p>
-        </header>
-        <TempGraphQLComponent />
-        <div className="buttons">
-            <Button>Test button</Button><br />
-            <Button loading={true}>Loading button</Button>
-        </div>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
+            </Route>
+        </Routes>
     </div>
 );
 

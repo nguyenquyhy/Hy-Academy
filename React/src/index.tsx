@@ -1,6 +1,7 @@
 import './sass/styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,9 +13,11 @@ const apollo = new ApolloClient({
 
 ReactDOM.render(
     <React.StrictMode>
-        <ApolloProvider client={apollo}>
-            <App />
-        </ApolloProvider>
+        <BrowserRouter>
+            <ApolloProvider client={apollo}>
+                <App />
+            </ApolloProvider>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

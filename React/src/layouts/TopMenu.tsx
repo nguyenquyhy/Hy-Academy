@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const menu = [
     {
         text: 'Documentation',
@@ -28,9 +30,9 @@ const menu = [
 const TopMenu = () => (
     <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-            <a className="navbar-item" href="/">
+            <Link className="navbar-item" to="/" title="Hy Academy">
                 <img src="https://via.placeholder.com/112x28?text=Logo" width="112" height="28" alt="Hy Academy" />
-            </a>
+            </Link>
 
             <button className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
@@ -48,22 +50,22 @@ const TopMenu = () => (
                                 {item.text}
                             </span>
                             <div className="navbar-dropdown">
-                                {item.items.map(subItem => subItem.text === '-' ?
+                                {item.items.map(subItem => subItem.text === '-' || !subItem.link ?
                                 (
                                     <hr className="navbar-divider" />
                                 ):
                                 (
-                                    <a className="navbar-item" href={subItem.link}>
+                                    <Link className="navbar-item" to={subItem.link}>
                                         {subItem.text}
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
                     ) :
                     (
-                        <a key={item.text} href={item.link} className="navbar-item">
+                        <Link key={item.text} to={item.link} className="navbar-item">
                             {item.text}
-                        </a>
+                        </Link>
                     )
                 )}
             </div>
