@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    environment: Production
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repo
@@ -26,4 +27,4 @@ jobs:
         file: ./Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/HyAcamedyAPI:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/HyAcamedyAPI:latest
