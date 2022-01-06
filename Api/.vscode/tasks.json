@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/HyAcademy.APIs/HyAcademy.APIs.csproj",
+                "${workspaceFolder}/HyAcademy.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
