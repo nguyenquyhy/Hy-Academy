@@ -27,4 +27,4 @@ jobs:
         file: ./Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/HyAcamedyAPI:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/hyacamedyapi:latest
