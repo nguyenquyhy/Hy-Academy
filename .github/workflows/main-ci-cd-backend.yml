@@ -29,4 +29,4 @@ jobs:
         context: ./Api/HyAcademy.APIs
         builder: ${{ steps.buildx.outputs.name }}
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/hyacamedyapi:${{ secrets.DOCKER_TAG }}
+        tags: ${{ secrets.DOCKER_TAG }}
