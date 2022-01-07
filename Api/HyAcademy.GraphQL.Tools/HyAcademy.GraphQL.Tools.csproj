@@ -16,8 +16,12 @@
     <ProjectReference Include="..\HyAcademy.GraphQL\HyAcademy.GraphQL.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" Exists('$(TargetDir)HyAcademy.GraphQL.Tools.exe') ">
     <Exec Command="$(TargetDir)HyAcademy.GraphQL.Tools.exe" />
+  </Target>
+  <!-- Linux -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" !Exists('$(TargetDir)HyAcademy.GraphQL.Tools.exe') ">
+    <Exec Command="$(TargetDir)HyAcademy.GraphQL.Tools"/>
   </Target>
 
 </Project>
