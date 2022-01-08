@@ -6,11 +6,6 @@ on:
     paths: 
       - '.github/workflows/main-ci-cd-backend.yml'
       - 'Api/**'
-  pull_request:
-    branches: [ main ]
-    paths: 
-      - '.github/workflows/main-ci-cd-backend.yml'
-      - 'Api/**'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -66,7 +61,7 @@ jobs:
           --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
           --template-file ./.azure/backend.bicep \
           --parameters \
-            environmentName="${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}-container-app" \
+            environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
             dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
             logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
 
