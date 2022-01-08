@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-container-app:
-    environment: Production
+    environment: Pull Requests
     runs-on: ubuntu-latest
     permissions: 
       id-token: write
