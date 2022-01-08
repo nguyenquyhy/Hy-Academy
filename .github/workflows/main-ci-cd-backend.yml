@@ -58,7 +58,7 @@ jobs:
           --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
           --template-file ./.azure/backend.bicep \
           --parameters \
-            environmentName="${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}" \
+            environmentName="${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}-container-app" \
             dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
             logAnalyticsSKU = "${{ secrets.LOG_ANALYTICS_SKU }}" \
 
