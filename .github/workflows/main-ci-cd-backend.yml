@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-upload-docker-file:
     environment: Production
     runs-on: ubuntu-latest
     permissions: 
@@ -34,6 +34,7 @@ jobs:
   deploy-container-app:
     environment: Production
     runs-on: ubuntu-latest
+    needs : [ build-upload-docker-file ]
     permissions: 
       id-token: write
       contents: read
@@ -58,7 +59,8 @@ jobs:
           --template-file ./.azure/backend.bicep \
           --parameters \
             environmentName="${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}" \
-            dockerImage="${{ secrets.DOCKER_TAG }}" \
+            dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
+            logAnalyticsSKU = "${{ secrets.LOG_ANALYTICS_SKU }}" \
 
     - name: Azure logout
       run: |
