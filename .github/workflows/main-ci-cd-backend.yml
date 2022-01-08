@@ -30,7 +30,7 @@ jobs:
         azcliversion: 2.30.0
         inlineScript: |
           az deployment group create \
-          --resource-group "$RESOURCE_GROUP" \
+          --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
           --template-file ./.azure/backend.bicep \
           --parameters \
             environmentName="${{ secrets.REACT_STORAGE_ACCOUNT_NAME }}" \
