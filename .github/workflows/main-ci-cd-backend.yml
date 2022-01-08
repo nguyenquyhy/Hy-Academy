@@ -13,7 +13,7 @@ jobs:
     permissions: 
       packages: write
       contents: read
-    steps:      
+    steps:
     - name: Check out the repo
       uses: actions/checkout@v2
       
@@ -30,3 +30,28 @@ jobs:
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKER_TAG }}
+  deploy-container-app:
+    environment: Production
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write
+      contents: read
+    - name: Azure login
+        uses: azure/login@v1.4.2
+        with:
+          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+
+    - name: Deploy container app
+        uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+          template: ./.azure/backend.bicep
+          parameters: environmentName=${{ secrets.REACT_STORAGE_ACCOUNT_NAME }} dockerImage=${{ secrets.DOCKER_TAG }}
+
+    - name: Azure logout
+      run: |
+            az logout
+      if: always()
+
