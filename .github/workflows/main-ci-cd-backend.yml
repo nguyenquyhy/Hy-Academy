@@ -33,6 +33,8 @@ jobs:
         builder: ${{ steps.buildx.outputs.name }}
         push: true
         tags: ${{ secrets.DOCKER_TAG }}
+        build-args: |
+          "FRONTEND_URL=${{ secrets.FRONTEND_URL }}"
         
   deploy-container-app:
     environment: Production
