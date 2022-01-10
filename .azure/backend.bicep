@@ -1,13 +1,12 @@
+param appName string = ''
 param environmentName string = ''
 param dockerImage string = ''
 param logAnalyticsSKU string = ''
 
 var location = resourceGroup().location
-var workspaceName = '${environmentName}-log-analytics'
-
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
-  name: workspaceName
+  name: environmentName
   location: location
   properties: {
     sku: {
@@ -35,7 +34,7 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
 }
 
 resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
-  name: environmentName
+  name: appName
   kind: 'containerapps'
   location: location
   properties: {
