@@ -19,5 +19,7 @@ RUN dotnet publish Api/HyAcademy.APIs/HyAcademy.APIs.csproj -c Release -o /app/p
 FROM base
 WORKDIR /app
 COPY --from=build /app/publish/. .
+ARG FRONTEND_URL
+ENV FrontEndUrl=${FRONTEND_URL}
 EXPOSE 80
 CMD ["dotnet", "HyAcademy.APIs.dll"]
