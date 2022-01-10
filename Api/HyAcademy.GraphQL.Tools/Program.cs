@@ -9,7 +9,7 @@ var schema = SchemaBuilder.New()
 var newSchema = schema.ToString();
 Console.WriteLine(newSchema);
 
-var schemaFile = System.IO.Path.Join(ProjectPathInfo.SolutionPath, "..\\React\\schema.graphql");
+var schemaFile = System.IO.Path.Join(ProjectPathInfo.SolutionPath, "..", "React", "schema.graphql");
 var oldSchema = File.ReadAllText(schemaFile);
 if (newSchema != oldSchema)
 {

@@ -1,0 +1,73 @@
+name: CI-CD Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - '.github/workflows/main-ci-cd-backend.yml'
+      - 'Api/**'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-upload-docker-file:
+    environment: Production
+    runs-on: ubuntu-latest
+    permissions: 
+      packages: write
+      contents: read
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+      
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1.12.0
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: ${{ secrets.DOCKER_TAG }}
+        
+  deploy-container-app:
+    environment: Production
+    runs-on: ubuntu-latest
+    needs : [ build-upload-docker-file ]
+    permissions: 
+      id-token: write
+      contents: read
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Azure login
+      uses: azure/login@v1.4.2
+      with:
+        client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+        tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+        subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+                
+    - name: Deploy container app
+      uses: azure/CLI@1.0.4
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az deployment group create \
+          --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
+          --template-file ./.azure/backend.bicep \
+          --parameters \
+            appName="${{ secrets.CONTAINER_APP_NAME }}" \
+            environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
+            dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
+            logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
+
+    - name: Azure logout
+      run: |
+            az logout
+      if: always()
+
