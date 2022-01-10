@@ -6,6 +6,11 @@ on:
     paths: 
       - '.github/workflows/main-ci-cd-backend.yml'
       - 'Api/**'
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - '.github/workflows/main-ci-cd-backend.yml'
+      - 'Api/**'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
