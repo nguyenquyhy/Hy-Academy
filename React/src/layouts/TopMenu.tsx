@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Icon from 'images/icon-95x56.png';
 import { useState } from 'react';
 import classNames from 'classnames';
+import SignInButton from '../components/SignInButton'
 
 const menu = [
     {
@@ -91,6 +92,7 @@ const TopMenu = () => {
                             <a className="button is-light" href="/signin">
                                 Log in
                             </a>
+                            <SignInButton/>
                         </div>
                     </div>
                 </div>

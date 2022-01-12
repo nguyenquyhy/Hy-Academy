@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { MsalProvider } from '@azure/msal-react';
+import { Configuration, PublicClientApplication } from '@azure/msal-browser';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -11,11 +13,21 @@ const apollo = new ApolloClient({
     cache: new InMemoryCache()
 });
 
+const configuration: Configuration = {
+    auth: {
+        clientId: '0b4344df-c1ea-4ff2-ba85-299c41f62fd7',
+        authority: 'https://hyacademyproduction.b2clogin.com/hyacademyproduction.onmicrosoft.com/B2C_1_HyAcademySignUpSignIn',
+        knownAuthorities: ['hyacademyproduction.b2clogin.com']
+    }
+};
+
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <ApolloProvider client={apollo}>
-                <App />
+                <MsalProvider instance={new PublicClientApplication(configuration)}>
+                    <App />
+                </MsalProvider>
             </ApolloProvider>
         </BrowserRouter>
     </React.StrictMode>,
