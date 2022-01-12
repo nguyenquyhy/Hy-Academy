@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Icon from 'images/icon-95x56.png';
 
 const menu = [
     {
@@ -31,7 +32,7 @@ const TopMenu = () => (
     <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
             <Link className="navbar-item" to="/" title="Hy Academy">
-                <img src="https://via.placeholder.com/112x28?text=Logo" width="112" height="28" alt="Hy Academy" />
+                <img src={Icon} height="28" alt="Hy Academy" />
             </Link>
 
             <button className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
