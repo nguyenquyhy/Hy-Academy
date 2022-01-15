@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useIsAuthenticated } from '@azure/msal-react';
 import Icon from 'images/icon-95x56.png';
 import { useState } from 'react';
 import classNames from 'classnames';
 import SignInButton from '../components/SignInButton'
+import SignOutButton from '../components/SignOutButton'
 
 const menu = [
     {
@@ -33,7 +35,8 @@ const menu = [
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-
+    const isAuthenticated = useIsAuthenticated();
+    
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
@@ -88,11 +91,11 @@ const TopMenu = () => {
                         <div className="buttons">
                             <a className="button is-primary" href="/signup">
                                 <strong>Sign up</strong>
-                            </a>
+                            </a>                        
                             <a className="button is-light" href="/signin">
-                                Log in
+                                Log in                            
                             </a>
-                            <SignInButton/>
+                            {isAuthenticated ? <SignOutButton/> : <SignInButton/>}
                         </div>
                     </div>
                 </div>

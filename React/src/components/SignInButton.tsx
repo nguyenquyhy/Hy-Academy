@@ -1,11 +1,11 @@
 import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../authConfig";
 
 const SignInButton = () => {
     const { instance } = useMsal();
-    const scopes: string[] = ['https://mocpos.onmicrosoft.com/api/global'];
 
     const handleLogin = () => {
-        instance.loginRedirect({ scopes }).catch(e => {
+        instance.loginRedirect(loginRequest).catch(e => {
             console.error(e);
         });
     
