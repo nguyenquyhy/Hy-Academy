@@ -6,6 +6,7 @@ import { loginRequest } from 'authConfig';
 
 const Home = () => {
     const { instance, accounts, inProgress } = useMsal();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
