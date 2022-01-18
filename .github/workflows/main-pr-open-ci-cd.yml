@@ -83,7 +83,7 @@ jobs:
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
-      dockerTag: "${{ secrets.DOCKER_IMAGE }}:pr${{ github.event.pull_request.number }}"
+      dockerTag: ${{ secrets.DOCKER_IMAGE }}:pr${{ github.event.pull_request.number }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   temp:
