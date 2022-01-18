@@ -9,6 +9,13 @@ on:
       backendUrl:
         required: true
         type: string
+    secrets:
+      DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID:
+        required: true
+      DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID:
+        required: true
+      DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID:
+        required: true
 
 jobs:
   build_react_package:
