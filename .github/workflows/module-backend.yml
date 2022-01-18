@@ -2,6 +2,10 @@ name: Deploy backend
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -26,6 +30,7 @@ on:
 
 jobs:
   deploy_container_app:
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     permissions: 
       id-token: write
