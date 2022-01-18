@@ -10,7 +10,6 @@ jobs:
     with:
       environment: Pull Requests
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
-      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
@@ -18,9 +17,10 @@ jobs:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
       dockerTag: docker.io/${{ secrets.DOCKER_TAG }}
+      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   temp:
     runs-on: ubuntu-latest
     needs: [ deploy_api ]
     steps:
-    - run: echo ${{ needs.deploy_api.outputs.apiDomain }}1
+    - run: echo ${{ needs.deploy_api.outputs.apiDomain }}

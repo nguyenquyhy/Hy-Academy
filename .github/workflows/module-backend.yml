@@ -9,9 +9,6 @@ on:
       containerAppName:
         required: true
         type: string
-      logAnalyticsSKU:
-        required: true
-        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -22,6 +19,8 @@ on:
       resourceGroupName:
         required: true
       containerEnvironmentName:
+        required: true
+      logAnalyticsSKU:
         required: true
       dockerTag:
         required: true
@@ -58,8 +57,8 @@ jobs:
         template: ./.azure/backend.bicep
         parameters: appName="${{ inputs.containerAppName }}"
           environmentName="${{ secrets.containerEnvironmentName }}"
-          dockerImage="docker.io/${{ secrets.DOCKER_TAG }}"
-          logAnalyticsSKU="${{ inputs.logAnalyticsSKU }}"
+          dockerImage="${{ secrets.dockerTag }}"
+          logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
     - name: Azure logout
