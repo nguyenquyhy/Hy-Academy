@@ -8,7 +8,7 @@ env:
   
 jobs:    
   deploy_api:
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
     secrets:
