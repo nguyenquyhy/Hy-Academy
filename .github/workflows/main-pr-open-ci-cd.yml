@@ -13,7 +13,7 @@ jobs:
       environment: Pull Requests
     secrets:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
-      containerAppName: ${{ env.PRNUMNER }}-api
+      containerAppName: ${PRNUMNER}-api
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
       dockerTag: docker.io/${{ secrets.DOCKER_TAG }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
