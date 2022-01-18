@@ -52,7 +52,7 @@ jobs:
           inlineScript: |
             echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web'`"
 
-      - runs: echo ${{ steps.geturl.outputs.url }}
+      - run: echo ${{ steps.geturl.outputs.url }}
 
       - name: Add URL to PR comment
         if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
