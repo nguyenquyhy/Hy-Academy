@@ -34,6 +34,7 @@ jobs:
           environmentName="${{ secrets.CONTAINER_ENVIRONMENT_NAME }}"
           dockerImage="docker.io/${{ secrets.DOCKER_TAG }}"
           logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}"
+        failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
     - run: echo ${{ steps.deploy_backend.outputs.applicationURL }}
 
