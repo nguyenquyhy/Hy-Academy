@@ -26,7 +26,7 @@ jobs:
                 
     - name: Deploy container app
       id: deploy_backend
-      uses: azure/arm-deploy@1.0.6
+      uses: azure/arm-deploy@v1.0.6
       with:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
         template: ./.azure/backend.bicep
