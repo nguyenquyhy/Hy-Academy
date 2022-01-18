@@ -7,76 +7,23 @@ env:
   PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
 
 jobs:
-  create_app_resources:
-    runs-on: ubuntu-latest
-    environment: Pull Requests
-    permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
-    outputs:
-      url: ${{ steps.geturl.outputs.url }}
-    steps:
-      - name: Azure Login
-        uses: Azure/login@v1.4.2
-        with:
-          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
-
-      - name: Check Storage Account Exist
-        id: checkAccountExist
-        uses: azure/CLI@1.0.4
-        with:
-          inlineScript: |
-            echo "::set-output name=isNew::`az storage account check-name --name ${PRNUMNER} --query nameAvailable`"
-
-      - name: Create Storage Account
-        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
-        uses: azure/CLI@1.0.4
-        with:
-          inlineScript: |
-            az storage account create -n ${PRNUMNER} -g '${{ secrets.RESOURCE_GROUP_NAME }}' -l SoutheastAsia --sku Standard_LRS --kind StorageV2
-
-      - name: Enable Static Site
-        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
-        uses: azure/CLI@1.0.4
-        with:
-          inlineScript: |
-            az storage blob service-properties update --account-name ${PRNUMNER} --static-website --404-document index.html --index-document index.html
-
-      - name: Get static site URL
-        id: geturl
-        uses: azure/CLI@1.0.4
-        with:
-          inlineScript: |
-            echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web' --output tsv`"
-
-      - run: echo ${{ steps.geturl.outputs.url }}
-
-      - name: Add URL to PR comment
-        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: ${{ steps.geturl.outputs.url }}
-            })
-
-      - name: Azure logout
-        run: |
-          az logout
-        if: always()
+  create_app:
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-resources.yml@hy/pr-workflow-backend
+    with:
+      environment: Pull Requests
+      storageAccountName: hyacademypr${{ github.event.pull_request.number }}
+    secrets:
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
 
   deploy_api:
-    needs: [create_app_resources]
+    needs: [create_app]
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
-      frontendUrl: ${{ needs.create_app_resources.outputs.url }}
+      frontendUrl: ${{ needs.create_app.outputs.url }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
