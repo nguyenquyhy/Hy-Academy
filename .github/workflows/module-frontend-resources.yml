@@ -1,4 +1,4 @@
-name: Deploy frontend
+name: Create resources for frontend
 
 on:
   workflow_call:

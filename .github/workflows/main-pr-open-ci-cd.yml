@@ -1,10 +1,8 @@
-name: Deploy a new API for each pull request
+name: Deploy new webapp and API for each pull request
 
 on:
   pull_request:
     branches: [main]
-env:
-  PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
 
 jobs:
   create_app:
