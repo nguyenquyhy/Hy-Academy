@@ -55,18 +55,18 @@ jobs:
         subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
                 
     - name: Deploy container app
-      id: deploy_backend
-      uses: azure/arm-deploy@1.0.6
+      uses: azure/CLI@1.0.4
       with:
-        resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
-        template: ./.azure/backend.bicep
-        parameters: |
+        azcliversion: 2.30.0
+        inlineScript: |
+          az deployment group create \
+          --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
+          --template-file ./.azure/backend.bicep \
+          --parameters \
             appName="${{ secrets.CONTAINER_APP_NAME }}" \
             environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
             dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
             logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
-
-    - run: echo ${{ steps.deploy_backend.outputs.applicationURL }}
 
     - name: Azure logout
       run: |
