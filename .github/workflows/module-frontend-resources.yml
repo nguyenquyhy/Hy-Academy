@@ -80,7 +80,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ steps.geturl.outputs.url }}
+              body: "${{ steps.geturl.outputs.url }}"
             })
 
       - name: Azure logout
