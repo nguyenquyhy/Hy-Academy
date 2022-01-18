@@ -50,7 +50,7 @@ jobs:
         uses: azure/CLI@1.0.4
         with:
           inlineScript: |
-            echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web'`"
+            echo "::set-output name=url::`az storage account show --name ${PRNUMNER} --query 'primaryEndpoints.web' --output tsv`"
 
       - run: echo ${{ steps.geturl.outputs.url }}
 
@@ -76,7 +76,7 @@ jobs:
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
-      frontendUrl: ${{ fromJSON(needs.create_app_resources.outputs.url) }}
+      frontendUrl: ${{ needs.create_app_resources.outputs.url }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
