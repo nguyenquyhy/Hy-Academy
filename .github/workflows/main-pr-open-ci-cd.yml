@@ -76,6 +76,8 @@ jobs:
       frontendUrl: ${{ needs.create_app_resources.outputs.url }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
     secrets:
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
