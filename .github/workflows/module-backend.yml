@@ -2,11 +2,13 @@ name: Deploy backend
 
 on:
   workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
     secrets:
+      deploymentSpClientId:
+        required: true
+      deploymentSpTenantId:
+        required: true
+      deploymentSpSubscriptionId:
+        required: true
       resourceGroupName:
         required: true
       containerAppName:
@@ -24,7 +26,6 @@ on:
 
 jobs:
   deploy_container_app:
-    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     permissions: 
       id-token: write
@@ -38,9 +39,9 @@ jobs:
     - name: Azure login
       uses: azure/login@v1.4.2
       with:
-        client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-        tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-        subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+        client-id: ${{ secrets.deploymentSpClientId }}
+        tenant-id: ${{ secrets.deploymentSpTenantId }}
+        subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
                 
     - name: Deploy container app
       id: deploy_backend
