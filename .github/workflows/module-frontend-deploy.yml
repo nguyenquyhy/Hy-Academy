@@ -10,11 +10,11 @@ on:
         required: true
         type: string
     secrets:
-      DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID:
+      deploymentSpClientId:
         required: true
-      DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID:
+      deploymentSpTenantId:
         required: true
-      DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID:
+      deploymentSpSubscriptionId:
         required: true
 
 jobs:
@@ -55,10 +55,10 @@ jobs:
           
       - name: Azure Login
         uses: Azure/login@v1.4.2
-        with: 
-          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}          
+        with:
+          client-id: ${{ secrets.deploymentSpClientId }}
+          tenant-id: ${{ secrets.deploymentSpTenantId }}
+          subscription-id: ${{ secrets.deploymentSpSubscriptionId }}       
           
       - name: Upload to blob storage
         uses: azure/CLI@1.0.4

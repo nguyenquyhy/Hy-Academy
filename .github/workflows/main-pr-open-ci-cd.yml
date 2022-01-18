@@ -95,3 +95,7 @@ jobs:
     with:
       environment: Pull Requests
       backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
+    secrets:
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
