@@ -9,6 +9,9 @@ on:
       backendUrl:
         required: true
         type: string
+      storageAccountName:
+        required: true
+        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -64,7 +67,7 @@ jobs:
         uses: azure/CLI@1.0.4
         with:
           inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${PRNUMNER} --auth-mode key -s './build' -d '$web'
+            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
             
       - name: Azure logout
         run: |

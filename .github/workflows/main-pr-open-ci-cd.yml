@@ -95,6 +95,7 @@ jobs:
     with:
       environment: Pull Requests
       backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
+      storageAccountName: hyacademypr${{ github.event.pull_request.number }}
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
