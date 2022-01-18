@@ -3,11 +3,12 @@ import classnames from 'classnames';
 
 interface Props {
     loading?: boolean;
-    children: React.ReactNode;
+    children: React.ReactNode; 
+    onClick?: () => void;   
 }
 
-const Button = ({ loading, children } : Props) => 
-    <button type="button" className={classnames("button", "is-primary", { "is-loading": loading })}>
+const Button = ({ loading, children, onClick } : Props) => 
+    <button type="button" className={classnames("button", "is-primary", { "is-loading": loading })} onClick={onClick}>
         { children }
     </button>
 

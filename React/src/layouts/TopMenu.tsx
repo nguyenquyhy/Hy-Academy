@@ -88,15 +88,7 @@ const TopMenu = () => {
 
                 <div className="navbar-end">
                     <div className="navbar-item">
-                        <div className="buttons">
-                            <a className="button is-primary" href="/signup">
-                                <strong>Sign up</strong>
-                            </a>                        
-                            <a className="button is-light" href="/signin">
-                                Log in                            
-                            </a>
-                            {isAuthenticated ? <SignOutButton/> : <SignInButton/>}
-                        </div>
+                        {isAuthenticated ? <SignOutButton/> : <SignInButton/>}
                     </div>
                 </div>
             </div>

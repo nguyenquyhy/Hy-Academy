@@ -1,18 +1,20 @@
 import { useMsal } from "@azure/msal-react";
+import Button from "controls/Button";
 import { loginRequest } from "../authConfig";
 
 const SignInButton = () => {
     const { instance } = useMsal();
 
-    const handleLogin = () => {
-        instance.loginRedirect(loginRequest).catch(e => {
+    const handleLogin = async () => {
+        try {
+            await instance.loginRedirect(loginRequest)
+        } catch(e) {
             console.error(e);
-        });
-    
+        };    
     }
 
     return (
-        <button className="is-primary" onClick={() => handleLogin()}>Login</button>
+        <Button onClick={() => handleLogin()}>Login</Button>
     );
 }
 
