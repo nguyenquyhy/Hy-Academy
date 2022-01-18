@@ -73,7 +73,7 @@ jobs:
 
   deploy_api:
     needs: [create_app_resources]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app_resources.outputs.url }}
@@ -89,56 +89,9 @@ jobs:
       dockerTag: ${{ secrets.DOCKER_IMAGE }}:pr${{ github.event.pull_request.number }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
-  build_app:
-    runs-on: ubuntu-latest
-    needs: [deploy_api]
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Install NPM packages
-        working-directory: ./React
-        run: npm ci
-      
-      - name: Run Build
-        working-directory: ./React
-        run: |
-          export REACT_APP_API_URL=https://${{ needs.deploy_api.outputs.apiDomain }}
-          npm run build
-          
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package-deployment
-          path: ./React/build
-          
   deploy_app:
-    runs-on: ubuntu-latest
-    needs: [build_app]
-    environment: Pull Requests
-    permissions:
-      id-token: write
-      contents: read
-    
-    steps:      
-      - uses: actions/download-artifact@v2
-        with:
-          name: package-deployment
-          path: ./build
-          
-      - name: Azure Login
-        uses: Azure/login@v1.4.2
-        with: 
-          client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-          tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-          subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}          
-          
-      - name: Upload to blob storage
-        uses: azure/CLI@1.0.4
-        with:
-          inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}' --account-name ${PRNUMNER} --auth-mode key -s './build' -d '$web'
-            
-      - name: Azure logout
-        run: |
-            az logout
-        if: always()
+    needs: [deploy_api]
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@hy/pr-workflow-backend
+    with:
+      environment: Pull Requests
+      backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
