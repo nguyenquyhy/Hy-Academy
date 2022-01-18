@@ -90,4 +90,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy_api]
     steps:
-      - run: echo ${{ needs.deploy_api.outputs.apiDomain }}
+      - run: echo ${{ needs.deploy_api.outputs.apiDomain }}1
