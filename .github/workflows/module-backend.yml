@@ -30,6 +30,32 @@ on:
         value: ${{ jobs.deploy_container_app.outputs.apiDomain }}
 
 jobs:
+  build-upload-docker-file:
+    environment: Production
+    runs-on: ubuntu-latest
+    permissions: 
+      packages: write
+      contents: read
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+      
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1.12.0
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: ${{ secrets.DOCKER_TAG }}
+        build-args: |
+          "FRONTEND_URL=${{ secrets.FRONTEND_URL }}"
+          
   deploy_container_app:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
@@ -57,7 +83,7 @@ jobs:
         template: ./.azure/backend.bicep
         parameters: appName="${{ inputs.containerAppName }}"
           environmentName="${{ secrets.containerEnvironmentName }}"
-          dockerImage="docker.io/${{ secrets.dockerTag }}"
+          dockerImage="docker.io/${{ secrets.DOCKER_TAG }}"
           logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
