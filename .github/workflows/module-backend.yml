@@ -1,0 +1,60 @@
+name: Deploy backend
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      resourceGroupName:
+        required: true
+      containerAppName:
+        required: true
+      containerEnvironmentName:
+        required: true
+      dockerTag:
+        required: true
+      logAnalyticsSKU:
+        required: true
+    outputs:
+      apiDomain:
+        description: "Domain of the created API endpoint"
+        value: ${{ jobs.deploy_container_app.outputs.apiDomain }}
+
+jobs:
+  deploy_container_app:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write
+      contents: read
+    outputs:
+      apiDomain: ${{ steps.deploy_backend.outputs.applicationURL }}
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Azure login
+      uses: azure/login@v1.4.2
+      with:
+        client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+        tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+        subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+                
+    - name: Deploy container app
+      id: deploy_backend
+      uses: azure/arm-deploy@v1.0.6
+      with:
+        resourceGroupName: ${{ secrets.resourceGroupName }}
+        template: ./.azure/backend.bicep
+        parameters: appName="${{ secrets.containerAppName }}"
+          environmentName="${{ secrets.containerEnvironmentName }}"
+          dockerImage="docker.io/${{ secrets.dockerTag }}"
+          logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
+        failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
+
+    - name: Azure logout
+      run: |
+            az logout
+      if: always()

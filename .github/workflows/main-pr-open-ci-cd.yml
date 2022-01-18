@@ -7,38 +7,18 @@ env:
   PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
   
 jobs:    
-  deploy-container-app:
-    environment: Pull Requests
+  deploy_api:
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml
+    with:
+      environment: Pull Requests
+    secrets:
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+      containerAppName: ${{ env.PRNUMNER }}-api
+      containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
+      dockerTag: docker.io/${{ secrets.DOCKER_TAG }}
+      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
+
+  temp:
     runs-on: ubuntu-latest
-    permissions: 
-      id-token: write
-      contents: read
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-      
-    - name: Azure login
-      uses: azure/login@v1.4.2
-      with:
-        client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
-        tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
-        subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
-                
-    - name: Deploy container app
-      id: deploy_backend
-      uses: azure/arm-deploy@v1.0.6
-      with:
-        resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
-        template: ./.azure/backend.bicep
-        parameters: appName="${{ env.PRNUMNER }}-api"
-          environmentName="${{ secrets.CONTAINER_ENVIRONMENT_NAME }}"
-          dockerImage="docker.io/${{ secrets.DOCKER_TAG }}"
-          logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}"
-        failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
-
-    - run: echo ${{ steps.deploy_backend.outputs.applicationURL }}
-
-    - name: Azure logout
-      run: |
-            az logout
-      if: always()
+    - run: echo ${{ needs.deploy_api.outputs.apiDomain }}
