@@ -1,0 +1,44 @@
+name: Deploy a new API for each pull request
+
+on:
+  pull_request:
+    branches: [ main ]
+env:
+  PRNUMNER: 'hyacademypr${{github.event.pull_request.number}}'  
+  
+jobs:    
+  deploy-container-app:
+    environment: Pull Requests
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write
+      contents: read
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Azure login
+      uses: azure/login@v1.4.2
+      with:
+        client-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+        tenant-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+        subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+                
+    - name: Deploy container app
+      uses: azure/CLI@1.0.4
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az deployment group create \
+          --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
+          --template-file ./.azure/backend.bicep \
+          --parameters \
+            appName="${PRNUMNER}" \
+            environmentName="${{ secrets.CONTAINER_ENVIRONMENT_NAME }}" \
+            dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
+            logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
+
+    - name: Azure logout
+      run: |
+            az logout
+      if: always()
