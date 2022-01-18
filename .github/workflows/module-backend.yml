@@ -6,19 +6,7 @@ on:
       environment:
         required: true
         type: string
-      resourceGroupName:
-        required: true
-        type: string
       containerAppName:
-        required: true
-        type: string
-      containerEnvironmentName:
-        required: true
-        type: string
-      logAnalyticsSKU:
-        required: true
-        type: string
-      dockerTag:
         required: true
         type: string
     secrets:
@@ -27,6 +15,14 @@ on:
       deploymentSpTenantId:
         required: true
       deploymentSpSubscriptionId:
+        required: true
+      resourceGroupName:
+        required: true
+      containerEnvironmentName:
+        required: true
+      logAnalyticsSKU:
+        required: true
+      dockerTag:
         required: true
     outputs:
       apiDomain:
@@ -57,12 +53,12 @@ jobs:
       id: deploy_backend
       uses: azure/arm-deploy@v1.0.6
       with:
-        resourceGroupName: ${{ inputs.resourceGroupName }}
+        resourceGroupName: ${{ secrets.resourceGroupName }}
         template: ./.azure/backend.bicep
         parameters: appName="${{ inputs.containerAppName }}"
-          environmentName="${{ inputs.containerEnvironmentName }}"
-          dockerImage="docker.io/${{ inputs.dockerTag }}"
-          logAnalyticsSKU="${{ inputs.logAnalyticsSKU }}"
+          environmentName="${{ secrets.containerEnvironmentName }}"
+          dockerImage="docker.io/${{ secrets.dockerTag }}"
+          logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
     - name: Azure logout

@@ -9,15 +9,15 @@ jobs:
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
-      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
-      containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
-      dockerTag: docker.io/${{ secrets.DOCKER_TAG }}
-      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+      containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
+      dockerTag: docker.io/${{ secrets.DOCKER_TAG }}
+      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   temp:
     runs-on: ubuntu-latest
