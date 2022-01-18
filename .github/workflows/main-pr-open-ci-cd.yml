@@ -30,7 +30,7 @@ jobs:
       with:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
         template: ./.azure/backend.bicep
-        parameters: appName="${PRNUMNER}-api"
+        parameters: appName="${{ env.PRNUMNER }}-api"
           environmentName="${{ secrets.CONTAINER_ENVIRONMENT_NAME }}"
           dockerImage="docker.io/${{ secrets.DOCKER_TAG }}"
           logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}"
