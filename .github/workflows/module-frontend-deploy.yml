@@ -64,7 +64,7 @@ jobs:
         uses: azure/CLI@1.0.4
         with:
           inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}' --account-name ${PRNUMNER} --auth-mode key -s './build' -d '$web'
+            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${PRNUMNER} --auth-mode key -s './build' -d '$web'
             
       - name: Azure logout
         run: |
