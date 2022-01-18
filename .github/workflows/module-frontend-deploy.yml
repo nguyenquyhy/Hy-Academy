@@ -13,7 +13,6 @@ on:
 jobs:
   build_react_package:
     runs-on: ubuntu-latest
-    needs: [deploy_api]
     steps:
       - uses: actions/checkout@v2
       
