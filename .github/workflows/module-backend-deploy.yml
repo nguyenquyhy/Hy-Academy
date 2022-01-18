@@ -1,0 +1,101 @@
+name: Deploy backend
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      frontendUrl:
+        required: true
+        type: string
+      containerAppName:
+        required: true
+        type: string
+    secrets:
+      dockerUsername:
+        required: true
+      dockerPassword:
+        required: true
+      deploymentSpClientId:
+        required: true
+      deploymentSpTenantId:
+        required: true
+      deploymentSpSubscriptionId:
+        required: true
+      resourceGroupName:
+        required: true
+      containerEnvironmentName:
+        required: true
+      logAnalyticsSKU:
+        required: true
+      dockerTag:
+        required: true
+    outputs:
+      apiDomain:
+        description: "Domain of the created API endpoint"
+        value: ${{ jobs.deploy_container_app.outputs.apiDomain }}
+
+jobs:
+  build_docker_image:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    permissions: 
+      packages: write
+      contents: read
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+      
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1.12.0
+      with:
+        username: ${{ secrets.dockerUsername }}
+        password: ${{ secrets.dockerPassword }}
+        
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: ${{ secrets.dockerTag }}
+        build-args: |
+          "FRONTEND_URL=${{ inputs.frontendUrl }}"
+
+  deploy_container_app:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    needs: [build_docker_image]
+    permissions: 
+      id-token: write
+      contents: read
+    outputs:
+      apiDomain: ${{ steps.deploy_backend.outputs.applicationURL }}
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Azure login
+      uses: azure/login@v1.4.2
+      with:
+        client-id: ${{ secrets.deploymentSpClientId }}
+        tenant-id: ${{ secrets.deploymentSpTenantId }}
+        subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
+                
+    - name: Deploy container app
+      id: deploy_backend
+      uses: azure/arm-deploy@v1.0.6
+      with:
+        resourceGroupName: ${{ secrets.resourceGroupName }}
+        template: ./.azure/backend.bicep
+        parameters: appName="${{ inputs.containerAppName }}"
+          environmentName="${{ secrets.containerEnvironmentName }}"
+          dockerImage="docker.io/${{ secrets.dockerTag }}"
+          logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
+        failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
+
+    - name: Azure logout
+      run: |
+            az logout
+      if: always()

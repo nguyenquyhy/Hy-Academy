@@ -1,0 +1,54 @@
+name: Delete resources of frontend
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      storageAccountName:
+        required: true
+        type: string
+    secrets:
+      deploymentSpClientId:
+        required: true
+      deploymentSpTenantId:
+        required: true
+      deploymentSpSubscriptionId:
+        required: true
+      resourceGroupName:
+        required: true
+
+jobs:
+  delete_resources:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Azure Login
+        uses: Azure/login@v1.4.2
+        with:
+          client-id: ${{ secrets.deploymentSpClientId }}
+          tenant-id: ${{ secrets.deploymentSpTenantId }}
+          subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
+
+      - name: Check Storage Account Exist
+        id: checkAccountExist
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            echo "::set-output name=isNew::`az storage account check-name --name ${{ inputs.storageAccountName }} --query nameAvailable`"
+
+      - name: Delete Storage Account
+        if: ${{ steps.checkAccountExist.outputs.isNew == 'false'}}
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            az storage account delete -n ${{ inputs.storageAccountName }} -g '${{ secrets.resourceGroupName }}' --yes
+
+      - name: Azure logout
+        run: |
+          az logout
+        if: always()
