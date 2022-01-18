@@ -8,8 +8,8 @@ env:
   
 jobs:    
   deploy_api:
-    environment: Pull Requests
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
+    environment: Pull Requests
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
