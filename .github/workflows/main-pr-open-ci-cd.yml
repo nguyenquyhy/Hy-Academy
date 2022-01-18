@@ -73,7 +73,7 @@ jobs:
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend.yml@hy/pr-workflow-backend
     with:
       environment: Pull Requests
-      frontendUrl: ${{ jobs.create_app_resources.outputs.url }}
+      frontendUrl: ${{ needs.create_app_resources.outputs.url }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
