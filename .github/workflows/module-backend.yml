@@ -55,7 +55,7 @@ jobs:
       with:
         resourceGroupName: ${{ secrets.resourceGroupName }}
         template: ./.azure/backend.bicep
-        parameters: appName="${{ secrets.containerAppName }}"
+        parameters: appName="${{ inputs.containerAppName }}"
           environmentName="${{ secrets.containerEnvironmentName }}"
           dockerImage="docker.io/${{ secrets.dockerTag }}"
           logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
