@@ -55,6 +55,7 @@ jobs:
         subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
                 
     - name: Deploy container app
+      id: deploy_backend
       uses: azure/arm-deploy@1.0.6
       with:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
@@ -64,6 +65,8 @@ jobs:
             environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
             dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
             logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
+
+    - run: echo ${{ steps.deploy_backend.outputs.applicationURL }}
 
     - name: Azure logout
       run: |
