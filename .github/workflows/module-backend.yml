@@ -6,6 +6,9 @@ on:
       environment:
         required: true
         type: string
+      containerAppName:
+        required: true
+        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -14,8 +17,6 @@ on:
       deploymentSpSubscriptionId:
         required: true
       resourceGroupName:
-        required: true
-      containerAppName:
         required: true
       containerEnvironmentName:
         required: true
