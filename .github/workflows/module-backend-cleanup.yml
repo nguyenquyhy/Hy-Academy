@@ -64,4 +64,4 @@ jobs:
       - name: Delete tag
         run: |
           TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\":\"${{ secrets.dockerUsername }}\",\"password\":\"${{ secrets.dockerPassword }}\"}" "https://hub.docker.com/v2/users/login/" | jq -r .token)
-          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ secrets.dockerTag }}/" -X DELETE -H "Authorization: JWT ${TOKEN}"
+          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ secrets.dockerTag }}/" -X DELETE -H "Authorization: Bearer ${TOKEN}"
