@@ -22,6 +22,7 @@ jobs:
     with:
       environment: Pull Requests
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
+      dockerTag: pr${{ github.event.pull_request.number }}
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
@@ -30,4 +31,3 @@ jobs:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
       dockerImage: ${{ secrets.DOCKER_IMAGE }}
-      dockerTag: pr${{ github.event.pull_request.number }}

@@ -9,6 +9,9 @@ on:
       containerAppName:
         required: true
         type: string
+      dockerTag:
+        required: true
+        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -23,8 +26,6 @@ on:
       dockerPassword:
         required: true
       dockerImage:
-        required: true
-      dockerTag:
         required: true
 
 jobs:
@@ -64,4 +65,4 @@ jobs:
       - name: Delete tag
         run: |
           TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\":\"${{ secrets.dockerUsername }}\",\"password\":\"${{ secrets.dockerPassword }}\"}" "https://hub.docker.com/v2/users/login/" | jq -r .token)
-          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ secrets.dockerTag }}/" -X DELETE -H "Authorization: Bearer ${TOKEN}"
+          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ inputs.dockerTag }}/" -X DELETE -H "Authorization: Bearer ${TOKEN}"
