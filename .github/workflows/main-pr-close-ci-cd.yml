@@ -16,3 +16,14 @@ jobs:
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+      
+  cleanup_api:
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-cleanup.yml@hy/pr-workflow-backend
+    with:
+      environment: Pull Requests
+      containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
+    secrets:
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
