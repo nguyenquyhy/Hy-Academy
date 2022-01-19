@@ -29,6 +29,8 @@ on:
         required: true
       logAnalyticsSKU:
         required: true
+      dockerImage:
+        required: true
       dockerTag:
         required: true
     outputs:
@@ -59,7 +61,7 @@ jobs:
         context: .
         builder: ${{ steps.buildx.outputs.name }}
         push: true
-        tags: ${{ secrets.dockerTag }}
+        tags: ${{ secrets.dockerImage }}:${{ secrets.dockerTag }}
         build-args: |
           "FRONTEND_URL=${{ inputs.frontendUrl }}"
 
@@ -91,7 +93,7 @@ jobs:
         template: ./.azure/backend.bicep
         parameters: appName="${{ inputs.containerAppName }}"
           environmentName="${{ secrets.containerEnvironmentName }}"
-          dockerImage="docker.io/${{ secrets.dockerTag }}"
+          dockerImage="docker.io/${{ secrets.dockerImage }}:${{ secrets.dockerTag }}"
           logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 

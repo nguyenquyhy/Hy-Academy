@@ -18,6 +18,14 @@ on:
         required: true
       resourceGroupName:
         required: true
+      dockerUsername:
+        required: true
+      dockerPassword:
+        required: true
+      dockerImage:
+        required: true
+      dockerTag:
+        required: true
 
 jobs:
   delete_resources:
@@ -45,3 +53,15 @@ jobs:
         run: |
           az logout
         if: always()
+
+  delete_dockerhub_tag:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Delete tag
+        run: |
+          TOKEN=`curl -s -H "Content-Type: application/json" -X POST -d "{'username':'${{ secrets.dockerUsername }}','password':'${{ secrets.dockerPassword }}'}" "https://hub.docker.com/v2/users/login/" | jq -r .token`
+          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ secrets.dockerTag }}/" -X DELETE -H "Authorization: JWT ${TOKEN}"

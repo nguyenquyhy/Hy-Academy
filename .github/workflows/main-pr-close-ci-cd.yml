@@ -27,3 +27,7 @@ jobs:
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+      dockerImage: ${{ secrets.DOCKER_IMAGE }}
+      dockerTag: pr${{ github.event.pull_request.number }}
