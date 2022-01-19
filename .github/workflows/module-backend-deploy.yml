@@ -97,6 +97,15 @@ jobs:
           logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
+    - run: echo '${{ steps.deploy_backend.outputs.applicationURL }}'
+
+    - name: Check container app
+      if: ${{ steps.deploy_backend.outputs.applicationURL }} != ''
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed('API cannot be deployed to ContainerApp!')
+
     - name: Azure logout
       run: |
             az logout
