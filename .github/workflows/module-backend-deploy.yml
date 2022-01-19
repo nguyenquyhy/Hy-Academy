@@ -100,7 +100,7 @@ jobs:
     - run: echo '${{ steps.deploy_backend.outputs.applicationURL }}'
 
     - name: Check container app
-      if: ${{ steps.deploy_backend.outputs.applicationURL }} != ''
+      if: ${{ steps.deploy_backend.outputs.applicationURL }} == ''
       uses: actions/github-script@v3
       with:
         script: |
