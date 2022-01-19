@@ -23,6 +23,7 @@ jobs:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app.outputs.url }}
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
+      dockerTag: pr${{ github.event.pull_request.number }}
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
@@ -32,7 +33,6 @@ jobs:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
       dockerImage: ${{ secrets.DOCKER_IMAGE }}
-      dockerTag: pr${{ github.event.pull_request.number }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   deploy_app:
