@@ -6,7 +6,7 @@ on:
 
 jobs:
   create_app:
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-resources.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-resources.yml@main
     with:
       environment: Pull Requests
       storageAccountName: hyacademypr${{ github.event.pull_request.number }}
@@ -18,7 +18,7 @@ jobs:
 
   deploy_api:
     needs: [create_app]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@main
     with:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app.outputs.url }}
@@ -37,7 +37,7 @@ jobs:
 
   deploy_app:
     needs: [deploy_api]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@main
     with:
       environment: Pull Requests
       backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}

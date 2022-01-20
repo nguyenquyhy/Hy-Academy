@@ -7,7 +7,7 @@ on:
   
 jobs:
   cleanup_app:
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-cleanup.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-cleanup.yml@main
     with:
       environment: Pull Requests
       storageAccountName: hyacademypr${{ github.event.pull_request.number }}
@@ -18,7 +18,7 @@ jobs:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       
   cleanup_api:
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-cleanup.yml@hy/pr-workflow-backend
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-cleanup.yml@main
     with:
       environment: Pull Requests
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
