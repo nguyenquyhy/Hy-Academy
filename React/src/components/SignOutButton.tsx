@@ -4,10 +4,12 @@ import Button from "controls/Button";
 const SignOutButton = () => {
     const { instance } = useMsal();
 
-    const handleLogout = () => {
-        instance.logoutRedirect({postLogoutRedirectUri: "/",}).catch(e => {
+    const handleLogout = async () => {
+        try {
+            await instance.logoutRedirect({postLogoutRedirectUri: "/",})
+        } catch(e) {
             console.error(e);
-        });
+        };
     
     }
 

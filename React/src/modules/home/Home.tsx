@@ -26,7 +26,7 @@ const Home = () => {
     }, [inProgress, accounts, instance])
     
     return <>
-        <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name} !` : 'Welcome !'}</h2>
+        <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name} !` : 'Welcome!'}</h2>
         <TempGraphQLComponent />
         <div className="buttons">
             <Button>Test button</Button><br />

@@ -14,7 +14,7 @@ const SignInButton = () => {
     }
 
     return (
-        <Button onClick={() => handleLogin()}>Login</Button>
+        <Button onClick={() => handleLogin()}>Login / Register</Button>
     );
 }
 

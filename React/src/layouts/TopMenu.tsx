@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from '@azure/msal-react';
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useIsAuthenticated } from '@azure/msal-react';
 import Icon from 'images/icon-95x56.png';
 import { useState } from 'react';
 import classNames from 'classnames';
 import SignInButton from '../components/SignInButton'
 import SignOutButton from '../components/SignOutButton'
+import EditProfileButton from 'components/EditProfileButton';
 
 const menu = [
     {
@@ -86,10 +87,20 @@ const TopMenu = () => {
                     )}
                 </div>
 
-                <div className="navbar-end">
-                    <div className="navbar-item">
-                        {isAuthenticated ? <SignOutButton/> : <SignInButton/>}
-                    </div>
+                <div className="navbar-end">                    
+                    <UnauthenticatedTemplate>
+                        <div className="navbar-item">
+                            <SignInButton/>
+                        </div>
+                    </UnauthenticatedTemplate>
+                    <AuthenticatedTemplate>
+                        <div className="navbar-item">
+                            <EditProfileButton/>
+                        </div>
+                        <div className="navbar-item">
+                            <SignOutButton/>
+                        </div>
+                    </AuthenticatedTemplate>                        
                 </div>
             </div>
         </nav>
