@@ -61,8 +61,11 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      USERNAME: ${{ secrets.dockerUsername }}
+      PASSWORD: ${{ secrets.dockerPassword }}
     steps:
       - name: Delete tag
         run: |
-          TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\":\"${{ secrets.dockerUsername }}\",\"password\":\"${{ secrets.dockerPassword }}\"}" "https://hub.docker.com/v2/users/login/" | jq -r .token)
+          TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\":\"${USERNAME}\",\"password\":\"${PASSWORD}\"}" "https://hub.docker.com/v2/users/login/" | jq -r .token)
           curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ inputs.dockerTag }}/" -X DELETE -H "Authorization: Bearer ${TOKEN}"
