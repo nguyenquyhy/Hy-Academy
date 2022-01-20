@@ -23,7 +23,7 @@ app.UseCors(policy =>
     var frontEndUrl = builder.Configuration["FrontEndUrl"];
     if (!string.IsNullOrEmpty(frontEndUrl))
     {
-        policy.WithOrigins(frontEndUrl);
+        policy.WithOrigins(frontEndUrl.Trim('/'));
     }
     policy.AllowAnyHeader().AllowAnyMethod();
 });

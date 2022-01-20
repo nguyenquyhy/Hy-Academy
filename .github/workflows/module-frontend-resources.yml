@@ -1,0 +1,91 @@
+name: Create resources for frontend
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      storageAccountName:
+        required: true
+        type: string
+    secrets:
+      deploymentSpClientId:
+        required: true
+      deploymentSpTenantId:
+        required: true
+      deploymentSpSubscriptionId:
+        required: true
+      resourceGroupName:
+        required: true
+    outputs:
+      url:
+        description: "URL of the created frontend endpoint"
+        value: ${{ jobs.create_resources.outputs.url }}
+
+jobs:
+  create_resources:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    outputs:
+      url: ${{ steps.geturl.outputs.url }}
+    steps:
+      - name: Azure Login
+        uses: Azure/login@v1.4.2
+        with:
+          client-id: ${{ secrets.deploymentSpClientId }}
+          tenant-id: ${{ secrets.deploymentSpTenantId }}
+          subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
+
+      - name: Check Storage Account Exist
+        id: checkAccountExist
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            echo "::set-output name=isNew::`az storage account check-name --name ${{ inputs.storageAccountName }} --query nameAvailable`"
+
+      - name: Create Storage Account
+        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            az storage account create -n ${{ inputs.storageAccountName }} -g '${{ secrets.resourceGroupName }}' -l SoutheastAsia --sku Standard_LRS --kind StorageV2
+
+      - name: Enable Static Site
+        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            az storage blob service-properties update --account-name ${{ inputs.storageAccountName }} --static-website --404-document index.html --index-document index.html
+
+      - name: Get static site URL
+        id: geturl
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            echo "::set-output name=url::`az storage account show --name ${{ inputs.storageAccountName }} --query 'primaryEndpoints.web' --output tsv`"
+
+      - run: echo ${{ steps.geturl.outputs.url }}
+
+      - name: Add URL to PR comment
+        if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "${{ steps.geturl.outputs.url }}"
+            })
+
+      - name: Azure logout
+        run: |
+          az logout
+        if: always()
+
+  

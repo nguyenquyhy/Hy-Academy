@@ -1,0 +1,71 @@
+name: Delete resources of backend
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      containerAppName:
+        required: true
+        type: string
+      dockerTag:
+        required: true
+        type: string
+    secrets:
+      deploymentSpClientId:
+        required: true
+      deploymentSpTenantId:
+        required: true
+      deploymentSpSubscriptionId:
+        required: true
+      resourceGroupName:
+        required: true
+      dockerUsername:
+        required: true
+      dockerPassword:
+        required: true
+      dockerImage:
+        required: true
+
+jobs:
+  delete_resources:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Azure Login
+        uses: Azure/login@v1.4.2
+        with:
+          client-id: ${{ secrets.deploymentSpClientId }}
+          tenant-id: ${{ secrets.deploymentSpTenantId }}
+          subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
+
+      - name: Delete ContainerApp
+        uses: azure/CLI@1.0.4
+        with:
+          inlineScript: |
+            az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
+            az containerapp delete -n ${{ inputs.containerAppName }} -g '${{ secrets.resourceGroupName }}' --yes
+
+      - name: Azure logout
+        run: |
+          az logout
+        if: always()
+
+  delete_dockerhub_tag:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      USERNAME: ${{ secrets.dockerUsername }}
+      PASSWORD: ${{ secrets.dockerPassword }}
+    steps:
+      - name: Delete tag
+        run: |
+          TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\":\"${USERNAME}\",\"password\":\"${PASSWORD}\"}" "https://hub.docker.com/v2/users/login/" | jq -r .token)
+          curl "https://hub.docker.com/v2/repositories/${{ secrets.dockerImage }}/tags/${{ inputs.dockerTag }}/" -X DELETE -H "Authorization: Bearer ${TOKEN}"

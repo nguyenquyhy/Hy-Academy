@@ -5,10 +5,14 @@
 All changes to production (`main` branch) must go through GitHub Pull Request (PR).
 
 Any PR to `main` branch automatically triggers the follow checks:
-- [main-pr-open-ci-cd-frontend](/.github/workflows/main-pr-open-ci-cd-frontend.yml) (GitHub Actions): This includes running npm scripts to test and build the front-end package and deploy the package to a temporary site in Azure for reviewing.
+- [main-pr-open-ci-cd](/.github/workflows/main-pr-open-ci-cd.yml) (GitHub Actions): This includes:
+  1. Create Azure resources for frontend
+  1. Get created frontend URL to build backend image
+  1. Deploy backend image
+  1. Get backend URL to build frontend package and deploy the package
 - At least one reviewer approval
 
-Once the PR is merged or closed, another workflow is triggered to clean up the created Azure resources.
+Once the PR is merged or closed, another workflow [main-pr-close-ci-cd](/.github/workflows/main-pr-close-ci-cd.yml) is triggered to clean up the created Azure and Docker resources.
 
 ## Continuous Deployment
 

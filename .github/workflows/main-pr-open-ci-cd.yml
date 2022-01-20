@@ -1,0 +1,52 @@
+name: Deploy new webapp and API for each pull request
+
+on:
+  pull_request:
+    branches: [main]
+    paths: 
+      - '.github/workflows/main-pr-open-ci-cd.yml'
+      - 'React/**'
+      - 'Api/**'
+
+jobs:
+  create_app:
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-resources.yml@main
+    with:
+      environment: Pull Requests
+      storageAccountName: hyacademypr${{ github.event.pull_request.number }}
+    secrets:
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+
+  deploy_api:
+    needs: [create_app]
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@main
+    with:
+      environment: Pull Requests
+      frontendUrl: ${{ needs.create_app.outputs.url }}
+      containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
+      dockerTag: pr${{ github.event.pull_request.number }}
+    secrets:
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+      containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
+      dockerImage: ${{ secrets.DOCKER_IMAGE }}
+      logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
+
+  deploy_app:
+    needs: [deploy_api]
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@main
+    with:
+      environment: Pull Requests
+      backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
+      storageAccountName: hyacademypr${{ github.event.pull_request.number }}
+    secrets:
+      deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
+      deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
+      deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
