@@ -1,12 +1,17 @@
 using HyAcademy.GraphQL;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+
 builder.Services.AddCors();
 builder.Services.AddAuthorization();
 builder.Services
     .AddGraphQLServer()
+    .AddAuthorization()
     .ConfigureGraphQL();
 
 var app = builder.Build();
@@ -34,6 +39,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGraphQL();

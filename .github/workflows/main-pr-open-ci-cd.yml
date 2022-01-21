@@ -22,7 +22,7 @@ jobs:
 
   deploy_api:
     needs: [create_app]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@main
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@hy/graphql-auth
     with:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app.outputs.url }}
@@ -31,12 +31,17 @@ jobs:
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+      dockerImage: ${{ secrets.DOCKER_IMAGE }}
+      azureAdDomain: ${{ secrets.AZUREAD_DOMAIN }}
+      azureAdInstance: ${{ secrets.AZUREAD_INSTANCE }}
+      azureAdTenantId: ${{ secrets.AZUREAD_TENANTID }}
+      azureAdClientId: ${{ secrets.AZUREAD_CLIENTID }}
+      azureAdSignUpSignInPolicyId: ${{ secrets.AZUREAD_SIGNUPSIGNIN_POLICYID }}
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
-      dockerImage: ${{ secrets.DOCKER_IMAGE }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   deploy_app:
