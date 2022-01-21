@@ -10,5 +10,7 @@ public static class GraphQLExtensions
         => builder.ConfigureSchema(schemaBuilder => schemaBuilder.ConfigureGraphQL());
 
     public static ISchemaBuilder ConfigureGraphQL(this ISchemaBuilder builder) 
-        => builder.AddQueryType<Query>();
+        => builder
+            .AddQueryType<Query>()
+            .AddMutationType<Mutation>();
 }
