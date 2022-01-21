@@ -20,6 +20,18 @@ on:
         required: true
       dockerPassword:
         required: true
+      dockerImage:
+        required: true
+      azureAdDomain:
+        required: true
+      azureAdInstance:
+        required: true
+      azureAdTenantId:
+        required: true
+      azureAdClientId:
+        required: true
+      azureAdSignUpSignInPolicyId:
+        required: true
       deploymentSpClientId:
         required: true
       deploymentSpTenantId:
@@ -31,8 +43,6 @@ on:
       containerEnvironmentName:
         required: true
       logAnalyticsSKU:
-        required: true
-      dockerImage:
         required: true
     outputs:
       apiDomain:
@@ -65,6 +75,11 @@ jobs:
         tags: ${{ secrets.dockerImage }}:${{ inputs.dockerTag }}
         build-args: |
           "FRONTEND_URL=${{ inputs.frontendUrl }}"
+          "AZUREAD_DOMAIN=${{ secrets.azureAdDomain }}"
+          "AZUREAD_INSTANCE=${{ secrets.azureAdInstance }}"
+          "AZUREAD_TENANTID=${{ secrets.azureAdTenantId }}"
+          "AZUREAD_CLIENTID=${{ secrets.azureAdClientId }}"
+          "AZUREAD_SIGNUPSIGNIN_POLICYID=${{ secrets.azureAdSignUpSignInPolicyId }}"
 
   deploy_container_app:
     environment: ${{ inputs.environment }}

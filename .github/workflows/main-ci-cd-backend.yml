@@ -35,6 +35,11 @@ jobs:
         tags: ${{ secrets.DOCKER_TAG }}
         build-args: |
           "FRONTEND_URL=${{ secrets.FRONTEND_URL }}"
+          "AZUREAD_DOMAIN=${{ secrets.AZUREAD_DOMAIN }}"
+          "AZUREAD_INSTANCE=${{ secrets.AZUREAD_INSTANCE }}"
+          "AZUREAD_TENANTID=${{ secrets.AZUREAD_TENANTID }}"
+          "AZUREAD_CLIENTID=${{ secrets.AZUREAD_CLIENTID }}"
+          "AZUREAD_SIGNUPSIGNIN_POLICYID=${{ secrets.AZUREAD_SIGNUPSIGNIN_POLICYID }}"
         
   deploy-container-app:
     environment: Production

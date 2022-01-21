@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate" Version="12.4.1" />
+    <PackageReference Include="HotChocolate" Version="12.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </Target>
   <!-- Linux -->
   <Target Name="PostBuildLinux" AfterTargets="PostBuildEvent" Condition=" !Exists('$(TargetDir)HyAcademy.GraphQL.Tools.exe') ">
-    <Exec Command="$(TargetDir)HyAcademy.GraphQL.Tools"/>
+    <Exec Command="$(TargetDir)HyAcademy.GraphQL.Tools" />
   </Target>
 
 </Project>
