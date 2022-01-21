@@ -74,12 +74,12 @@ jobs:
         push: true
         tags: ${{ secrets.dockerImage }}:${{ inputs.dockerTag }}
         build-args: |
-          "FRONTEND_URL=${{ inputs.frontendUrl }}"
-          "AZUREAD_DOMAIN=${{ secrets.azureAdDomain }}"
-          "AZUREAD_INSTANCE=${{ secrets.azureAdInstance }}"
-          "AZUREAD_TENANTID=${{ secrets.azureAdTenantId }}"
-          "AZUREAD_CLIENTID=${{ secrets.azureAdClientId }}"
-          "AZUREAD_SIGNUPSIGNIN_POLICYID=${{ secrets.azureAdSignUpSignInPolicyId }}"
+          FRONTEND_URL=${{ inputs.frontendUrl }}
+          AZUREAD_DOMAIN=${{ secrets.azureAdDomain }}
+          AZUREAD_INSTANCE=${{ secrets.azureAdInstance }}
+          AZUREAD_TENANTID=${{ secrets.azureAdTenantId }}
+          AZUREAD_CLIENTID=${{ secrets.azureAdClientId }}
+          AZUREAD_SIGNUPSIGNIN_POLICYID=${{ secrets.azureAdSignUpSignInPolicyId }}
 
   deploy_container_app:
     environment: ${{ inputs.environment }}
