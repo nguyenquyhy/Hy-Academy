@@ -23,6 +23,8 @@ jobs:
   deploy_api:
     needs: [create_app]
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@main
+    concurrency: 
+      group: pr${{ github.event.pull_request.number }}
     with:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app.outputs.url }}
