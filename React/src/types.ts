@@ -13,19 +13,117 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
+  DateTime: any;
   UUID: any;
+};
+
+export type AddCourseInput = {
+  description: Scalars['String'];
+  title: Scalars['String'];
+  visibility: CourseVisibility;
+};
+
+export enum ApplyPolicy {
+  AfterResolver = 'AFTER_RESOLVER',
+  BeforeResolver = 'BEFORE_RESOLVER'
+}
+
+export type AuthorizeDirective = {
+  __typename?: 'AuthorizeDirective';
+  apply: ApplyPolicy;
+  policy?: Maybe<Scalars['String']>;
+  roles?: Maybe<Array<Scalars['String']>>;
 };
 
 export type Course = {
   __typename?: 'Course';
+  added: Scalars['DateTime'];
+  description: Scalars['String'];
   id: Scalars['UUID'];
+  roleAssignments: Array<RoleAssignment>;
   title: Scalars['String'];
+  updated: Scalars['DateTime'];
+  visibility: CourseVisibility;
+};
+
+export enum CourseVisibility {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC',
+  Unlisted = 'UNLISTED'
+}
+
+export type EditCourseInput = {
+  courseId: Scalars['UUID'];
+  description: Scalars['String'];
+  title: Scalars['String'];
+  visibility: CourseVisibility;
+};
+
+export type EnrollInput = {
+  courseId: Scalars['UUID'];
+};
+
+export type Enrollment = {
+  __typename?: 'Enrollment';
+  added: Scalars['DateTime'];
+  course: Course;
+  id: Scalars['UUID'];
+  student: Profile;
+  updated: Scalars['DateTime'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  addCourse: Course;
+  editCourse: Course;
+  enroll: Enrollment;
+};
+
+
+export type MutationAddCourseArgs = {
+  input: AddCourseInput;
+};
+
+
+export type MutationEditCourseArgs = {
+  input: EditCourseInput;
+};
+
+
+export type MutationEnrollArgs = {
+  input: EnrollInput;
+};
+
+export type Profile = {
+  __typename?: 'Profile';
+  added: Scalars['DateTime'];
+  id: Scalars['UUID'];
+  roleAssignments: Array<RoleAssignment>;
+  updated: Scalars['DateTime'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  authValue: Scalars['Int'];
   courses: Array<Course>;
+  enrollments: Array<Enrollment>;
   value: Scalars['Int'];
+};
+
+export enum Role {
+  Contributor = 'CONTRIBUTOR',
+  Owner = 'OWNER'
+}
+
+export type RoleAssignment = {
+  __typename?: 'RoleAssignment';
+  added: Scalars['DateTime'];
+  course: Course;
+  id: Scalars['UUID'];
+  profile: Profile;
+  role: Role;
+  updated: Scalars['DateTime'];
 };
 
 export type GetTestValueQueryVariables = Exact<{ [key: string]: never; }>;
