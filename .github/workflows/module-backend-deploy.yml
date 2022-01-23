@@ -95,7 +95,7 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
-
+      
     - name: Azure login
       uses: azure/login@v1.4.2
       with:
