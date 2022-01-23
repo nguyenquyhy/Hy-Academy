@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths: 
       - '.github/workflows/main-pr-open-ci-cd.yml'
+      - '.github/workflows/module-*'
       - 'React/**'
       - 'Api/**'
 
