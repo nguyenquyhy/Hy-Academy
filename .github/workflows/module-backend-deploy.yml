@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_docker_image]
     concurrency: 
-      group: pr${{ github.event.pull_request.number }}
+      group: ${{ github.ref }}-api-container-app
     permissions: 
       id-token: write
       contents: read
@@ -96,8 +96,6 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    - run: echo '${{ github.ref }}'
-      
     - name: Azure login
       uses: azure/login@v1.4.2
       with:
