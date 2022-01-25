@@ -46,17 +46,17 @@ const TopMenu = () => (
             <div className="navbar-start">
                 {menu.map(item => item.items ? 
                     (
-                        <div className="navbar-item has-dropdown is-hoverable">
+                        <div key={item.text} className="navbar-item has-dropdown is-hoverable">
                             <span className="navbar-link">
                                 {item.text}
                             </span>
                             <div className="navbar-dropdown">
-                                {item.items.map(subItem => subItem.text === '-' || !subItem.link ?
+                                {item.items.map((subItem, index) => subItem.text === '-' || !subItem.link ?
                                 (
-                                    <hr className="navbar-divider" />
+                                    <hr key={index} className="navbar-divider" />
                                 ):
                                 (
-                                    <Link className="navbar-item" to={subItem.link}>
+                                    <Link key={subItem.text} className="navbar-item" to={subItem.link}>
                                         {subItem.text}
                                     </Link>
                                 ))}
