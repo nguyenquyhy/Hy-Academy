@@ -56,3 +56,9 @@ jobs:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
       deploymentSpSubscriptionId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
+      azureADClientID: ${{ secrets.AZUREAD_CLIENTID }}
+      azureADAuthority: ${{ secrets.AZUREAD_AUTHORITY }}
+      azureADApiScope: ${{ secrets.AZUREAD_API_SCOPE }}
+      azureADSignUpSignIn: ${{ secrets.AZUREAD_SIGNUPSIGNIN_AUTHORITY }}
+      azureADEditProfile: ${{ secrets.AZUREAD_EDITPROFILE_AUTHORITY }}
+      azureADResetPassword: ${{ secrets.AZUREAD_RESETPASSWORD_AUTHORITY }}

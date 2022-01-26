@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import Icon from 'images/icon-95x56.png';
 import { useState } from 'react';
 import classNames from 'classnames';
+import SignInButton from 'layouts/SignInButton'
+import SignOutButton from 'layouts/SignOutButton'
+import EditProfileButton from 'layouts/EditProfileButton';
 
 const menu = [
     {
@@ -32,7 +36,7 @@ const menu = [
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-
+    
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
@@ -82,17 +86,20 @@ const TopMenu = () => {
                     )}
                 </div>
 
-                <div className="navbar-end">
-                    <div className="navbar-item">
-                        <div className="buttons">
-                            <a className="button is-primary" href="/signup">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a className="button is-light" href="/signin">
-                                Log in
-                            </a>
+                <div className="navbar-end">                    
+                    <UnauthenticatedTemplate>
+                        <div className="navbar-item">
+                            <SignInButton/>
                         </div>
-                    </div>
+                    </UnauthenticatedTemplate>
+                    <AuthenticatedTemplate>
+                        <div className="navbar-item">
+                            <EditProfileButton/>
+                        </div>
+                        <div className="navbar-item">
+                            <SignOutButton/>
+                        </div>
+                    </AuthenticatedTemplate>                        
                 </div>
             </div>
         </nav>
