@@ -1,6 +1,6 @@
 import { useMsal } from "@azure/msal-react";
 import Button from "controls/Button";
-import { loginRequest } from "../authConfig";
+import { loginRequest } from "authConfig";
 
 const SignInButton = () => {
     const { instance } = useMsal();
@@ -9,6 +9,7 @@ const SignInButton = () => {
         try {
             await instance.loginRedirect(loginRequest)
         } catch(e) {
+            //TODO: need to implement handle excecption 
             console.error(e);
         };    
     }

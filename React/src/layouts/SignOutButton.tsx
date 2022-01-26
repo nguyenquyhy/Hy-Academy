@@ -8,6 +8,7 @@ const SignOutButton = () => {
         try {
             await instance.logoutRedirect({postLogoutRedirectUri: "/",})
         } catch(e) {
+            //TODO: need to implement handle excecption 
             console.error(e);
         };
     

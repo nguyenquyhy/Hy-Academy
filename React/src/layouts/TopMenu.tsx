@@ -3,9 +3,9 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-reac
 import Icon from 'images/icon-95x56.png';
 import { useState } from 'react';
 import classNames from 'classnames';
-import SignInButton from '../components/SignInButton'
-import SignOutButton from '../components/SignOutButton'
-import EditProfileButton from 'components/EditProfileButton';
+import SignInButton from 'layouts/SignInButton'
+import SignOutButton from 'layouts/SignOutButton'
+import EditProfileButton from 'layouts/EditProfileButton';
 
 const menu = [
     {
@@ -36,7 +36,6 @@ const menu = [
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const isAuthenticated = useIsAuthenticated();
     
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
