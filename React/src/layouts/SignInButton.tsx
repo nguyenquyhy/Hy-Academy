@@ -5,6 +5,7 @@ import { loginRequest } from "authConfig";
 const SignInButton = () => {
     const { instance } = useMsal();
 
+    //reference: https://github.com/Azure-Samples/ms-identity-javascript-react-spa/blob/main/src/components/SignInButton.jsx
     const handleLogin = async () => {
         try {
             await instance.loginRedirect(loginRequest)

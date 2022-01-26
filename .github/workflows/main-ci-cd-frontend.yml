@@ -34,6 +34,11 @@ jobs:
         run: |
           export REACT_APP_API_URL=${{ secrets.API_URL }}
           export REACT_APP_B2C_CLIENT_ID=${{ secrets.AZUREAD_CLIENTID }}
+          export REACT_APP_B2C_AUTHORITY=${{ secrets.AZUREAD_AUTHORITY }}
+          export REACT_APP_B2C_API_SCOPE=${{ secrets.AZUREAD_API_SCOPE }}
+          export REACT_APP_B2C_SIGNUP_SIGNIN=${{ secrets.AZUREAD_SIGNUPSIGNIN_AUTHORITY }}
+          export REACT_APP_B2C_EDIT_PROFILE=${{ secrets.AZUREAD_EDITPROFILE_AUTHORITY }}
+          export REACT_APP_B2C_RESET_PASSWORD=${{ secrets.AZUREAD_RESETPASSWORD_AUTHORITY }}
           npm run build
           
       - name: Upload artifacts

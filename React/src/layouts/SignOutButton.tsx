@@ -4,6 +4,7 @@ import Button from "controls/Button";
 const SignOutButton = () => {
     const { instance } = useMsal();
 
+    //reference: https://github.com/Azure-Samples/ms-identity-javascript-react-spa/blob/main/src/components/SignOutButton.jsx
     const handleLogout = async () => {
         try {
             await instance.logoutRedirect({postLogoutRedirectUri: "/",})

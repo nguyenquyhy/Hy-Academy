@@ -21,7 +21,15 @@ on:
         required: true
       azureADClientID:
         required: true
+      azureADAuthority:
+        required: true  
+      azureADApiScope:
+        required: true          
       azureADSignUpSignIn:
+        required: true
+      azureADEditProfile:
+        required: true
+      azureADResetPassword:
         required: true
 
 jobs:
@@ -39,7 +47,11 @@ jobs:
         run: |
           export REACT_APP_API_URL=${{ inputs.backendUrl }}
           export REACT_APP_B2C_CLIENT_ID=${{ secrets.azureADClientID }}
+          export REACT_APP_B2C_AUTHORITY=${{ secrets.azureADAuthority }}
+          export REACT_APP_B2C_API_SCOPE=${{ secrets.azureADApiScope }}
           export REACT_APP_B2C_SIGNUP_SIGNIN=${{ secrets.azureADSignUpSignIn }}
+          export REACT_APP_B2C_EDIT_PROFILE=${{ secrets.azureADEditProfile }}
+          export REACT_APP_B2C_RESET_PASSWORD=${{ secrets.azureADResetPassword }}
           npm run build
           
       - name: Upload artifacts
