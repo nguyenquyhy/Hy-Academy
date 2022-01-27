@@ -42,7 +42,7 @@ type Profile {
 
 type Query {
   value: Int!
-  authValue: Int!
+  authValue: String!
   courses: [Course!]!
   enrollments: [Enrollment!]!
 }

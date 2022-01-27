@@ -22,14 +22,20 @@ export const loginRequest: RedirectRequest = {
     state: process.env.REACT_APP_B2C_STATE
 };
 
+export const logoutRequest = {
+    postLogoutRedirectUri: "/" 
+};
+
 export const editProfile = {
     authority: process.env.REACT_APP_B2C_EDIT_PROFILE,
     scopes: []
 };
 
-//TODO: need to implement forgot password
-//reference: https://github.com/Azure-Samples/ms-identity-javascript-react-tutorial/tree/main/1-Authentication/2-sign-in-b2c
-export const forgotPassword = {
+export const resetPasswordRequest = {
     authority: process.env.REACT_APP_B2C_RESET_PASSWORD,
     scopes: []
+};
+
+export const loginSilentRequest = {
+    scopes: [process.env.REACT_APP_B2C_API_SCOPE]
 };

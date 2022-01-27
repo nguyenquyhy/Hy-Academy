@@ -105,7 +105,7 @@ export type Profile = {
 
 export type Query = {
   __typename?: 'Query';
-  authValue: Scalars['Int'];
+  authValue: Scalars['String'];
   courses: Array<Course>;
   enrollments: Array<Enrollment>;
   value: Scalars['Int'];
@@ -129,12 +129,13 @@ export type RoleAssignment = {
 export type GetTestValueQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTestValueQuery = { __typename?: 'Query', value: number };
+export type GetTestValueQuery = { __typename?: 'Query', value: number, authValue: string };
 
 
 export const GetTestValueDocument = gql`
     query GetTestValue {
   value
+  authValue
 }
     `;
 

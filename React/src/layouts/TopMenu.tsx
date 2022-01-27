@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
-import Icon from 'images/icon-95x56.png';
-import { useState } from 'react';
 import classNames from 'classnames';
+import Icon from 'images/icon-95x56.png';
 import SignInButton from 'layouts/SignInButton'
 import SignOutButton from 'layouts/SignOutButton'
 import EditProfileButton from 'layouts/EditProfileButton';

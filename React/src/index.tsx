@@ -2,28 +2,20 @@ import './sass/styles.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from '@azure/msal-browser';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { msalConfig } from "./authConfig";
-
-const apollo = new ApolloClient({
-    uri: `${process.env.REACT_APP_API_URL}/graphql`,
-    cache: new InMemoryCache()
-});
+import { msalConfig } from './auth/authConfig';
+import ApolloApp from 'ApolloApp';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <ApolloProvider client={apollo}>
-                <MsalProvider instance={msalInstance}>
-                    <App />
-                </MsalProvider>
-            </ApolloProvider>
+            <MsalProvider instance={msalInstance}>
+                <ApolloApp />
+            </MsalProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
