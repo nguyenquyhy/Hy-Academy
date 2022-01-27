@@ -46,12 +46,13 @@ jobs:
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
 
   deploy_app:
-    needs: [deploy_api]
+    needs: [create_app, deploy_api]
     uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@main
     with:
       environment: Pull Requests
       backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
       storageAccountName: hyacademypr${{ github.event.pull_request.number }}
+      azureADState: ${{ needs.create_app.outputs.url }}
     secrets:
       deploymentSpClientId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_CLIENT_ID }}
       deploymentSpTenantId: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_TENANT_ID }}
@@ -62,3 +63,4 @@ jobs:
       azureADSignUpSignIn: ${{ secrets.AZUREAD_SIGNUPSIGNIN_AUTHORITY }}
       azureADEditProfile: ${{ secrets.AZUREAD_EDITPROFILE_AUTHORITY }}
       azureADResetPassword: ${{ secrets.AZUREAD_RESETPASSWORD_AUTHORITY }}
+      azureADRedirectUrl: ${{ secrets.AZUREAD_REDIRECTURL }}
