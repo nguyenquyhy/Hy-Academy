@@ -11,7 +11,7 @@ const Dialog = ({ title, message }: DialogProps) => {
 
     return (
         <div className={classNames('modal', { 'is-active': isOpen })}>
-            <div className="modal-background" onClick={() => setOpen(false)}></div>
+            <div className="modal-background" data-testid="dialog-background" onClick={() => setOpen(false)}></div>
             <div className="modal-card">
                 <header className="modal-card-head">
                     <p className="modal-card-title">{title}</p>
