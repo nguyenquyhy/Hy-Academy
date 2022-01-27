@@ -3,11 +3,12 @@ import { setContext } from '@apollo/client/link/context';
 import { useMsal } from '@azure/msal-react';
 import App from 'App';
 import { lookupTokenAsync, useMsalEvents } from 'auth';
+import { Dialog, LoaderBlocking } from 'controls';
 
 const ApolloApp = () => {
     const { instance, inProgress } = useMsal();
 
-    useMsalEvents(instance);
+    const { message } = useMsalEvents(instance);
 
     const withToken = setContext(async (_, { headers }) => {
         const token = await lookupTokenAsync(instance, inProgress);
@@ -34,6 +35,8 @@ const ApolloApp = () => {
 
     return (
         <ApolloProvider client={apollo}>
+            {inProgress === 'none' || <LoaderBlocking message='Please wait...' />}
+            {!!message && <Dialog title='Account' message={message} />}
             <App />
         </ApolloProvider>
     );

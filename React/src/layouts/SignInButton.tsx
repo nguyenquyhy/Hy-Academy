@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react';
-import Button from 'controls/Button';
+import { Button } from 'controls';
 import { loginRequest } from 'auth/authConfig';
 
 const SignInButton = () => {

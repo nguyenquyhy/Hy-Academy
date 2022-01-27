@@ -1,9 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AuthError, EventMessage, EventType, IPublicClientApplication } from '@azure/msal-browser';
 import last from 'lodash/last';
 import { resetPasswordRequest } from './authConfig';
 
 const useMsalEvents = (instance: IPublicClientApplication) => {
+    const [message, setMessage] = useState<string | null>(null);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.get('reason') === 'AADB2C90118') {
+            searchParams.delete('reason');
+            setSearchParams(searchParams);
+            setMessage('Password has been reset successfully. \nPlease sign-in with your new password.');
+        }
+    }, [searchParams, setSearchParams]);
+
     /**
      * Register MSAL event callback
      * For more, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/events.md
@@ -28,8 +41,9 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                     const idTokenClaims: any = event.payload.idTokenClaims;
                     const resetPasswordPolicyId = last(resetPasswordRequest.authority.split('/'));
                     if (idTokenClaims && idTokenClaims["tfp"] === resetPasswordPolicyId) {
-                        window.alert("Password has been reset successfully. \nPlease sign-in with your new password");
-                        return instance.logout();
+                        return instance.logout({
+                            postLogoutRedirectUri: '/?reason=AADB2C90118'
+                        });
                     }
                 }
             }
@@ -40,7 +54,9 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                 instance.removeEventCallback(callbackId);
             }
         };
-    }, [instance]);
+    }, [instance, setMessage]);
+
+    return { message, setMessage };
 };
 
 export default useMsalEvents;

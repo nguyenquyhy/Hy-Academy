@@ -1,6 +1,6 @@
 import { useMsal } from '@azure/msal-react';
 import TempGraphQLComponent from 'modules/temp/TempGraphQLComponent';
-import Button from 'controls/Button';
+import { Button } from 'controls';
 
 const Home = () => {
     const { accounts } = useMsal();
