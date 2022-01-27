@@ -12,6 +12,9 @@ on:
       storageAccountName:
         required: true
         type: string
+      azureADState:
+        required: false
+        type: string
     secrets:
       deploymentSpClientId:
         required: true
@@ -31,6 +34,8 @@ on:
         required: true
       azureADResetPassword:
         required: true
+      azureADRedirectUrl:
+        required: false
 
 jobs:
   build_react_package:
@@ -53,6 +58,8 @@ jobs:
           export REACT_APP_B2C_SIGNUP_SIGNIN=${{ secrets.azureADSignUpSignIn }}
           export REACT_APP_B2C_EDIT_PROFILE=${{ secrets.azureADEditProfile }}
           export REACT_APP_B2C_RESET_PASSWORD=${{ secrets.azureADResetPassword }}
+          export REACT_APP_B2C_REDIRECT_URL=${{ secrets.azureADRedirectUrl }}
+          export REACT_APP_B2C_STATE=${{ inputs.azureADState }}
           npm run build
           
       - name: Upload artifacts
