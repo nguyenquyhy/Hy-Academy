@@ -47,7 +47,7 @@ jobs:
 
   deploy_app:
     needs: [create_app, deploy_api]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@hy/azuread-redirect
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-frontend-deploy.yml@main
     with:
       environment: Pull Requests
       backendUrl: https://${{ needs.deploy_api.outputs.apiDomain }}
