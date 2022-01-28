@@ -1,6 +1,7 @@
 import { useMsal } from '@azure/msal-react';
 import { Button } from 'controls';
 import { logoutRequest } from 'auth/authConfig';
+import { ButtonType } from 'controls/Button';
 
 const SignOutButton = () => {
     const { instance } = useMsal();
@@ -17,7 +18,7 @@ const SignOutButton = () => {
     }
 
     return (
-        <Button onClick={() => handleLogout()}>Log Out</Button>
+        <Button onClick={() => handleLogout()} type={ButtonType.Secondary}>Log Out</Button>
     );
 }
 

@@ -94,10 +94,10 @@ const TopMenu = () => {
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
                         <div className="navbar-item">
-                            <EditProfileButton/>
-                        </div>
-                        <div className="navbar-item">
-                            <SignOutButton/>
+                            <div className="buttons">
+                                <EditProfileButton />
+                                <SignOutButton />
+                            </div>
                         </div>
                     </AuthenticatedTemplate>                        
                 </div>
