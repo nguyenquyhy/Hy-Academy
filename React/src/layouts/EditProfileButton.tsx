@@ -1,6 +1,6 @@
-import { useMsal } from "@azure/msal-react";
-import Button from "controls/Button";
-import { editProfile } from "authConfig";
+import { useMsal } from '@azure/msal-react';
+import { Button } from 'controls';
+import { editProfile } from 'auth/authConfig';
 
 const EditProfileButton = () => {
     const { instance } = useMsal();
