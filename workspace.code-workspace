@@ -15,7 +15,9 @@
 	},
 	"extensions": {
 		"recommendations": [
-			"hediet.vscode-drawio"
+			"hediet.vscode-drawio",
+			"dbaeumer.vscode-eslint",
+			"orta.vscode-jest"
 		]
 	}
 }

@@ -7,16 +7,16 @@ const EditProfileButton = () => {
 
     const handleEditProfile = async () => {
         try {
-            await instance.loginRedirect(editProfile)
-        } catch(e) {
-            //TODO: need to implement handle excecption 
+            await instance.loginRedirect(editProfile);
+        } catch (e) {
+            // TODO: need to implement handle exception
             console.error(e);
-        };    
-    }
+        }
+    };
 
     return (
         <Button onClick={() => handleEditProfile()}>Edit Profile</Button>
     );
-}
+};
 
 export default EditProfileButton;

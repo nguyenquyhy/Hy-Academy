@@ -11,11 +11,11 @@ const Dialog = ({ title, message }: DialogProps) => {
 
     return (
         <div className={classNames('modal', { 'is-active': isOpen })}>
-            <div className="modal-background" data-testid="dialog-background" onClick={() => setOpen(false)}></div>
+            <div className="modal-background" role="none" data-testid="dialog-background" onClick={() => setOpen(false)} />
             <div className="modal-card">
                 <header className="modal-card-head">
                     <p className="modal-card-title">{title}</p>
-                    <button className="delete" aria-label="close" onClick={() => setOpen(false)}></button>
+                    <button className="delete" aria-label="close" onClick={() => setOpen(false)} />
                 </header>
                 <section className="modal-card-body">
                     {message}

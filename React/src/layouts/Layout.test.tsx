@@ -4,7 +4,7 @@ import Layout from './Layout';
 
 test('renders nav', () => {
     render(
-    <MemoryRouter>
+        <MemoryRouter>
             <Layout />
         </MemoryRouter>
     );

@@ -4,7 +4,6 @@ import Home from './Home';
 
 test('renders header', () => {
     render(
-    
         <MockedProvider>
             <Home />
         </MockedProvider>

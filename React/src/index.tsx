@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from '@azure/msal-browser';
-import reportWebVitals from './reportWebVitals';
-import { msalConfig } from './auth/authConfig';
+import reportWebVitals from 'reportWebVitals';
+import { msalConfig } from 'auth/authConfig';
 import ApolloApp from 'ApolloApp';
 
 const msalInstance = new PublicClientApplication(msalConfig);

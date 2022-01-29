@@ -25,7 +25,7 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
         const callbackId = instance.addEventCallback((event: EventMessage) => {
             if (event.eventType === EventType.LOGIN_FAILURE) {
                 // Reference: https://github.com/Azure-Samples/ms-identity-javascript-react-tutorial/tree/main/1-Authentication/2-sign-in-b2c
-                if (event.error && event.error instanceof AuthError && event.error.errorMessage.indexOf("AADB2C90118") > -1) {
+                if (event.error && event.error instanceof AuthError && event.error.errorMessage.indexOf('AADB2C90118') > -1) {
                     // AADB2C90118:+The+user+has+forgotten+their+password.
                     instance.loginRedirect(resetPasswordRequest);
                 }
@@ -38,10 +38,11 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                      * "acr" claim in the token tells us what policy is used (NOTE: for new policies (v2.0), use "tfp" instead of "acr").
                      * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
                      */
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any,prefer-destructuring
                     const idTokenClaims: any = event.payload.idTokenClaims;
                     const resetPasswordPolicyId = last(resetPasswordRequest.authority.split('/'));
-                    if (idTokenClaims && idTokenClaims["tfp"] === resetPasswordPolicyId) {
-                        return instance.logout({
+                    if (idTokenClaims && idTokenClaims.tfp === resetPasswordPolicyId) {
+                        instance.logout({
                             postLogoutRedirectUri: '/?reason=AADB2C90118'
                         });
                     }

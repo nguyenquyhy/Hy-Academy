@@ -19,11 +19,10 @@ const lookupTokenAsync = async (instance: IPublicClientApplication, inProgress: 
                     return instance.acquireTokenRedirect(loginRequest);
                 }
             }
-        } else if (!account) {
-            // We don't force login if the user has not logged in before
-            return null;
         }
+        // We don't force login if the user has not logged in before
     }
+    return null;
 };
 
 export default lookupTokenAsync;

@@ -28,6 +28,10 @@ jobs:
       - name: Run lint
         working-directory: ./React
         run: npm run lint
+
+      - name: Runt tests
+        working-directory: ./React
+        run: npm test
       
       - name: Run build
         working-directory: ./React

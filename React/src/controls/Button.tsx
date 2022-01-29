@@ -16,20 +16,20 @@ interface Props {
 function typeToColor(type: ButtonType) {
     switch (type) {
         case ButtonType.Secondary:
-            return "is-light";
+            return 'is-light';
         default:
-            return "is-primary";
+            return 'is-primary';
     }
 }
 
-const Button = ({ loading, children, onClick, type } : Props) => (
-    <button type="button" className={classnames("button", typeToColor(type), { "is-loading": loading })} onClick={onClick}>
-        { children }
+const Button = ({ loading, children, onClick, type }: Props) => (
+    <button type="button" className={classnames('button', typeToColor(type), { 'is-loading': loading })} onClick={onClick}>
+        {children}
     </button>
 );
 
 Button.defaultProps = {
     type: ButtonType.Primary
-}
+};
 
 export default Button;

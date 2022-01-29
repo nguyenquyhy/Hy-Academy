@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import App from './App';
 import { MemoryRouter } from 'react-router-dom';
+import App from './App';
 
 test('renders home page', () => {
     render(
