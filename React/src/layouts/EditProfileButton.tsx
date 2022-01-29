@@ -6,12 +6,7 @@ const EditProfileButton = () => {
     const { instance } = useMsal();
 
     const handleEditProfile = async () => {
-        try {
-            await instance.loginRedirect(editProfile);
-        } catch (e) {
-            // TODO: need to implement handle exception
-            console.error(e);
-        }
+        await instance.loginRedirect(editProfile);
     };
 
     return (

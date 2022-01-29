@@ -8,12 +8,7 @@ const SignOutButton = () => {
 
     // Reference: https://github.com/Azure-Samples/ms-identity-javascript-react-spa/blob/main/src/components/SignOutButton.jsx
     const handleLogout = async () => {
-        try {
-            await instance.logoutRedirect(logoutRequest);
-        } catch (e) {
-            // TODO: need to implement handle exception
-            console.error(e);
-        }
+        await instance.logoutRedirect(logoutRequest);
     };
 
     return (
