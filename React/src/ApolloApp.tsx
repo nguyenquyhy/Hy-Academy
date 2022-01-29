@@ -19,9 +19,8 @@ const ApolloApp = () => {
                     Authorization: token ? `Bearer ${token}` : null,
                 },
             };
-        } else {
-            return { headers };
         }
+        return { headers };
     });
 
     const httpLink = createHttpLink({
@@ -35,11 +34,11 @@ const ApolloApp = () => {
 
     return (
         <ApolloProvider client={apollo}>
-            {inProgress === 'none' || <LoaderBlocking message='Please wait...' />}
-            {!!message && <Dialog title='Account' message={message} />}
+            {inProgress === 'none' || <LoaderBlocking message="Please wait..." />}
+            {!!message && <Dialog title="Account" message={message} />}
             <App />
         </ApolloProvider>
     );
-}
+};
 
 export default ApolloApp;

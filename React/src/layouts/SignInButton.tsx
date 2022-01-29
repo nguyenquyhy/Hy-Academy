@@ -5,19 +5,14 @@ import { loginRequest } from 'auth/authConfig';
 const SignInButton = () => {
     const { instance } = useMsal();
 
-    //reference: https://github.com/Azure-Samples/ms-identity-javascript-react-spa/blob/main/src/components/SignInButton.jsx
+    // Reference: https://github.com/Azure-Samples/ms-identity-javascript-react-spa/blob/main/src/components/SignInButton.jsx
     const handleLogin = async () => {
-        try {
-            await instance.loginRedirect(loginRequest)
-        } catch(e) {
-            //TODO: need to implement handle excecption 
-            console.error(e);
-        };    
-    }
+        await instance.loginRedirect(loginRequest);
+    };
 
     return (
         <Button onClick={() => handleLogin()}>Login / Register</Button>
     );
-}
+};
 
 export default SignInButton;

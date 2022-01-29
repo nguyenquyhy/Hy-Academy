@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import classNames from 'classnames';
 import Icon from 'images/icon-95x56.png';
-import SignInButton from 'layouts/SignInButton'
-import SignOutButton from 'layouts/SignOutButton'
+import SignInButton from 'layouts/SignInButton';
+import SignOutButton from 'layouts/SignOutButton';
 import EditProfileButton from 'layouts/EditProfileButton';
 
 const menu = [
@@ -32,11 +32,18 @@ const menu = [
             }
         ]
     }
-]
+];
+
+const DropDownItem = ({ index, text, link }: { index: number, text: string, link?: string }) => {
+    if (text === '-' || !link) {
+        return <hr key={index} className="navbar-divider" />;
+    }
+    return <Link key={text} className="navbar-item" to={link}>{text}</Link>;
+};
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-    
+
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
@@ -44,37 +51,29 @@ const TopMenu = () => {
                     <img src={Icon} height="28" alt="Hy Academy" />
                 </Link>
 
-                <button 
-                    className={classNames("navbar-burger", { "is-active": isMenuOpen })} 
-                    aria-label="menu" 
-                    aria-expanded="false" 
+                <button
+                    className={classNames('navbar-burger', { 'is-active': isMenuOpen })}
+                    aria-label="menu"
+                    aria-expanded="false"
                     data-target="navbarBasicExample"
                     onClick={() => setMenuOpen(!isMenuOpen)}
                 >
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true" />
+                    <span aria-hidden="true" />
+                    <span aria-hidden="true" />
                 </button>
             </div>
 
-            <div id="navbarBasicExample" className={classNames("navbar-menu", { "is-active": isMenuOpen })}>
+            <div id="navbarBasicExample" className={classNames('navbar-menu', { 'is-active': isMenuOpen })}>
                 <div className="navbar-start">
-                    {menu.map(item => item.items ? 
+                    {menu.map(item => (item.items ?
                         (
                             <div key={item.text} className="navbar-item has-dropdown is-hoverable">
                                 <span className="navbar-link">
                                     {item.text}
                                 </span>
                                 <div className="navbar-dropdown">
-                                    {item.items.map((subItem, index) => subItem.text === '-' || !subItem.link ?
-                                    (
-                                        <hr key={index} className="navbar-divider" />
-                                    ):
-                                    (
-                                        <Link key={subItem.text} className="navbar-item" to={subItem.link}>
-                                            {subItem.text}
-                                        </Link>
-                                    ))}
+                                    {item.items.map((subItem, index) => <DropDownItem index={index} text={subItem.text} link={subItem.link} />)}
                                 </div>
                             </div>
                         ) :
@@ -83,13 +82,13 @@ const TopMenu = () => {
                                 {item.text}
                             </Link>
                         )
-                    )}
+                    ))}
                 </div>
 
-                <div className="navbar-end">                    
+                <div className="navbar-end">
                     <UnauthenticatedTemplate>
                         <div className="navbar-item">
-                            <SignInButton/>
+                            <SignInButton />
                         </div>
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
@@ -99,11 +98,11 @@ const TopMenu = () => {
                                 <SignOutButton />
                             </div>
                         </div>
-                    </AuthenticatedTemplate>                        
+                    </AuthenticatedTemplate>
                 </div>
             </div>
         </nav>
     );
-}
+};
 
 export default TopMenu;

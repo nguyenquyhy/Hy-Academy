@@ -8,7 +8,7 @@ test('renders brand link', () => {
             <TopMenu />
         </MemoryRouter>
     );
-    
+
     const brandImage = screen.getByTitle('Hy Academy');
 
     expect(brandImage).toBeInTheDocument();
@@ -21,7 +21,7 @@ test('renders about link', () => {
             <TopMenu />
         </MemoryRouter>
     );
-    
+
     const brandImage = screen.getByText('About');
 
     expect(brandImage).toBeInTheDocument();

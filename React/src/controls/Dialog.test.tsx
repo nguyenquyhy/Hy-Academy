@@ -1,11 +1,10 @@
-
-import { fireEvent, render, screen } from "@testing-library/react"
-import Dialog from "./Dialog";
+import { fireEvent, screen } from '@testing-library/react';
+import Dialog from './Dialog';
 import renderWithStyle from './renderWithStyle';
 
 test('renders title and message by default', () => {
     renderWithStyle(
-        <Dialog title="Test title" message="Test message" />, 
+        <Dialog title="Test title" message="Test message" />,
         { stylesheet: '.modal { display:none } .modal.is-active { display:block }' }
     );
 
@@ -19,9 +18,9 @@ test('renders title and message by default', () => {
 test('dismisses on clicking background', () => {
     // Render with some Bulma styles
     renderWithStyle(
-        <Dialog title="Test title" message="Test message" />, 
-        { stylesheet: '.modal { display:none } .modal.is-active { display:block }' 
-    });
+        <Dialog title="Test title" message="Test message" />,
+        { stylesheet: '.modal { display:none } .modal.is-active { display:block }' }
+    );
 
     const background = screen.getByTestId('dialog-background');
 
@@ -37,7 +36,7 @@ test('dismisses on clicking background', () => {
 test('dismisses on clicking close', () => {
     // Render with some Bulma styles
     renderWithStyle(
-        <Dialog title="Test title" message="Test message" />, 
+        <Dialog title="Test title" message="Test message" />,
         { stylesheet: '.modal { display:none } .modal.is-active { display:block }' }
     );
 

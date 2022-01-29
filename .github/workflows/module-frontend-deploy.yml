@@ -47,6 +47,14 @@ jobs:
       - name: Install NPM packages
         working-directory: ./React
         run: npm ci
+
+      - name: Runt Lint
+        working-directory: ./React
+        run: npm run lint
+
+      - name: Runt Tests
+        working-directory: ./React
+        run: npm test
       
       - name: Run Build
         working-directory: ./React

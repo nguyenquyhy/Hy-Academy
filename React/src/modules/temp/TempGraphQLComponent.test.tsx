@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 
-import TempGraphQLComponent from './TempGraphQLComponent';
 import { GetTestValueDocument } from 'types';
+import TempGraphQLComponent from './TempGraphQLComponent';
 
 test('loads data', async () => {
     const mocks = [
@@ -28,8 +28,8 @@ test('loads data', async () => {
     const loadingElement = screen.getByText(/Loading.../i);
     expect(loadingElement).toBeInTheDocument();
 
-    await new Promise(resolve => setTimeout(resolve, 0));
-    
+    await new Promise(resolve => { setTimeout(resolve, 0); });
+
     // Success state
     const successElement = screen.getByText(/GraphQL Data: 123/i);
     expect(successElement).toBeInTheDocument();
@@ -51,8 +51,8 @@ test('shows error', async () => {
         </MockedProvider>
     );
 
-    await new Promise(resolve => setTimeout(resolve, 0));
-    
+    await new Promise(resolve => { setTimeout(resolve, 0); });
+
     // Error state
     const errorElement = screen.getByText(/Network error/i);
     expect(errorElement).toBeInTheDocument();
