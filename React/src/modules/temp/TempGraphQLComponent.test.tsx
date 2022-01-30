@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 
 import { GetTestValueDocument } from 'types';
@@ -28,7 +28,7 @@ test('loads data', async () => {
     const loadingElement = screen.getByText(/Loading.../i);
     expect(loadingElement).toBeInTheDocument();
 
-    await new Promise(resolve => { setTimeout(resolve, 0); });
+    await act(() => new Promise(resolve => { setTimeout(resolve, 0); }));
 
     // Success state
     const successElement = screen.getByText(/GraphQL Data: 123/i);
@@ -51,7 +51,7 @@ test('shows error', async () => {
         </MockedProvider>
     );
 
-    await new Promise(resolve => { setTimeout(resolve, 0); });
+    await act(() => new Promise(resolve => { setTimeout(resolve, 0); }));
 
     // Error state
     const errorElement = screen.getByText(/Network error/i);
