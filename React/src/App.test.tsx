@@ -3,7 +3,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders home page', () => {
+test('renders layout', () => {
     render(
         <MemoryRouter>
             <MockedProvider>
@@ -11,6 +11,6 @@ test('renders home page', () => {
             </MockedProvider>
         </MemoryRouter>
     );
-    const linkElement = screen.getByText(/Welcome/i);
+    const linkElement = screen.getByText(/Login \/ Register/i);
     expect(linkElement).toBeInTheDocument();
 });

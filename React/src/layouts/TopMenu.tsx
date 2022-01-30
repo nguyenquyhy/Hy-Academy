@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
 import classNames from 'classnames';
 import Icon from 'images/icon-95x56.png';
 import SignInButton from 'layouts/SignInButton';
@@ -34,15 +34,16 @@ const menu = [
     }
 ];
 
-const DropDownItem = ({ index, text, link }: { index: number, text: string, link?: string }) => {
+const DropDownItem = ({ text, link }: { text: string, link?: string }) => {
     if (text === '-' || !link) {
-        return <hr key={index} className="navbar-divider" />;
+        return <hr className="navbar-divider" />;
     }
-    return <Link key={text} className="navbar-item" to={link}>{text}</Link>;
+    return <Link className="navbar-item" to={link}>{text}</Link>;
 };
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const { accounts } = useMsal();
 
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -73,7 +74,7 @@ const TopMenu = () => {
                                     {item.text}
                                 </span>
                                 <div className="navbar-dropdown">
-                                    {item.items.map((subItem, index) => <DropDownItem index={index} text={subItem.text} link={subItem.link} />)}
+                                    {item.items.map((subItem, index) => <DropDownItem key={subItem.text !== '-' ? subItem.text : index} text={subItem.text} link={subItem.link} />)}
                                 </div>
                             </div>
                         ) :
@@ -92,6 +93,9 @@ const TopMenu = () => {
                         </div>
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
+                        <div className="navbar-item">
+                            <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name} !` : 'Welcome!'}</h2>
+                        </div>
                         <div className="navbar-item">
                             <div className="buttons">
                                 <EditProfileButton />
