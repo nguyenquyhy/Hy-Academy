@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import Home from './Home';
 
-test('renders header', () => {
+test('renders home page', () => {
     render(
         <MockedProvider>
             <Home />
         </MockedProvider>
     );
 
-    const homeHeader = screen.getByText('Welcome!');
+    const testButton = screen.getByText('Test button');
 
-    expect(homeHeader).toBeInTheDocument();
+    expect(testButton).toBeInTheDocument();
 });
