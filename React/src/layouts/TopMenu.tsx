@@ -94,7 +94,7 @@ const TopMenu = () => {
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
                         <div className="navbar-item">
-                            <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name} !` : 'Welcome!'}</h2>
+                            <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name}` : 'Welcome!'}</h2>
                         </div>
                         <div className="navbar-item">
                             <div className="buttons">
