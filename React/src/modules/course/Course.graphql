@@ -1,0 +1,7 @@
+query GetCourse($id: UUID!) {
+    course(id: $id) {
+        id
+        title
+        description
+    }
+}

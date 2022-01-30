@@ -9,7 +9,7 @@ test('renders home page', () => {
         </MockedProvider>
     );
 
-    const testButton = screen.getByText('Test button');
+    const testButton = screen.getByText('Courses');
 
     expect(testButton).toBeInTheDocument();
 });

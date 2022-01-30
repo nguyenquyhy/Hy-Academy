@@ -1,3 +1,4 @@
+using HyAcademy.Data;
 using HyAcademy.GraphQL;
 using Microsoft.Identity.Web;
 
@@ -13,6 +14,10 @@ builder.Services
     .AddGraphQLServer()
     .AddAuthorization()
     .ConfigureGraphQL();
+
+builder.Services
+    .AddTransient<IGetCoursesQuery, FakeGetCoursesQuery>()
+    .AddTransient<IGetCourseQuery, FakeGetCourseQuery>();
 
 var app = builder.Build();
 
