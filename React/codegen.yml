@@ -6,6 +6,6 @@ generates:
       - typescript-operations
       - typescript-react-apollo
     documents:
-      - src/**/operations.graphql
+      - src/**/*.graphql
     config:
       withRefetchFn: true

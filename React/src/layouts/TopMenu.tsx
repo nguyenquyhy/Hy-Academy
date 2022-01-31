@@ -9,8 +9,8 @@ import EditProfileButton from 'layouts/EditProfileButton';
 
 const menu = [
     {
-        text: 'Documentation',
-        link: '#'
+        text: 'Courses',
+        link: '/courses'
     },
     {
         text: 'More',

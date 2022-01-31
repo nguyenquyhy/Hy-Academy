@@ -1,14 +1,7 @@
-import TempGraphQLComponent from 'modules/temp/TempGraphQLComponent';
-import { Button } from 'controls';
+import { Courses } from 'modules/courses';
 
 const Home = () => (
-    <>
-        <TempGraphQLComponent />
-        <div className="buttons">
-            <Button>Test button</Button><br />
-            <Button loading>Loading button</Button>
-        </div>
-    </>
+    <Courses />
 );
 
 export default Home;
