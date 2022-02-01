@@ -6,6 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 COPY Api/HyAcademy.APIs/*.csproj Api/HyAcademy.APIs/
 COPY Api/HyAcademy.Data/*.csproj Api/HyAcademy.Data/
+COPY Api/HyAcademy.Data.EF/*.csproj Api/HyAcademy.Data.EF/
+COPY Api/HyAcademy.Data.EF.MySql/*.csproj Api/HyAcademy.Data.EF.MySql/
 COPY Api/HyAcademy.GraphQL/*.csproj Api/HyAcademy.GraphQL/
 COPY Api/HyAcademy.GraphQL.Extensions/*.csproj Api/HyAcademy.GraphQL.Extensions/
 COPY Api/HyAcademy.GraphQL.Tools/*.csproj Api/HyAcademy.GraphQL.Tools/
