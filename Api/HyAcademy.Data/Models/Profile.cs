@@ -2,5 +2,5 @@ namespace HyAcademy.Data;
 
 public class Profile : Base
 {
-    public ICollection<RoleAssignment> RoleAssignments { get; set; } = null!;
+    public virtual ICollection<RoleAssignment> RoleAssignments { get; set; } = new List<RoleAssignment>();
 }

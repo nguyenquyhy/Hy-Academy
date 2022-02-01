@@ -44,6 +44,7 @@ jobs:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       containerEnvironmentName: ${{ secrets.CONTAINER_ENVIRONMENT_NAME }}
       logAnalyticsSKU: ${{ secrets.LOG_ANALYTICS_SKU }}
+      databaseConnectionString: ${{ secrets.DATABASE_CONNECTION_STRING }}
 
   deploy_app:
     needs: [create_app, deploy_api]

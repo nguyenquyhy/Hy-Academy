@@ -1,4 +1,5 @@
 using HyAcademy.Data;
+using HyAcademy.Data.EF;
 using HyAcademy.GraphQL;
 using Microsoft.Identity.Web;
 
@@ -15,9 +16,12 @@ builder.Services
     .AddAuthorization()
     .ConfigureGraphQL();
 
-builder.Services
-    .AddTransient<IGetCoursesQuery, FakeGetCoursesQuery>()
-    .AddTransient<IGetCourseQuery, FakeGetCourseQuery>();
+builder.Services.AddEf();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseAppSqlServer(builder.Configuration["ConnectionStrings:Default"], builder.Configuration["MySql:Version"]);
+});
 
 var app = builder.Build();
 

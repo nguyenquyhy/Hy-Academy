@@ -1,7 +1,8 @@
-param appName string = ''
-param environmentName string = ''
-param dockerImage string = ''
-param logAnalyticsSKU string = ''
+param appName string
+param environmentName string
+param dockerImage string
+param logAnalyticsSKU string = 'PerGB2018'
+param databaseConnectionString string
 
 var location = resourceGroup().location
 
@@ -44,16 +45,28 @@ resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
         external:true
         targetPort:80
       }
+      secrets: [
+        {
+          name: 'database-connection-string'
+          value: databaseConnectionString
+        }
+      ]
     }
     template: {
       containers: [
         {
           name: environmentName
-          image: dockerImage          
+          image: dockerImage
           resources:{
             cpu:'.25'
             memory:'.5Gi'
           }
+          env: [
+            {
+              name: 'ConnectionStrings__Default'
+              secretref: 'database-connection-string'
+            }
+          ]
         }
       ]
     }
