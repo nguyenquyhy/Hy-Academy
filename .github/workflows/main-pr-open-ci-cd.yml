@@ -23,7 +23,7 @@ jobs:
 
   deploy_api:
     needs: [create_app]
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@main
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-deploy.yml@hy/ef
     with:
       environment: Pull Requests
       frontendUrl: ${{ needs.create_app.outputs.url }}
