@@ -23,3 +23,7 @@ To update the database to latest migration (connection string in secret must be 
 ```
 dotnet ef database update --startup-project HyAcademy.APIs --project HyAcademy.Data.EF.MySql
 ```
+
+## CI/CD
+
+The database is not deployed by CI/CD at the moment. However, connection string is passed into API container using Container App secrets.

@@ -44,6 +44,8 @@ on:
         required: true
       logAnalyticsSKU:
         required: true
+      databaseConnectionString:
+        required: true
     outputs:
       apiDomain:
         description: "Domain of the created API endpoint"
@@ -113,6 +115,7 @@ jobs:
           environmentName="${{ secrets.containerEnvironmentName }}"
           dockerImage="docker.io/${{ secrets.dockerImage }}:${{ inputs.dockerTag }}"
           logAnalyticsSKU="${{ secrets.logAnalyticsSKU }}"
+          databaseConnectionString="${{ secrets.databaseConnectionString }}"
         failOnStdErr: false # Temporarily ignore error now until ARM specs adds Container App
 
     - run: echo '${{ steps.deploy_backend.outputs.applicationURL }}'

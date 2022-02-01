@@ -72,6 +72,7 @@ jobs:
             environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
             dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
             logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
+            databaseConnectionString="${{ secrets.DATABASE_CONNECTION_STRING }}" \
 
     - name: Azure logout
       run: |
