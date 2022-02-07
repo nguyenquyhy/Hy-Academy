@@ -102,8 +102,7 @@ jobs:
         with:
           action: azure/CLI@1.0.4
           with:
-            inlineScript: |
-              az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
+            inlineScript: az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
           attempt_limit: 3
           attempt_delay: 10000
             
