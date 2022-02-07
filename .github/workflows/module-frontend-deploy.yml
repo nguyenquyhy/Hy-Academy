@@ -98,10 +98,14 @@ jobs:
           subscription-id: ${{ secrets.deploymentSpSubscriptionId }}       
           
       - name: Upload to blob storage
-        uses: azure/CLI@1.0.4
+        uses: Wandalen/wretry.action@v1.0.11
         with:
-          inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
+          action: azure/CLI@1.0.4
+          with:
+            inlineScript: |
+              az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
+          attempt_limit: 3
+          attempt_delay: 10000
             
       - name: Azure logout
         run: |
