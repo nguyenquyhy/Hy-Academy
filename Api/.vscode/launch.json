@@ -6,6 +6,11 @@
     "configurations": [
         {
             "name": "Launch",
+            "presentation": {
+                "hidden": false,
+                "group": "1",
+                "order": 1
+            },
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -27,6 +32,11 @@
         },
         {
             "name": "Attach",
+            "presentation": {
+                "hidden": false,
+                "group": "2",
+                "order": 2
+            },
             "type": "coreclr",
             "request": "attach"
         }
