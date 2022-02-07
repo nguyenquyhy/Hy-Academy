@@ -12,7 +12,8 @@ test('loads data', async () => {
             },
             result: {
                 data: {
-                    value: 123
+                    value: 123,
+                    authValue: 'TEST_ID'
                 }
             }
         }
