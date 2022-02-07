@@ -17,7 +17,8 @@
 		"recommendations": [
 			"hediet.vscode-drawio",
 			"dbaeumer.vscode-eslint",
-			"orta.vscode-jest"
+			"orta.vscode-jest",
+			"visualstudioexptteam.vscodeintellicode"
 		]
 	}
 }
