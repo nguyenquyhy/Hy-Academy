@@ -8,6 +8,7 @@ COPY Api/HyAcademy.APIs/*.csproj Api/HyAcademy.APIs/
 COPY Api/HyAcademy.Data/*.csproj Api/HyAcademy.Data/
 COPY Api/HyAcademy.Data.EF/*.csproj Api/HyAcademy.Data.EF/
 COPY Api/HyAcademy.Data.EF.MySql/*.csproj Api/HyAcademy.Data.EF.MySql/
+COPY Api/HyAcademy.Data.EF.Tests/*.csproj Api/HyAcademy.Data.EF.Tests/
 COPY Api/HyAcademy.GraphQL/*.csproj Api/HyAcademy.GraphQL/
 COPY Api/HyAcademy.GraphQL.Extensions/*.csproj Api/HyAcademy.GraphQL.Extensions/
 COPY Api/HyAcademy.GraphQL.Tools/*.csproj Api/HyAcademy.GraphQL.Tools/
@@ -16,6 +17,7 @@ COPY React/*.esproj React/
 RUN dotnet restore Api/HyAcademy.sln
 
 COPY . .
+RUN dotnet test Api/HyAcademy.sln
 RUN dotnet publish Api/HyAcademy.APIs/HyAcademy.APIs.csproj -c Release -o /app/publish
 
 FROM base

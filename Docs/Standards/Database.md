@@ -16,7 +16,7 @@ dotnet tool update --global dotnet-ef
 
 To add a new migration to database change:
 ```
-dotnet ef migrations add InitialCreate --startup-project HyAcademy.APIs --project HyAcademy.Data.EF.MySql
+dotnet ef migrations add <Migration Name> --startup-project HyAcademy.APIs --project HyAcademy.Data.EF.MySql
 ```
 
 To update the database to latest migration (connection string in secret must be set beforehand):

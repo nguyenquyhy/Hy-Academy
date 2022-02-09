@@ -2,7 +2,11 @@ namespace HyAcademy.Data;
 
 public static class FakeData
 {
-    public static List<Course> Courses { get; }= new List<Course>
+    public static List<Profile> Profiles { get; } = new List<Profile>
+    {
+    };
+
+    public static List<Course> Courses { get; } = new List<Course>
     {
         new Course
         {

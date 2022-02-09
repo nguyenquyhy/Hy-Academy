@@ -101,6 +101,7 @@ export type Profile = {
   id: Scalars['UUID'];
   roleAssignments: Array<RoleAssignment>;
   updated: Scalars['DateTime'];
+  userId: Scalars['String'];
 };
 
 export type Query = {
