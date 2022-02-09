@@ -9,5 +9,6 @@ public class AppDbContext : DbContext
 
     }
 
+    public DbSet<Profile> Profiles { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;
 }

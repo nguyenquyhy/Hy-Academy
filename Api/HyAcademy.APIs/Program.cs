@@ -1,3 +1,4 @@
+using HyAcademy.APIs;
 using HyAcademy.Data;
 using HyAcademy.Data.EF;
 using HyAcademy.GraphQL;
@@ -6,8 +7,7 @@ using Microsoft.Identity.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+builder.Services.AddCustomMicrosoftIdentityWebApi(builder.Configuration.GetSection(Constants.AzureAd));
 
 builder.Services.AddCors();
 builder.Services.AddAuthorization();
@@ -17,6 +17,7 @@ builder.Services
     .ConfigureGraphQL();
 
 builder.Services.AddEf();
+// builder.Services.AddFakes();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
