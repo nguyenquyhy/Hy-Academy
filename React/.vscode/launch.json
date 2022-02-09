@@ -6,6 +6,11 @@
     "configurations": [
         {
             "name": "Launch",
+            "presentation": {
+                "hidden": false,
+                "group": "1",
+                "order": 1
+            },
             "request": "launch",
             "runtimeArgs": [
                 "start"
@@ -17,9 +22,39 @@
             "type": "pwa-node"
         },
         {
-            "type": "edge",
-            "request": "launch",
             "name": "Edge debug",
+            "presentation": {
+                "hidden": false,
+                "group": "2",
+                "order": 2
+            },
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "https://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Edge (Dev) debug",
+            "presentation": {
+                "hidden": false,
+                "group": "2",
+                "order": 2
+            },
+            "type": "pwa-msedge",
+            "runtimeExecutable": "dev",
+            "request": "launch",
+            "url": "https://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Chrome debug",
+            "presentation": {
+                "hidden": false,
+                "group": "2",
+                "order": 2
+            },
+            "type": "pwa-chrome",
+            "request": "launch",
             "url": "https://localhost:3000",
             "webRoot": "${workspaceFolder}"
         }
