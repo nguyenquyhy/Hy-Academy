@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B67BEC0-091B-4EA9-8120-6913466B9F2B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		CodeMap.dgml = CodeMap.dgml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data", "HyAcademy.Data\HyAcademy.Data.csproj", "{B6EB7872-8BFC-4BB7-8FAC-23EB9A99CD15}"
@@ -20,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.GraphQL.Tools", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.GraphQL.Extensions", "HyAcademy.GraphQL.Extensions\HyAcademy.GraphQL.Extensions.csproj", "{E6E0C823-661B-4F55-A622-6A3875777BB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyAcademy.Data.EF", "HyAcademy.Data.EF\HyAcademy.Data.EF.csproj", "{4D7B47A9-63A0-4857-B286-EB795CAF5960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data.EF", "HyAcademy.Data.EF\HyAcademy.Data.EF.csproj", "{4D7B47A9-63A0-4857-B286-EB795CAF5960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyAcademy.Data.EF.MySql", "HyAcademy.Data.EF.MySql\HyAcademy.Data.EF.MySql.csproj", "{CBE3CEB3-34C6-4B46-8788-E23C97A65F5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data.EF.MySql", "HyAcademy.Data.EF.MySql\HyAcademy.Data.EF.MySql.csproj", "{CBE3CEB3-34C6-4B46-8788-E23C97A65F5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
