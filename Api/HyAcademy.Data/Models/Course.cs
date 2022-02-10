@@ -7,6 +7,7 @@ public class Course : Base
     public CourseVisibility Visibility { get; set; } = CourseVisibility.Private;
     public virtual ICollection<RoleAssignment> RoleAssignments { get; set; } = new List<RoleAssignment>();
     public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
 }
 
 public enum CourseVisibility

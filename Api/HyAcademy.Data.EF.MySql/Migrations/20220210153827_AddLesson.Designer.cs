@@ -3,6 +3,7 @@ using System;
 using HyAcademy.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HyAcademy.Data.EF.MySql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220210153827_AddLesson")]
+    partial class AddLesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,34 +46,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Course", (string)null);
-                });
-
-            modelBuilder.Entity("HyAcademy.Data.Enrollment", b =>            
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("Added")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Enrollment");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("HyAcademy.Data.Lesson", b =>
@@ -101,8 +76,8 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lesson", (string)null);
-                });            
+                    b.ToTable("Lessons");
+                });
 
             modelBuilder.Entity("HyAcademy.Data.Profile", b =>
                 {
@@ -122,7 +97,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profile", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("HyAcademy.Data.RoleAssignment", b =>
@@ -153,25 +128,6 @@ namespace HyAcademy.Data.EF.MySql.Migrations
                     b.HasIndex("ProfileId");
 
                     b.ToTable("RoleAssignment");
-                });
-
-            modelBuilder.Entity("HyAcademy.Data.Enrollment", b =>
-                {
-                    b.HasOne("HyAcademy.Data.Course", "Course")
-                        .WithMany("Enrollments")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HyAcademy.Data.Profile", "Student")
-                        .WithMany("Enrollments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("HyAcademy.Data.Lesson", b =>
@@ -206,8 +162,6 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
             modelBuilder.Entity("HyAcademy.Data.Course", b =>
                 {
-                    b.Navigation("Enrollments");
-                    
                     b.Navigation("Lessons");
 
                     b.Navigation("RoleAssignments");
@@ -215,8 +169,6 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
             modelBuilder.Entity("HyAcademy.Data.Profile", b =>
                 {
-                    b.Navigation("Enrollments");
-
                     b.Navigation("RoleAssignments");
                 });
 #pragma warning restore 612, 618
