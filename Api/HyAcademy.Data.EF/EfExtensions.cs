@@ -1,4 +1,5 @@
 using HyAcademy.Data.EF;
+using HyAcademy.Data.EF.Queries;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HyAcademy.Data;

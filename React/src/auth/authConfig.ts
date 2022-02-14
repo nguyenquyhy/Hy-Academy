@@ -17,7 +17,7 @@ export const msalConfig = {
 
 export const loginRequest: RedirectRequest = {
     scopes: [process.env.REACT_APP_B2C_API_SCOPE],
-    redirectUri: process.env.REACT_APP_B2C_REDIRECT_URL,
+    redirectUri: process.env.REACT_APP_B2C_REDIRECT_URL || '/',
     state: process.env.REACT_APP_B2C_STATE
 };
 

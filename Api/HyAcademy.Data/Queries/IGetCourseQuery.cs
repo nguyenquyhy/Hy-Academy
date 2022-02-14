@@ -2,5 +2,5 @@ namespace HyAcademy.Data;
 
 public interface IGetCourseQuery
 {
-    Task<Course?> Execute(Guid id);
+    Task<Course?> ExecuteAsync(Guid id);
 }

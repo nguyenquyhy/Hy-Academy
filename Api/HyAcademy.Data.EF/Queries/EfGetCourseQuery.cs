@@ -1,4 +1,4 @@
-namespace HyAcademy.Data.EF;
+namespace HyAcademy.Data.EF.Queries;
 
 public class EfGetCourseQuery : IGetCourseQuery
 {
@@ -9,7 +9,7 @@ public class EfGetCourseQuery : IGetCourseQuery
         this.context = context;
     }
 
-    public async Task<Course?> Execute(Guid id)
+    public async Task<Course?> ExecuteAsync(Guid id)
     {
         return await context.Courses.FindAsync(id);
     }

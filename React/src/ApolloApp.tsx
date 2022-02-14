@@ -5,6 +5,9 @@ import App from 'App';
 import { lookupTokenAsync, useMsalEvents } from 'auth';
 import { Dialog, LoaderBlocking } from 'controls';
 
+// NOTE: cache is created outside of a component to prevent recreation every render
+const cache = new InMemoryCache();
+
 const ApolloApp = () => {
     const { instance, inProgress } = useMsal();
 
@@ -28,7 +31,7 @@ const ApolloApp = () => {
     });
 
     const apollo = new ApolloClient({
-        cache: new InMemoryCache(),
+        cache,
         link: from([withToken, httpLink])
     });
 

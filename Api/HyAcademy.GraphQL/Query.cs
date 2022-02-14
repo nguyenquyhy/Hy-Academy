@@ -13,10 +13,7 @@ public class Query
     public string GetAuthValue([Service] IHttpContextAccessor contextAccessor) 
         => contextAccessor.HttpContext.User.GetUserId() ?? throw new InvalidOperationException("Cannot find user ID!");
 
-    public Task<IQueryable<Course>> GetCourses([Service] IGetCoursesQuery query) => query.Execute();
+    public Task<IQueryable<Course>> GetCourses([Service] IGetCoursesQuery query) => query.ExecuteAsync();
 
-    public Task<Course?> GetCourse([Service] IGetCourseQuery query, Guid id) => query.Execute(id);
-
-    [Authorize]
-    public IQueryable<Enrollment> GetEnrollments() => new List<Enrollment>().AsQueryable();
+    public Task<Course?> GetCourse([Service] IGetCourseQuery query, Guid id) => query.ExecuteAsync(id);
 }
