@@ -17,7 +17,7 @@ builder.Services
     .ConfigureGraphQL();
 
 builder.Services.AddEf();
-// builder.Services.AddFakes();
+//builder.Services.AddFakes();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

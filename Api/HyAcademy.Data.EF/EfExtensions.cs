@@ -9,5 +9,7 @@ public static class EfExtensions
         => services
             .AddTransient<IProfileService, EfProfileService>()
             .AddTransient<IGetCoursesQuery, EfGetCoursesQuery>()
-            .AddTransient<IGetCourseQuery, EfGetCourseQuery>();
+            .AddTransient<IGetCourseQuery, EfGetCourseQuery>()
+            .AddTransient<IGetLessonQuery, EfGetLessonQuery>()
+            .AddTransient<IGetLessonsQuery, EfGetLessonsQuery>();
 }

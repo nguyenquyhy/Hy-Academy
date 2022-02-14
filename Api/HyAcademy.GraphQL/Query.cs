@@ -17,6 +17,10 @@ public class Query
 
     public Task<Course?> GetCourse([Service] IGetCourseQuery query, Guid id) => query.Execute(id);
 
+    public Task<IQueryable<Lesson>> GetLessons([Service] IGetLessonsQuery query) => query.Execute();
+    public Task<IQueryable<Lesson>> GetLessons([Service] IGetLessonsQuery query, Guid id) => query.Execute(id);
+    public Task<Lesson?> GetLesson([Service] IGetLessonQuery query, Guid id) => query.Execute(id);
+
     [Authorize]
     public IQueryable<Enrollment> GetEnrollments() => new List<Enrollment>().AsQueryable();
 }

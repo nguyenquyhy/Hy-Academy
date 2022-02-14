@@ -8,5 +8,7 @@ public static class FakeExtensions
         => services
             .AddTransient<IProfileService, FakeProfileService>()
             .AddTransient<IGetCoursesQuery, FakeGetCoursesQuery>()
-            .AddTransient<IGetCourseQuery, FakeGetCourseQuery>();
+            .AddTransient<IGetCourseQuery, FakeGetCourseQuery>()
+            .AddTransient<IGetLessonQuery, FakeGetLessonQuery>()
+            .AddTransient<IGetLessonsQuery, FakeGetLessonsQuery>();
 }

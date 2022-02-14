@@ -14,6 +14,7 @@ type Course {
   description: String!
   visibility: CourseVisibility!
   roleAssignments: [RoleAssignment!]!
+  lessons: [Lesson!]!
   id: UUID!
   added: DateTime!
   updated: DateTime!
@@ -22,6 +23,15 @@ type Course {
 type Enrollment {
   student: Profile!
   course: Course!
+  id: UUID!
+  added: DateTime!
+  updated: DateTime!
+}
+
+type Lesson {
+  course: Course!
+  name: String!
+  description: String!
   id: UUID!
   added: DateTime!
   updated: DateTime!
@@ -46,6 +56,8 @@ type Query {
   authValue: String!
   courses: [Course!]!
   course(id: UUID!): Course
+  lessons: [Lesson!]!
+  lesson(id: UUID!): Lesson
   enrollments: [Enrollment!]!
 }
 
