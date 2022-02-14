@@ -102,7 +102,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lesson", (string)null);
-                });            
+                });
 
             modelBuilder.Entity("HyAcademy.Data.Profile", b =>
                 {
@@ -207,7 +207,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
             modelBuilder.Entity("HyAcademy.Data.Course", b =>
                 {
                     b.Navigation("Enrollments");
-                    
+
                     b.Navigation("Lessons");
 
                     b.Navigation("RoleAssignments");

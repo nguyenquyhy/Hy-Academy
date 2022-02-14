@@ -15,6 +15,7 @@ type Course {
   description: String!
   roleAssignments: [RoleAssignment!]!
   enrollments: [Enrollment!]!
+  lessons: [Lesson!]!
   id: UUID!
   added: DateTime!
   updated: DateTime!
@@ -50,6 +51,15 @@ type EnrollResult {
 type Enrollment {
   student: Profile!
   course: Course!
+  id: UUID!
+  added: DateTime!
+  updated: DateTime!
+}
+
+type Lesson {
+  course: Course!
+  name: String!
+  description: String!
   id: UUID!
   added: DateTime!
   updated: DateTime!

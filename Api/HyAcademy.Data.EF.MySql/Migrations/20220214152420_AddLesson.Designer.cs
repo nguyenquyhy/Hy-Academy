@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HyAcademy.Data.EF.MySql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220210153827_AddLesson")]
+    [Migration("20220214152420_AddLesson")]
     partial class AddLesson
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course", (string)null);
                 });
 
             modelBuilder.Entity("HyAcademy.Data.Lesson", b =>
@@ -76,7 +76,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lesson", (string)null);
                 });
 
             modelBuilder.Entity("HyAcademy.Data.Profile", b =>
@@ -97,7 +97,7 @@ namespace HyAcademy.Data.EF.MySql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profile", (string)null);
                 });
 
             modelBuilder.Entity("HyAcademy.Data.RoleAssignment", b =>
