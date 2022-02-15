@@ -109,7 +109,6 @@ export type Query = {
   authValue: Scalars['String'];
   course?: Maybe<Course>;
   courses: Array<Course>;
-  enrollments: Array<Enrollment>;
   value: Scalars['Int'];
 };
 

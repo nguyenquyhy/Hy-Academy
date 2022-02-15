@@ -1,4 +1,4 @@
-namespace HyAcademy.Data.EF;
+namespace HyAcademy.Data.EF.Queries;
 
 public class EfGetCoursesQuery : IGetCoursesQuery
 {
@@ -9,7 +9,7 @@ public class EfGetCoursesQuery : IGetCoursesQuery
         this.context = context;
     }
 
-    public Task<IQueryable<Course>> Execute()
+    public Task<IQueryable<Course>> ExecuteAsync()
     {
         return Task.FromResult(context.Courses.AsQueryable());
     }

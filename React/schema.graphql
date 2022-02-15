@@ -46,7 +46,6 @@ type Query {
   authValue: String!
   courses: [Course!]!
   course(id: UUID!): Course
-  enrollments: [Enrollment!]!
 }
 
 type RoleAssignment {

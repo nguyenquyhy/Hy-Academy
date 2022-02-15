@@ -1,6 +1,8 @@
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,13 +12,31 @@ namespace HyAcademy.Data.EF.Tests;
 [TestClass]
 public class ProfileServiceTest
 {
-    private static AppDbContext CreateContext()
-        => new AppDbContext(new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase($"Test_{Guid.NewGuid()}").Options);
+    private static IDbContextFactory<AppDbContext> CreateContextFactory()
+    {
+        var mock = new Mock<IDbContextFactory<AppDbContext>>();
+
+        var connection = new SqliteConnection("Filename=:memory:");
+        connection.Open();
+
+        mock.Setup(o => o.CreateDbContext()).Returns(() =>
+        {
+            var context = new AppDbContext(
+                new DbContextOptionsBuilder<AppDbContext>()
+                    .UseSqlite(connection)
+                    .Options
+            );
+            context.Database.EnsureCreated();
+            return context;
+        });
+        return mock.Object;
+    }
 
     [TestMethod]
     public async Task TestCreate()
     {
-        var context = CreateContext();
+        var contextFactory = CreateContextFactory();
+        using var context = contextFactory.CreateDbContext();
 
         var existingProfile = context.Profiles.FirstOrDefault(o => o.UserId == "test_id");
 
@@ -38,7 +58,8 @@ public class ProfileServiceTest
     [TestMethod]
     public async Task TestGet()
     {
-        var context = CreateContext();
+        var contextFactory = CreateContextFactory();
+        using var context = contextFactory.CreateDbContext();
 
         context.Profiles.Add(new Profile
         {
@@ -59,7 +80,8 @@ public class ProfileServiceTest
     [TestMethod]
     public async Task TestRepeat()
     {
-        var context = CreateContext();
+        var contextFactory = CreateContextFactory();
+        using var context = contextFactory.CreateDbContext();
         var service = new EfProfileService(context);
 
         var profile = await service.CreateOrGetAsync("test_id");

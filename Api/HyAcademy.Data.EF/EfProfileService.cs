@@ -2,16 +2,18 @@ namespace HyAcademy.Data.EF;
 
 public class EfProfileService : IProfileService
 {
-    private readonly AppDbContext dbContext;
+    private readonly AppDbContext context;
 
-    public EfProfileService(AppDbContext dbContext)
+    public EfProfileService(AppDbContext context)
     {
-        this.dbContext = dbContext;
+        this.context = context;
     }
 
     public async Task<Profile> CreateOrGetAsync(string userId)
     {
-        var profile = dbContext.Profiles.FirstOrDefault(o => o.UserId == userId);
+        using var transaction = context.Database.BeginTransaction();
+
+        var profile = context.Profiles.FirstOrDefault(o => o.UserId == userId);
         if (profile == null)
         {
             profile = new Profile
@@ -21,9 +23,12 @@ public class EfProfileService : IProfileService
                 Updated = DateTime.UtcNow,
                 UserId = userId
             };
-            dbContext.Profiles.Add(profile);
-            await dbContext.SaveChangesAsync();
+            context.Profiles.Add(profile);
+            await context.SaveChangesAsync();
         }
+
+        await transaction.CommitAsync();
+
         return profile;
     }
 }
