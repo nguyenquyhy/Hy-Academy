@@ -3,5 +3,23 @@ query GetCourse($id: UUID!) {
         id
         title
         description
+        permissions {
+            canEdit
+            canEnroll
+        }
+    }
+}
+
+mutation EnrollCourse($input: EnrollInput!) {
+    enroll(input: $input) {
+        enrollment {
+            id
+            course {
+                id
+                permissions {
+                    canEnroll
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,19 @@
 query GetCourses {
     courses {
-        id
-        title
-        description
+        nodes {
+            id
+            title
+            description
+        }
+    }
+}
+
+query GetMyCourses {
+    myCourses {
+        nodes {
+            id
+            title
+            description
+        }
     }
 }

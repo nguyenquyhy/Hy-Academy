@@ -1,37 +1,10 @@
-using FluentAssertions;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HyAcademy.Data.EF.Tests;
 
 [TestClass]
-public class ProfileServiceTest
+public class ProfileServiceTest : BaseTest
 {
-    private static IDbContextFactory<AppDbContext> CreateContextFactory()
-    {
-        var mock = new Mock<IDbContextFactory<AppDbContext>>();
-
-        var connection = new SqliteConnection("Filename=:memory:");
-        connection.Open();
-
-        mock.Setup(o => o.CreateDbContext()).Returns(() =>
-        {
-            var context = new AppDbContext(
-                new DbContextOptionsBuilder<AppDbContext>()
-                    .UseSqlite(connection)
-                    .Options
-            );
-            context.Database.EnsureCreated();
-            return context;
-        });
-        return mock.Object;
-    }
-
     [TestMethod]
     public async Task TestCreate()
     {
@@ -54,7 +27,7 @@ public class ProfileServiceTest
         existingProfile.Should().NotBeNull();
         existingProfile!.UserId.Should().Be("test_id");
     }
-    
+
     [TestMethod]
     public async Task TestGet()
     {
@@ -76,7 +49,7 @@ public class ProfileServiceTest
         profile.Id.Should().Be(new Guid("86fb9ccb-1476-44d2-bf46-615a77ab6b23"));
         profile!.UserId.Should().Be("test_id");
     }
-    
+
     [TestMethod]
     public async Task TestRepeat()
     {

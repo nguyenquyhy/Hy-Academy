@@ -4,6 +4,13 @@ public static class FakeData
 {
     public static List<Profile> Profiles { get; } = new List<Profile>
     {
+        new Profile
+        {
+            Id = Guid.Parse("894b3b64-5854-4e9f-b975-96864b5fc922"),
+            Added = new DateTime(2021,1,1),
+            Updated = new DateTime(2021,1,1),
+            UserId = "cff10329-3ce4-4021-acc9-d078fe076eb4"
+        }
     };
 
     public static List<Course> Courses { get; } = new List<Course>
@@ -38,5 +45,9 @@ public static class FakeData
             RoleAssignments = new List<RoleAssignment>(),
             Visibility = CourseVisibility.Public
         }
+    };
+
+    public static List<Enrollment> Enrollments { get; } = new List<Enrollment>
+    {
     };
 }

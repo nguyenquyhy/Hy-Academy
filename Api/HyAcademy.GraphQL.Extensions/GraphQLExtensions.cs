@@ -1,6 +1,7 @@
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Execution.Configuration;
+using HyAcademy.GraphQL.GraphTypes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HyAcademy.GraphQL;
@@ -20,8 +21,9 @@ public static class GraphQLExtensions
                 options.DefaultResolverStrategy = ExecutionStrategy.Serial;
             });
 
-    public static ISchemaBuilder ConfigureGraphQL(this ISchemaBuilder builder) 
+    public static ISchemaBuilder ConfigureGraphQL(this ISchemaBuilder builder)
         => builder
             .AddQueryType<Query>()
-            .AddMutationType<Mutation>();
+            .AddMutationType<Mutation>()
+            .AddType<CourseType>();
 }
