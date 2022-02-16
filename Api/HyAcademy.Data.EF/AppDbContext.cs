@@ -14,6 +14,5 @@ public class AppDbContext : DbContext
         // Override table name for DbSet to ensure all table name use class name directly
         modelBuilder.Entity<Profile>().ToTable(nameof(Profile));
         modelBuilder.Entity<Course>().ToTable(nameof(Course));
-        modelBuilder.Entity<Lesson>().ToTable(nameof(Lesson));
     }
 }
