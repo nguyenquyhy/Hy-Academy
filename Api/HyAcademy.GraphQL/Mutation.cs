@@ -8,9 +8,16 @@ namespace HyAcademy.GraphQL;
 public class Mutation
 {
     [Authorize]
-    public Course AddCourse(AddCourseInput input)
+    public async Task<AddCourseResult> AddCourse(
+        [Service] IHttpContextAccessor contextAccessor,
+        [Service] IAddCourseMutation addCourseMutation,
+        AddCourseInput input
+    )
     {
-        return null!;
+        var userId = contextAccessor.HttpContext.User.GetUserId() ?? throw new InvalidOperationException("Cannot get User ID");
+        return new AddCourseResult(
+            await addCourseMutation.ExecuteAsync(userId, input.title.Trim(), input.description.Trim())
+        );
     }
 
     [Authorize]
@@ -33,15 +40,17 @@ public class Mutation
 
 public record AddCourseInput(
     string title,
-    string description,
-    CourseVisibility visibility
+    string description
+);
+
+public record AddCourseResult(
+    Course course
 );
 
 public record EditCourseInput(
     Guid courseId,
     string title,
-    string description,
-    CourseVisibility visibility
+    string description
 );
 
 public record EnrollInput(Guid courseId);

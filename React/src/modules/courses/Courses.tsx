@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { useGetCoursesQuery, useGetMyCoursesQuery } from 'types';
 
-const Layout = ({ children, title }: { children: ReactNode, title: string }) => (
+const Layout = ({ children, title }: { children: ReactNode, title: string | ReactNode }) => (
     <section className="section">
         <h1 className="title">{title}</h1>
         {children}
@@ -57,6 +57,8 @@ export const MyCourses = () => {
     );
 };
 
+const CreateButton = () => <AuthenticatedTemplate><Link to="/courses/create" className="button is-primary">Create</Link></AuthenticatedTemplate>;
+
 export const Courses = () => {
     const { loading, error, data } = useGetCoursesQuery();
     const title = 'Courses';
@@ -73,14 +75,14 @@ export const Courses = () => {
 
     if (courses.length === 0) {
         return (
-            <Layout title={title}>
+            <Layout title={<>{title} <CreateButton /></>}>
                 <h2 className="subtitle">No course is available at the moment.</h2>
             </Layout>
         );
     }
 
     return (
-        <Layout title={title}>
+        <Layout title={<>{title} <CreateButton /></>}>
             <div className="columns is-multiline">
                 {courses.map(course => (
                     <div key={course.id} className="column is-6">

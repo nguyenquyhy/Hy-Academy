@@ -3,7 +3,8 @@ import classnames from 'classnames';
 
 export enum ButtonType {
     Primary,
-    Secondary
+    Secondary,
+    Submit,
 }
 
 interface Props {
@@ -23,7 +24,11 @@ function typeToColor(type: ButtonType) {
 }
 
 const Button = ({ loading, children, onClick, type }: Props) => (
-    <button type="button" className={classnames('button', typeToColor(type), { 'is-loading': loading })} onClick={onClick}>
+    <button
+        type={type === ButtonType.Submit ? 'submit' : 'button'}
+        className={classnames('button', typeToColor(type), { 'is-loading': loading })}
+        onClick={onClick}
+    >
         {children}
     </button>
 );
