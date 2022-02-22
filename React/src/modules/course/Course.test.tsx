@@ -1,12 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { CourseVisibility } from 'types';
 import { Course } from './Course';
 
 const defaultCourse = {
     id: 'a87be17f-13f6-4d6c-b5a6-91e89d54de94',
     title: 'Test course',
     description: 'Test description',
-    visibility: CourseVisibility.Public,
     permissions: {
         canEdit: false,
         canEnroll: false

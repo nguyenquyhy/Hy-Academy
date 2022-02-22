@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -21,7 +21,11 @@ export type Scalars = {
 export type AddCourseInput = {
   description: Scalars['String'];
   title: Scalars['String'];
-  visibility: CourseVisibility;
+};
+
+export type AddCourseResult = {
+  __typename?: 'AddCourseResult';
+  course: Course;
 };
 
 export enum ApplyPolicy {
@@ -54,12 +58,6 @@ export type CoursePermission = {
   canEnroll: Scalars['Boolean'];
 };
 
-export enum CourseVisibility {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC',
-  Unlisted = 'UNLISTED'
-}
-
 /** A connection to a list of items. */
 export type CoursesConnection = {
   __typename?: 'CoursesConnection';
@@ -84,7 +82,6 @@ export type EditCourseInput = {
   courseId: Scalars['UUID'];
   description: Scalars['String'];
   title: Scalars['String'];
-  visibility: CourseVisibility;
 };
 
 export type EnrollInput = {
@@ -107,7 +104,7 @@ export type Enrollment = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addCourse: Course;
+  addCourse: AddCourseResult;
   editCourse: Course;
   enroll: EnrollResult;
 };
@@ -215,12 +212,19 @@ export type RoleAssignment = {
   updated: Scalars['DateTime'];
 };
 
+export type AddCourseMutationVariables = Exact<{
+  input: AddCourseInput;
+}>;
+
+
+export type AddCourseMutation = { __typename?: 'Mutation', addCourse: { __typename?: 'AddCourseResult', course: { __typename?: 'Course', id: any, title: string, description: string } } };
+
 export type GetCourseQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean } } | null | undefined };
+export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean } } | null };
 
 export type EnrollCourseMutationVariables = Exact<{
   input: EnrollInput;
@@ -232,12 +236,12 @@ export type EnrollCourseMutation = { __typename?: 'Mutation', enroll: { __typena
 export type GetCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCoursesQuery = { __typename?: 'Query', courses?: { __typename?: 'CoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null | undefined } | null | undefined };
+export type GetCoursesQuery = { __typename?: 'Query', courses?: { __typename?: 'CoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
 
 export type GetMyCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyCoursesQuery = { __typename?: 'Query', myCourses?: { __typename?: 'MyCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null | undefined } | null | undefined };
+export type GetMyCoursesQuery = { __typename?: 'Query', myCourses?: { __typename?: 'MyCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
 
 export type GetTestValueQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -245,6 +249,43 @@ export type GetTestValueQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetTestValueQuery = { __typename?: 'Query', value: number, authValue: string };
 
 
+export const AddCourseDocument = gql`
+    mutation AddCourse($input: AddCourseInput!) {
+  addCourse(input: $input) {
+    course {
+      id
+      title
+      description
+    }
+  }
+}
+    `;
+export type AddCourseMutationFn = Apollo.MutationFunction<AddCourseMutation, AddCourseMutationVariables>;
+
+/**
+ * __useAddCourseMutation__
+ *
+ * To run a mutation, you first call `useAddCourseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCourseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCourseMutation, { data, loading, error }] = useAddCourseMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddCourseMutation(baseOptions?: Apollo.MutationHookOptions<AddCourseMutation, AddCourseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddCourseMutation, AddCourseMutationVariables>(AddCourseDocument, options);
+      }
+export type AddCourseMutationHookResult = ReturnType<typeof useAddCourseMutation>;
+export type AddCourseMutationResult = Apollo.MutationResult<AddCourseMutation>;
+export type AddCourseMutationOptions = Apollo.BaseMutationOptions<AddCourseMutation, AddCourseMutationVariables>;
 export const GetCourseDocument = gql`
     query GetCourse($id: UUID!) {
   course(id: $id) {

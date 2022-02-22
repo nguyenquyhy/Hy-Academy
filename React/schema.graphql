@@ -3,6 +3,10 @@ schema {
   mutation: Mutation
 }
 
+type AddCourseResult {
+  course: Course!
+}
+
 type AuthorizeDirective {
   policy: String
   roles: [String!]
@@ -56,7 +60,7 @@ type Enrollment {
 }
 
 type Mutation {
-  addCourse(input: AddCourseInput!): Course!
+  addCourse(input: AddCourseInput!): AddCourseResult!
   editCourse(input: EditCourseInput!): Course!
   enroll(input: EnrollInput!): EnrollResult!
 }
@@ -120,14 +124,12 @@ type RoleAssignment {
 input AddCourseInput {
   title: String!
   description: String!
-  visibility: CourseVisibility!
 }
 
 input EditCourseInput {
   courseId: UUID!
   title: String!
   description: String!
-  visibility: CourseVisibility!
 }
 
 input EnrollInput {
@@ -137,12 +139,6 @@ input EnrollInput {
 enum ApplyPolicy {
   BEFORE_RESOLVER
   AFTER_RESOLVER
-}
-
-enum CourseVisibility {
-  PRIVATE
-  UNLISTED
-  PUBLIC
 }
 
 enum Role {
