@@ -3,8 +3,7 @@ param environmentName string
 param dockerImage string
 param logAnalyticsSKU string = 'PerGB2018'
 param databaseConnectionString string
-
-var location = resourceGroup().location
+param location string = resourceGroup().location
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   name: environmentName
@@ -42,8 +41,8 @@ resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
     kubeEnvironmentId: environment.id
     configuration: {
       ingress: {
-        external:true
-        targetPort:80
+        external: true
+        targetPort: 80
       }
       secrets: [
         {
@@ -58,13 +57,13 @@ resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
           name: environmentName
           image: dockerImage
           resources:{
-            cpu:'.25'
-            memory:'.5Gi'
+            cpu: 0.25
+            memory: '.5Gi'
           }
           env: [
             {
               name: 'ConnectionStrings__Default'
-              secretref: 'database-connection-string'
+              secretRef: 'database-connection-string'
             }
           ]
         }
