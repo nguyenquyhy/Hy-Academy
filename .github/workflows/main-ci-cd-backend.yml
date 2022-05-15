@@ -2,7 +2,6 @@ name: CI-CD Backend
 
 on:
   push:
-    branches: [ main ]
     paths: 
       - '.github/workflows/main-ci-cd-backend.yml'
       - 'Api/**'
