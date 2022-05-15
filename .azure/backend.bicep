@@ -1,12 +1,11 @@
-param appName string
-param environmentName string
-param dockerImage string
+param location string = resourceGroup().location
 param logAnalyticsSKU string = 'PerGB2018'
+param environmentName string
+param appName string
+param dockerImage string
 param databaseConnectionString string
 
-var location = resourceGroup().location
-
-resource workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: environmentName
   location: location
   properties: {
@@ -18,12 +17,11 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   }
 }
 
-resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
+// To successfully deploy this, the principal also needs permission to perform Microsoft.App/locations/managedEnvironmentOperationStatuses/read on the subscription.
+resource environment 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: environmentName
   location: location
   properties: {
-    type:'Managed'
-    internalLoadBalancerEnabled: false
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
@@ -34,16 +32,16 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
   }
 }
 
-resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
+resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: appName
-  kind: 'containerapps'
   location: location
   properties: {
-    kubeEnvironmentId: environment.id
+    managedEnvironmentId: environment.id
     configuration: {
+      activeRevisionsMode: 'multiple'
       ingress: {
-        external:true
-        targetPort:80
+        external: true
+        targetPort: 80
       }
       secrets: [
         {
@@ -58,13 +56,13 @@ resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
           name: environmentName
           image: dockerImage
           resources:{
-            cpu:'.25'
-            memory:'.5Gi'
+            cpu: json('.25')
+            memory: '.5Gi'
           }
           env: [
             {
               name: 'ConnectionStrings__Default'
-              secretref: 'database-connection-string'
+              secretRef: 'database-connection-string'
             }
           ]
         }
