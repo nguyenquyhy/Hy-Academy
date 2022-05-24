@@ -61,19 +61,20 @@ jobs:
         subscription-id: ${{ secrets.DEPLOYMENT_SERVICE_PRINCIPAL_SUBSCRIPTION_ID }}
                 
     - name: Deploy container app
-      uses: azure/CLI@1.0.4
+      uses: Azure/arm-deploy@v1.0.8
       with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          az deployment group create \
-          --resource-group "${{ secrets.RESOURCE_GROUP_NAME }}" \
-          --template-file ./.azure/backend.bicep \
-          --parameters \
-            appName="${{ secrets.CONTAINER_APP_NAME }}" \
-            environmentName="${{ secrets.CONTAINER_APP_NAME }}" \
-            dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" \
-            logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" \
-            databaseConnectionString="${{ secrets.DATABASE_CONNECTION_STRING }}" \
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+        template: ./.azure/backend.bicep
+        # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
+        deploymentMode: Incremental
+        # Specifies the name of the resource group deployment to create.
+        #deploymentName: # optional
+        # Supply deployment parameter values.
+        parameters: environmentName="${{ secrets.CONTAINER_APP_NAME }}" logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" appName="${{ secrets.CONTAINER_APP_NAME }}" dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" databaseConnectionString="${{ secrets.DATABASE_CONNECTION_STRING }}"
+        # Specify whether to fail the action if some data is written to stderr stream of az cli. Valid values are: true, false
+        #failOnStdErr: # optional, default is true
+        # Specify any additional arguments for the deployment.
+        #additionalArguments: # optional
 
     - name: Azure logout
       run: |
