@@ -1,19 +1,29 @@
+fragment CourseField on Course {
+    id
+    title
+    description
+}
+
 query GetCourses {
     courses {
         nodes {
-            id
-            title
-            description
+            ...CourseField
         }
     }
 }
 
-query GetMyCourses {
-    myCourses {
+query GetAttendingCourses {
+    attendingCourses {
         nodes {
-            id
-            title
-            description
+            ...CourseField
+        }
+    }
+}
+
+query GetTeachingCourses {
+    teachingCourses {
+        nodes {
+            ...CourseField
         }
     }
 }

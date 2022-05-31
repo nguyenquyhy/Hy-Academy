@@ -1,7 +1,6 @@
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HyAcademy.Data;
-using Microsoft.AspNetCore.Http;
 
 namespace HyAcademy.GraphQL;
 
@@ -9,12 +8,12 @@ public class Mutation
 {
     [Authorize]
     public async Task<AddCourseResult> AddCourse(
-        [Service] IHttpContextAccessor contextAccessor,
+        [Service] IUserIdAccessor userIdAccessor,
         [Service] IAddCourseMutation addCourseMutation,
         AddCourseInput input
     )
     {
-        var userId = contextAccessor.HttpContext.User.GetUserId() ?? throw new InvalidOperationException("Cannot get User ID");
+        var userId = userIdAccessor.Get();
         return new AddCourseResult(
             await addCourseMutation.ExecuteAsync(userId, input.title.Trim(), input.description.Trim())
         );
@@ -28,12 +27,12 @@ public class Mutation
 
     [Authorize]
     public async Task<EnrollResult> Enroll(
-        [Service] IHttpContextAccessor contextAccessor,
+        [Service] IUserIdAccessor userIdAccessor,
         [Service] IEnrollCourseMutation mutation,
         EnrollInput input
     )
     {
-        var userId = contextAccessor.HttpContext.User.GetUserId() ?? throw new InvalidOperationException("Cannot get User ID");
+        var userId = userIdAccessor.Get();
         return new EnrollResult(await mutation.ExecuteAsync(input.courseId, userId));
     }
 }

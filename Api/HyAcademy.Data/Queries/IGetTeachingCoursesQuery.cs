@@ -1,6 +1,6 @@
 namespace HyAcademy.Data;
 
-public interface IGetMyCoursesQuery
+public interface IGetTeachingCoursesQuery
 {
     Task<IQueryable<Course>> ExecuteAsync(string userId);
 }

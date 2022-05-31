@@ -16,6 +16,8 @@ builder.Services
     .AddAuthorization()
     .ConfigureGraphQL();
 
+builder.Services.AddTransient<IUserIdAccessor, HttpContextUserIdAccessor>();
+
 builder.Services.AddEf();
 // builder.Services.AddFakes();
 

@@ -1,4 +1,4 @@
-import { CoursesPage, Courses, MyCourses } from './Courses';
+import { CoursesPage, Courses, AttendingCourses, TeachingCourses } from './Courses';
 
-export { Courses, MyCourses };
+export { Courses, AttendingCourses, TeachingCourses };
 export default CoursesPage;

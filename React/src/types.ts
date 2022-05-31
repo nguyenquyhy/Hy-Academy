@@ -33,6 +33,26 @@ export enum ApplyPolicy {
   BeforeResolver = 'BEFORE_RESOLVER'
 }
 
+/** A connection to a list of items. */
+export type AttendingCoursesConnection = {
+  __typename?: 'AttendingCoursesConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<AttendingCoursesEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Course>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type AttendingCoursesEdge = {
+  __typename?: 'AttendingCoursesEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Course;
+};
+
 export type AuthorizeDirective = {
   __typename?: 'AuthorizeDirective';
   apply: ApplyPolicy;
@@ -124,26 +144,6 @@ export type MutationEnrollArgs = {
   input: EnrollInput;
 };
 
-/** A connection to a list of items. */
-export type MyCoursesConnection = {
-  __typename?: 'MyCoursesConnection';
-  /** A list of edges. */
-  edges?: Maybe<Array<MyCoursesEdge>>;
-  /** A flattened list of the nodes. */
-  nodes?: Maybe<Array<Course>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-/** An edge in a connection. */
-export type MyCoursesEdge = {
-  __typename?: 'MyCoursesEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Course;
-};
-
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -169,11 +169,18 @@ export type Profile = {
 
 export type Query = {
   __typename?: 'Query';
-  authValue: Scalars['String'];
+  attendingCourses?: Maybe<AttendingCoursesConnection>;
   course?: Maybe<Course>;
   courses?: Maybe<CoursesConnection>;
-  myCourses?: Maybe<MyCoursesConnection>;
-  value: Scalars['Int'];
+  teachingCourses?: Maybe<TeachingCoursesConnection>;
+};
+
+
+export type QueryAttendingCoursesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -190,7 +197,7 @@ export type QueryCoursesArgs = {
 };
 
 
-export type QueryMyCoursesArgs = {
+export type QueryTeachingCoursesArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -210,6 +217,26 @@ export type RoleAssignment = {
   profile: Profile;
   role: Role;
   updated: Scalars['DateTime'];
+};
+
+/** A connection to a list of items. */
+export type TeachingCoursesConnection = {
+  __typename?: 'TeachingCoursesConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<TeachingCoursesEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Course>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type TeachingCoursesEdge = {
+  __typename?: 'TeachingCoursesEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Course;
 };
 
 export type AddCourseMutationVariables = Exact<{
@@ -233,22 +260,30 @@ export type EnrollCourseMutationVariables = Exact<{
 
 export type EnrollCourseMutation = { __typename?: 'Mutation', enroll: { __typename?: 'EnrollResult', enrollment: { __typename?: 'Enrollment', id: any, course: { __typename?: 'Course', id: any, permissions: { __typename?: 'CoursePermission', canEnroll: boolean } } } } };
 
+export type CourseFieldFragment = { __typename?: 'Course', id: any, title: string, description: string };
+
 export type GetCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCoursesQuery = { __typename?: 'Query', courses?: { __typename?: 'CoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
 
-export type GetMyCoursesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAttendingCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyCoursesQuery = { __typename?: 'Query', myCourses?: { __typename?: 'MyCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+export type GetAttendingCoursesQuery = { __typename?: 'Query', attendingCourses?: { __typename?: 'AttendingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
 
-export type GetTestValueQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetTestValueQuery = { __typename?: 'Query', value: number, authValue: string };
+export type GetTeachingCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
+export type GetTeachingCoursesQuery = { __typename?: 'Query', teachingCourses?: { __typename?: 'TeachingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+
+export const CourseFieldFragmentDoc = gql`
+    fragment CourseField on Course {
+  id
+  title
+  description
+}
+    `;
 export const AddCourseDocument = gql`
     mutation AddCourse($input: AddCourseInput!) {
   addCourse(input: $input) {
@@ -375,13 +410,11 @@ export const GetCoursesDocument = gql`
     query GetCourses {
   courses {
     nodes {
-      id
-      title
-      description
+      ...CourseField
     }
   }
 }
-    `;
+    ${CourseFieldFragmentDoc}`;
 
 /**
  * __useGetCoursesQuery__
@@ -412,80 +445,81 @@ export type GetCoursesQueryResult = Apollo.QueryResult<GetCoursesQuery, GetCours
 export function refetchGetCoursesQuery(variables?: GetCoursesQueryVariables) {
       return { query: GetCoursesDocument, variables: variables }
     }
-export const GetMyCoursesDocument = gql`
-    query GetMyCourses {
-  myCourses {
+export const GetAttendingCoursesDocument = gql`
+    query GetAttendingCourses {
+  attendingCourses {
     nodes {
-      id
-      title
-      description
+      ...CourseField
     }
   }
 }
-    `;
+    ${CourseFieldFragmentDoc}`;
 
 /**
- * __useGetMyCoursesQuery__
+ * __useGetAttendingCoursesQuery__
  *
- * To run a query within a React component, call `useGetMyCoursesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAttendingCoursesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAttendingCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMyCoursesQuery({
+ * const { data, loading, error } = useGetAttendingCoursesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetMyCoursesQuery(baseOptions?: Apollo.QueryHookOptions<GetMyCoursesQuery, GetMyCoursesQueryVariables>) {
+export function useGetAttendingCoursesQuery(baseOptions?: Apollo.QueryHookOptions<GetAttendingCoursesQuery, GetAttendingCoursesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyCoursesQuery, GetMyCoursesQueryVariables>(GetMyCoursesDocument, options);
+        return Apollo.useQuery<GetAttendingCoursesQuery, GetAttendingCoursesQueryVariables>(GetAttendingCoursesDocument, options);
       }
-export function useGetMyCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyCoursesQuery, GetMyCoursesQueryVariables>) {
+export function useGetAttendingCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAttendingCoursesQuery, GetAttendingCoursesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyCoursesQuery, GetMyCoursesQueryVariables>(GetMyCoursesDocument, options);
+          return Apollo.useLazyQuery<GetAttendingCoursesQuery, GetAttendingCoursesQueryVariables>(GetAttendingCoursesDocument, options);
         }
-export type GetMyCoursesQueryHookResult = ReturnType<typeof useGetMyCoursesQuery>;
-export type GetMyCoursesLazyQueryHookResult = ReturnType<typeof useGetMyCoursesLazyQuery>;
-export type GetMyCoursesQueryResult = Apollo.QueryResult<GetMyCoursesQuery, GetMyCoursesQueryVariables>;
-export function refetchGetMyCoursesQuery(variables?: GetMyCoursesQueryVariables) {
-      return { query: GetMyCoursesDocument, variables: variables }
+export type GetAttendingCoursesQueryHookResult = ReturnType<typeof useGetAttendingCoursesQuery>;
+export type GetAttendingCoursesLazyQueryHookResult = ReturnType<typeof useGetAttendingCoursesLazyQuery>;
+export type GetAttendingCoursesQueryResult = Apollo.QueryResult<GetAttendingCoursesQuery, GetAttendingCoursesQueryVariables>;
+export function refetchGetAttendingCoursesQuery(variables?: GetAttendingCoursesQueryVariables) {
+      return { query: GetAttendingCoursesDocument, variables: variables }
     }
-export const GetTestValueDocument = gql`
-    query GetTestValue {
-  value
-  authValue
+export const GetTeachingCoursesDocument = gql`
+    query GetTeachingCourses {
+  teachingCourses {
+    nodes {
+      ...CourseField
+    }
+  }
 }
-    `;
+    ${CourseFieldFragmentDoc}`;
 
 /**
- * __useGetTestValueQuery__
+ * __useGetTeachingCoursesQuery__
  *
- * To run a query within a React component, call `useGetTestValueQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTestValueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTeachingCoursesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeachingCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTestValueQuery({
+ * const { data, loading, error } = useGetTeachingCoursesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetTestValueQuery(baseOptions?: Apollo.QueryHookOptions<GetTestValueQuery, GetTestValueQueryVariables>) {
+export function useGetTeachingCoursesQuery(baseOptions?: Apollo.QueryHookOptions<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTestValueQuery, GetTestValueQueryVariables>(GetTestValueDocument, options);
+        return Apollo.useQuery<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>(GetTeachingCoursesDocument, options);
       }
-export function useGetTestValueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTestValueQuery, GetTestValueQueryVariables>) {
+export function useGetTeachingCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTestValueQuery, GetTestValueQueryVariables>(GetTestValueDocument, options);
+          return Apollo.useLazyQuery<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>(GetTeachingCoursesDocument, options);
         }
-export type GetTestValueQueryHookResult = ReturnType<typeof useGetTestValueQuery>;
-export type GetTestValueLazyQueryHookResult = ReturnType<typeof useGetTestValueLazyQuery>;
-export type GetTestValueQueryResult = Apollo.QueryResult<GetTestValueQuery, GetTestValueQueryVariables>;
-export function refetchGetTestValueQuery(variables?: GetTestValueQueryVariables) {
-      return { query: GetTestValueDocument, variables: variables }
+export type GetTeachingCoursesQueryHookResult = ReturnType<typeof useGetTeachingCoursesQuery>;
+export type GetTeachingCoursesLazyQueryHookResult = ReturnType<typeof useGetTeachingCoursesLazyQuery>;
+export type GetTeachingCoursesQueryResult = Apollo.QueryResult<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>;
+export function refetchGetTeachingCoursesQuery(variables?: GetTeachingCoursesQueryVariables) {
+      return { query: GetTeachingCoursesDocument, variables: variables }
     }

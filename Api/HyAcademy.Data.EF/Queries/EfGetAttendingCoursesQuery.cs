@@ -1,10 +1,10 @@
 namespace HyAcademy.Data.EF.Queries;
 
-public class EfGetMyCoursesQuery : IGetMyCoursesQuery
+public class EfGetAttendingCoursesQuery : IGetAttendingCoursesQuery
 {
     private readonly AppDbContext context;
 
-    public EfGetMyCoursesQuery(AppDbContext context)
+    public EfGetAttendingCoursesQuery(AppDbContext context)
     {
         this.context = context;
     }
