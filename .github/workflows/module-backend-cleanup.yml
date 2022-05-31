@@ -47,6 +47,7 @@ jobs:
         uses: azure/CLI@v1.0.6
         with:
           inlineScript: |
+            az extension add --name containerapp
             az containerapp delete -n ${{ inputs.containerAppName }} -g '${{ secrets.resourceGroupName }}' --yes
 
       - name: Azure logout
