@@ -18,7 +18,7 @@ jobs:
       resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
       
   cleanup_api:
-    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-cleanup.yml@hy/fix-action-close-pr
+    uses: nguyenquyhy/Hy-Academy/.github/workflows/module-backend-cleanup.yml@main
     with:
       environment: Pull Requests
       containerAppName: hyacademypr${{ github.event.pull_request.number }}-api
