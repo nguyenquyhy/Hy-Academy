@@ -9,7 +9,8 @@ public static class FakeExtensions
             .AddTransient<IProfileService, FakeProfileService>()
             .AddTransient<IGetCoursesQuery, FakeGetCoursesQuery>()
             .AddTransient<IGetCourseQuery, FakeGetCourseQuery>()
-            .AddTransient<IGetMyCoursesQuery, FakeGetMyCoursesQuery>()
+            .AddTransient<IGetAttendingCoursesQuery, FakeGetAttendingCoursesQuery>()
+            .AddTransient<IGetTeachingCoursesQuery, FakeGetTeachingCoursesQuery>()
 
             .AddTransient<IAddCourseMutation, FakeAddCourseMutation>()
             .AddTransient<IEnrollCourseMutation, FakeEnrollCourseMutation>()

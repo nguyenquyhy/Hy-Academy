@@ -2,29 +2,33 @@
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HyAcademy.Data;
-using Microsoft.AspNetCore.Http;
 
 namespace HyAcademy.GraphQL;
 
 public class Query
 {
-    public int GetValue() => 1;
-
-    [Authorize]
-    public string GetAuthValue([Service] IHttpContextAccessor contextAccessor)
-        => GetUserId(contextAccessor) ?? throw new InvalidOperationException("Cannot find user ID!");
-
     [UsePaging]
     public Task<IQueryable<Course>> GetCourses([Service] IGetCoursesQuery query) => query.ExecuteAsync();
 
     [Authorize]
     [UsePaging]
-    public Task<IQueryable<Course>> GetMyCourses(
-        [Service] IHttpContextAccessor contextAccessor,
-        [Service] IGetMyCoursesQuery query
+    public Task<IQueryable<Course>> GetTeachingCourses(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IGetTeachingCoursesQuery query
     )
     {
-        var userId = GetUserId(contextAccessor) ?? throw new InvalidOperationException("Cannot find user ID!");
+        var userId = userIdAccessor.Get();
+        return query.ExecuteAsync(userId);
+    }
+
+    [Authorize]
+    [UsePaging]
+    public Task<IQueryable<Course>> GetAttendingCourses(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IGetAttendingCoursesQuery query
+    )
+    {
+        var userId = userIdAccessor.Get();
         return query.ExecuteAsync(userId);
     }
 
@@ -35,6 +39,4 @@ public class Query
     {
         return query.ExecuteAsync(id);
     }
-
-    private string? GetUserId(IHttpContextAccessor contextAccessor) => contextAccessor.HttpContext.User.GetUserId();
 }

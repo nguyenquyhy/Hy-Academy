@@ -3,7 +3,7 @@ import { ButtonType } from 'controls/Button';
 import { NotificationType } from 'controls/Notification';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
-import { GetCourseQuery, GetMyCoursesDocument, useEnrollCourseMutation, useGetCourseQuery } from 'types';
+import { GetCourseQuery, GetAttendingCoursesDocument, useEnrollCourseMutation, useGetCourseQuery } from 'types';
 
 type QueriedCourse = NonNullable<GetCourseQuery['course']>;
 
@@ -47,7 +47,7 @@ const CoursePage = () => {
             }
         },
         refetchQueries: [
-            { query: GetMyCoursesDocument }
+            { query: GetAttendingCoursesDocument }
         ]
     });
     const { loading, error, data: queryData } = useGetCourseQuery({ variables: { id: params.id } });

@@ -1,10 +1,12 @@
 import { AuthenticatedTemplate } from '@azure/msal-react';
-import { Courses, MyCourses } from 'modules/courses';
+import { Courses, AttendingCourses, TeachingCourses } from 'modules/courses';
 
 const Home = () => (
     <>
         <AuthenticatedTemplate>
-            <MyCourses />
+            <TeachingCourses />
+            <hr />
+            <AttendingCourses />
             <hr />
         </AuthenticatedTemplate>
         <Courses />

@@ -1,6 +1,6 @@
 namespace HyAcademy.Data;
 
-public class FakeGetMyCoursesQuery : IGetMyCoursesQuery
+public class FakeGetAttendingCoursesQuery : IGetAttendingCoursesQuery
 {
     public Task<IQueryable<Course>> ExecuteAsync(string userId)
     {
