@@ -44,10 +44,9 @@ jobs:
           subscription-id: ${{ secrets.deploymentSpSubscriptionId }}
 
       - name: Delete ContainerApp
-        uses: azure/CLI@1.0.4
+        uses: azure/CLI@v1.0.6
         with:
           inlineScript: |
-            az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
             az containerapp delete -n ${{ inputs.containerAppName }} -g '${{ secrets.resourceGroupName }}' --yes
 
       - name: Azure logout
