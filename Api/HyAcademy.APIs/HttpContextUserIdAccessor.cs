@@ -12,4 +12,5 @@ public class HttpContextUserIdAccessor : IUserIdAccessor
     }
 
     public string Get() => httpContextAccessor.HttpContext?.User.GetUserId() ?? throw new InvalidOperationException("Cannot find user ID!");
+    public string? GetOrDefault() => httpContextAccessor.HttpContext?.User.GetUserId();
 }
