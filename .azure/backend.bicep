@@ -4,6 +4,7 @@ param environmentName string
 param appName string
 param dockerImage string
 param databaseConnectionString string
+param customDomain string = ''
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: environmentName
@@ -42,6 +43,13 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
       ingress: {
         external: true
         targetPort: 80
+        customDomains: (customDomain == '') ? [] : [
+          {
+            name: customDomain
+            certificateId: resourceId('Microsoft.App/managedEnvironments/certificates', environment.name, customDomain)
+            bindingType: 'SniEnabled'
+          }
+        ]
       }
       secrets: [
         {
