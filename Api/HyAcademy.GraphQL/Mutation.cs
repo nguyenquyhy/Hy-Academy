@@ -9,13 +9,13 @@ public class Mutation
     [Authorize]
     public async Task<AddCourseResult> AddCourse(
         [Service] IUserIdAccessor userIdAccessor,
-        [Service] IAddCourseMutation addCourseMutation,
+        [Service] IAddCourseMutation mutation,
         AddCourseInput input
     )
     {
         var userId = userIdAccessor.Get();
         return new AddCourseResult(
-            await addCourseMutation.ExecuteAsync(userId, input.title.Trim(), input.description.Trim())
+            await mutation.ExecuteAsync(userId, input.title.Trim(), input.description.Trim())
         );
     }
 
@@ -39,13 +39,26 @@ public class Mutation
     [Authorize]
     public async Task<AddLessonResult> AddLesson(
         [Service] IUserIdAccessor userIdAccessor,
-        [Service] IAddLessonMutation addLessonMutation,
+        [Service] IAddLessonMutation mutation,
         AddLessonInput input
     )
     {
         var userId = userIdAccessor.Get();
         return new AddLessonResult(
-            await addLessonMutation.ExecuteAsync(userId, input.courseId, input.title.Trim(), input.description.Trim())
+            await mutation.ExecuteAsync(userId, input.courseId, input.title.Trim(), input.description.Trim())
+        );
+    }
+
+    [Authorize]
+    public async Task<EditLessonResult> EditLesson(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IEditLessonMutation mutation,
+        EditLessonInput input
+    )
+    {
+        var userId = userIdAccessor.Get();
+        return new EditLessonResult(
+            await mutation.ExecuteAsync(userId, input.courseId, input.lessonId, input.title.Trim(), input.description.Trim())
         );
     }
 }
@@ -75,5 +88,16 @@ public record AddLessonInput(
 );
 
 public record AddLessonResult(
+    Lesson lesson
+);
+
+public record EditLessonInput(
+    Guid courseId,
+    Guid lessonId,
+    string title,
+    string description
+);
+
+public record EditLessonResult(
     Lesson lesson
 );

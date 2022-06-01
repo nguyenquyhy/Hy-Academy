@@ -70,6 +70,10 @@ type CoursesEdge {
   node: Course!
 }
 
+type EditLessonResult {
+  lesson: Lesson!
+}
+
 type EnrollResult {
   enrollment: Enrollment!
 }
@@ -96,6 +100,7 @@ type Mutation {
   editCourse(input: EditCourseInput!): Course!
   enroll(input: EnrollInput!): EnrollResult!
   addLesson(input: AddLessonInput!): AddLessonResult!
+  editLesson(input: EditLessonInput!): EditLessonResult!
 }
 
 "Information about pagination in a connection."
@@ -167,6 +172,13 @@ input AddLessonInput {
 
 input EditCourseInput {
   courseId: UUID!
+  title: String!
+  description: String!
+}
+
+input EditLessonInput {
+  courseId: UUID!
+  lessonId: UUID!
   title: String!
   description: String!
 }

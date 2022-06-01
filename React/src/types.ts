@@ -116,6 +116,18 @@ export type EditCourseInput = {
   title: Scalars['String'];
 };
 
+export type EditLessonInput = {
+  courseId: Scalars['UUID'];
+  description: Scalars['String'];
+  lessonId: Scalars['UUID'];
+  title: Scalars['String'];
+};
+
+export type EditLessonResult = {
+  __typename?: 'EditLessonResult';
+  lesson: Lesson;
+};
+
 export type EnrollInput = {
   courseId: Scalars['UUID'];
 };
@@ -149,6 +161,7 @@ export type Mutation = {
   addCourse: AddCourseResult;
   addLesson: AddLessonResult;
   editCourse: Course;
+  editLesson: EditLessonResult;
   enroll: EnrollResult;
 };
 
@@ -165,6 +178,11 @@ export type MutationAddLessonArgs = {
 
 export type MutationEditCourseArgs = {
   input: EditCourseInput;
+};
+
+
+export type MutationEditLessonArgs = {
+  input: EditLessonInput;
 };
 
 
@@ -332,7 +350,14 @@ export type GetLessonQueryVariables = Exact<{
 }>;
 
 
-export type GetLessonQuery = { __typename?: 'Query', lesson?: { __typename?: 'Lesson', id: any, title: string, description: string, course: { __typename?: 'Course', id: any, title: string } } | null };
+export type GetLessonQuery = { __typename?: 'Query', lesson?: { __typename?: 'Lesson', id: any, title: string, description: string, course: { __typename?: 'Course', id: any, title: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean } } } | null };
+
+export type EditLessonMutationVariables = Exact<{
+  input: EditLessonInput;
+}>;
+
+
+export type EditLessonMutation = { __typename?: 'Mutation', editLesson: { __typename?: 'EditLessonResult', lesson: { __typename?: 'Lesson', id: any } } };
 
 export const CourseFieldFragmentDoc = gql`
     fragment CourseField on Course {
@@ -669,6 +694,9 @@ export const GetLessonDocument = gql`
     course {
       id
       title
+      permissions {
+        canEdit
+      }
     }
   }
 }
@@ -705,3 +733,38 @@ export type GetLessonQueryResult = Apollo.QueryResult<GetLessonQuery, GetLessonQ
 export function refetchGetLessonQuery(variables: GetLessonQueryVariables) {
       return { query: GetLessonDocument, variables: variables }
     }
+export const EditLessonDocument = gql`
+    mutation EditLesson($input: EditLessonInput!) {
+  editLesson(input: $input) {
+    lesson {
+      id
+    }
+  }
+}
+    `;
+export type EditLessonMutationFn = Apollo.MutationFunction<EditLessonMutation, EditLessonMutationVariables>;
+
+/**
+ * __useEditLessonMutation__
+ *
+ * To run a mutation, you first call `useEditLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editLessonMutation, { data, loading, error }] = useEditLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditLessonMutation(baseOptions?: Apollo.MutationHookOptions<EditLessonMutation, EditLessonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditLessonMutation, EditLessonMutationVariables>(EditLessonDocument, options);
+      }
+export type EditLessonMutationHookResult = ReturnType<typeof useEditLessonMutation>;
+export type EditLessonMutationResult = Apollo.MutationResult<EditLessonMutation>;
+export type EditLessonMutationOptions = Apollo.BaseMutationOptions<EditLessonMutation, EditLessonMutationVariables>;

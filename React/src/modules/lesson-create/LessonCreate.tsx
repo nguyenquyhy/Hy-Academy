@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode, useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { Button, Notification } from 'controls';
+import { Button, Input, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
 import { GetCourseDocument, useAddLessonMutation, useGetCourseForLessonQuery } from 'types';
 
@@ -8,35 +8,6 @@ const Layout = ({ children }: { children: ReactNode }) => (
     <section className="section">
         {children}
     </section>
-);
-
-interface InputProps {
-    label: string
-    name: string
-    placeholder: string
-    loading?: boolean
-    required?: boolean
-    value: string
-    onChange: (name: string, value: string) => void
-}
-
-const Input = ({ label, name, placeholder, loading, required, value, onChange }: InputProps) => (
-    <div className="field">
-        <label htmlFor={name} className="label">{label}</label>
-        <p className="control">
-            <input
-                name={name}
-                className="input"
-                type="text"
-                title={label}
-                placeholder={placeholder}
-                disabled={!!loading}
-                required={required}
-                value={value}
-                onChange={e => onChange(name, e.target.value)}
-            />
-        </p>
-    </div>
 );
 
 const LessonCreatePage = () => {
@@ -98,12 +69,14 @@ const LessonCreatePage = () => {
             <form onSubmit={handleSubmit}>
                 <Input
                     label="Title" name="title"
-                    placeholder="Please enter lesson title" loading={loading} required
+                    placeholder="Please enter lesson title" required
+                    loading={loading}
                     value={data.title} onChange={handleChange}
                 />
                 <Input
                     label="Description" name="description"
-                    placeholder="Please enter lesson description" loading={loading} required
+                    placeholder="Please enter lesson description" required multiline
+                    loading={loading}
                     value={data.description} onChange={handleChange}
                 />
                 <div className="control">

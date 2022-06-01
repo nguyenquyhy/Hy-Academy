@@ -10,3 +10,8 @@ process.env.REACT_APP_B2C_AUTHORITY = 'test.authority';
 process.env.REACT_APP_B2C_SIGNUP_SIGNIN = 'SignUpSignIn';
 process.env.REACT_APP_B2C_EDIT_PROFILE = 'EditProfile';
 process.env.REACT_APP_B2C_RESET_PASSWORD = 'ResetPassword';
+
+// https://github.com/remarkjs/react-markdown/issues/635
+// HACK: we have to mock react-markdown because Jest and CRA do not support ESM used by react-markdown yet
+jest.mock('react-markdown', () => (props: any) => <>{props.children}</>);
+jest.mock("remark-gfm", () => () => {});
