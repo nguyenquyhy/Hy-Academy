@@ -39,4 +39,13 @@ public class Query
     {
         return query.ExecuteAsync(id);
     }
+
+    public Task<Lesson?> GetLesson(
+        [Service] IGetLessonQuery query,
+        Guid courseId,
+        Guid lessonId
+    )
+    {
+        return query.ExecuteAsync(courseId, lessonId);
+    }
 }

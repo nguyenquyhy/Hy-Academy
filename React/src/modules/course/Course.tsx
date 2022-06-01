@@ -2,7 +2,7 @@ import { Button, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
 import { NotificationType } from 'controls/Notification';
 import { ReactNode } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { GetCourseQuery, GetAttendingCoursesDocument, useEnrollCourseMutation, useGetCourseQuery } from 'types';
 
 type QueriedCourse = NonNullable<GetCourseQuery['course']>;
@@ -30,27 +30,34 @@ export const Course = ({ data, enroll, enrollLoading, enrollSuccess }: CoursePro
             <Notification message="You have enrolled in this course" /> :
             <Notification message="You cannot enroll in this course!" type={NotificationType.Error} />)}
 
+        <h2 className="title is-4">Lessons</h2>
+        {data.permissions.canEdit && <Link to={`/courses/${data.id}/lessons/create`} className="button is-primary">Add lesson</Link>}
+        {data.lessons.length === 0 ? <p>There is no lesson in this course.</p> : (
+            <ul>
+                {data.lessons.map(lesson => <li key={lesson.id}><Link to={`/courses/${data.id}/lessons/${lesson.id}`}>{lesson.title}</Link></li>)}
+            </ul>
+        )}
     </Layout>
 );
 
 const CoursePage = () => {
-    const params = useParams<{ id: string }>();
+    const params = useParams<{ courseId: string }>();
 
-    if (!params.id) {
+    if (!params.courseId) {
         return <Layout>Invalid course</Layout>;
     }
 
     const [enroll, { loading: enrollLoading, error: enrollError, data: enrollData }] = useEnrollCourseMutation({
         variables: {
             input: {
-                courseId: params.id
+                courseId: params.courseId
             }
         },
         refetchQueries: [
             { query: GetAttendingCoursesDocument }
         ]
     });
-    const { loading, error, data: queryData } = useGetCourseQuery({ variables: { id: params.id } });
+    const { loading, error, data: queryData } = useGetCourseQuery({ variables: { id: params.courseId } });
 
     if (loading) {
         return <Layout>Loading...</Layout>;

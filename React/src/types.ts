@@ -28,6 +28,17 @@ export type AddCourseResult = {
   course: Course;
 };
 
+export type AddLessonInput = {
+  courseId: Scalars['UUID'];
+  description: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export type AddLessonResult = {
+  __typename?: 'AddLessonResult';
+  lesson: Lesson;
+};
+
 export enum ApplyPolicy {
   AfterResolver = 'AFTER_RESOLVER',
   BeforeResolver = 'BEFORE_RESOLVER'
@@ -66,6 +77,7 @@ export type Course = {
   description: Scalars['String'];
   enrollments: Array<Enrollment>;
   id: Scalars['UUID'];
+  lessons: Array<Lesson>;
   permissions: CoursePermission;
   roleAssignments: Array<RoleAssignment>;
   title: Scalars['String'];
@@ -122,9 +134,20 @@ export type Enrollment = {
   updated: Scalars['DateTime'];
 };
 
+export type Lesson = {
+  __typename?: 'Lesson';
+  added: Scalars['DateTime'];
+  course: Course;
+  description: Scalars['String'];
+  id: Scalars['UUID'];
+  title: Scalars['String'];
+  updated: Scalars['DateTime'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCourse: AddCourseResult;
+  addLesson: AddLessonResult;
   editCourse: Course;
   enroll: EnrollResult;
 };
@@ -132,6 +155,11 @@ export type Mutation = {
 
 export type MutationAddCourseArgs = {
   input: AddCourseInput;
+};
+
+
+export type MutationAddLessonArgs = {
+  input: AddLessonInput;
 };
 
 
@@ -172,6 +200,7 @@ export type Query = {
   attendingCourses?: Maybe<AttendingCoursesConnection>;
   course?: Maybe<Course>;
   courses?: Maybe<CoursesConnection>;
+  lesson?: Maybe<Lesson>;
   teachingCourses?: Maybe<TeachingCoursesConnection>;
 };
 
@@ -194,6 +223,12 @@ export type QueryCoursesArgs = {
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryLessonArgs = {
+  courseId: Scalars['UUID'];
+  lessonId: Scalars['UUID'];
 };
 
 
@@ -251,7 +286,7 @@ export type GetCourseQueryVariables = Exact<{
 }>;
 
 
-export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean } } | null };
+export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean }, lessons: Array<{ __typename?: 'Lesson', id: any, title: string }> } | null };
 
 export type EnrollCourseMutationVariables = Exact<{
   input: EnrollInput;
@@ -276,6 +311,28 @@ export type GetTeachingCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTeachingCoursesQuery = { __typename?: 'Query', teachingCourses?: { __typename?: 'TeachingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+
+export type GetCourseForLessonQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetCourseForLessonQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string } | null };
+
+export type AddLessonMutationVariables = Exact<{
+  input: AddLessonInput;
+}>;
+
+
+export type AddLessonMutation = { __typename?: 'Mutation', addLesson: { __typename?: 'AddLessonResult', lesson: { __typename?: 'Lesson', id: any, title: string, description: string } } };
+
+export type GetLessonQueryVariables = Exact<{
+  courseId: Scalars['UUID'];
+  lessonId: Scalars['UUID'];
+}>;
+
+
+export type GetLessonQuery = { __typename?: 'Query', lesson?: { __typename?: 'Lesson', id: any, title: string, description: string, course: { __typename?: 'Course', id: any, title: string } } | null };
 
 export const CourseFieldFragmentDoc = gql`
     fragment CourseField on Course {
@@ -330,6 +387,10 @@ export const GetCourseDocument = gql`
     permissions {
       canEdit
       canEnroll
+    }
+    lessons {
+      id
+      title
     }
   }
 }
@@ -522,4 +583,125 @@ export type GetTeachingCoursesLazyQueryHookResult = ReturnType<typeof useGetTeac
 export type GetTeachingCoursesQueryResult = Apollo.QueryResult<GetTeachingCoursesQuery, GetTeachingCoursesQueryVariables>;
 export function refetchGetTeachingCoursesQuery(variables?: GetTeachingCoursesQueryVariables) {
       return { query: GetTeachingCoursesDocument, variables: variables }
+    }
+export const GetCourseForLessonDocument = gql`
+    query GetCourseForLesson($id: UUID!) {
+  course(id: $id) {
+    id
+    title
+  }
+}
+    `;
+
+/**
+ * __useGetCourseForLessonQuery__
+ *
+ * To run a query within a React component, call `useGetCourseForLessonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCourseForLessonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCourseForLessonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCourseForLessonQuery(baseOptions: Apollo.QueryHookOptions<GetCourseForLessonQuery, GetCourseForLessonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCourseForLessonQuery, GetCourseForLessonQueryVariables>(GetCourseForLessonDocument, options);
+      }
+export function useGetCourseForLessonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCourseForLessonQuery, GetCourseForLessonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCourseForLessonQuery, GetCourseForLessonQueryVariables>(GetCourseForLessonDocument, options);
+        }
+export type GetCourseForLessonQueryHookResult = ReturnType<typeof useGetCourseForLessonQuery>;
+export type GetCourseForLessonLazyQueryHookResult = ReturnType<typeof useGetCourseForLessonLazyQuery>;
+export type GetCourseForLessonQueryResult = Apollo.QueryResult<GetCourseForLessonQuery, GetCourseForLessonQueryVariables>;
+export function refetchGetCourseForLessonQuery(variables: GetCourseForLessonQueryVariables) {
+      return { query: GetCourseForLessonDocument, variables: variables }
+    }
+export const AddLessonDocument = gql`
+    mutation AddLesson($input: AddLessonInput!) {
+  addLesson(input: $input) {
+    lesson {
+      id
+      title
+      description
+    }
+  }
+}
+    `;
+export type AddLessonMutationFn = Apollo.MutationFunction<AddLessonMutation, AddLessonMutationVariables>;
+
+/**
+ * __useAddLessonMutation__
+ *
+ * To run a mutation, you first call `useAddLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addLessonMutation, { data, loading, error }] = useAddLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddLessonMutation(baseOptions?: Apollo.MutationHookOptions<AddLessonMutation, AddLessonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddLessonMutation, AddLessonMutationVariables>(AddLessonDocument, options);
+      }
+export type AddLessonMutationHookResult = ReturnType<typeof useAddLessonMutation>;
+export type AddLessonMutationResult = Apollo.MutationResult<AddLessonMutation>;
+export type AddLessonMutationOptions = Apollo.BaseMutationOptions<AddLessonMutation, AddLessonMutationVariables>;
+export const GetLessonDocument = gql`
+    query GetLesson($courseId: UUID!, $lessonId: UUID!) {
+  lesson(courseId: $courseId, lessonId: $lessonId) {
+    id
+    title
+    description
+    course {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLessonQuery__
+ *
+ * To run a query within a React component, call `useGetLessonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLessonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLessonQuery({
+ *   variables: {
+ *      courseId: // value for 'courseId'
+ *      lessonId: // value for 'lessonId'
+ *   },
+ * });
+ */
+export function useGetLessonQuery(baseOptions: Apollo.QueryHookOptions<GetLessonQuery, GetLessonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLessonQuery, GetLessonQueryVariables>(GetLessonDocument, options);
+      }
+export function useGetLessonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLessonQuery, GetLessonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLessonQuery, GetLessonQueryVariables>(GetLessonDocument, options);
+        }
+export type GetLessonQueryHookResult = ReturnType<typeof useGetLessonQuery>;
+export type GetLessonLazyQueryHookResult = ReturnType<typeof useGetLessonLazyQuery>;
+export type GetLessonQueryResult = Apollo.QueryResult<GetLessonQuery, GetLessonQueryVariables>;
+export function refetchGetLessonQuery(variables: GetLessonQueryVariables) {
+      return { query: GetLessonDocument, variables: variables }
     }

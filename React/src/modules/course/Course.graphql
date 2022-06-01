@@ -7,6 +7,10 @@ query GetCourse($id: UUID!) {
             canEdit
             canEnroll
         }
+        lessons {
+            id
+            title
+        }
     }
 }
 

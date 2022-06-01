@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Course } from './Course';
 
 const defaultCourse = {
@@ -8,17 +9,20 @@ const defaultCourse = {
     permissions: {
         canEdit: false,
         canEnroll: false
-    }
+    },
+    lessons: [],
 };
 
 test('renders content', () => {
     render(
-        <Course
-            data={defaultCourse}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={undefined}
-        />
+        <MemoryRouter>
+            <Course
+                data={defaultCourse}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={undefined}
+            />
+        </MemoryRouter>
     );
 
     const title = screen.getByText('Test course');
@@ -30,18 +34,20 @@ test('renders content', () => {
 
 test('shows edit button with permission', () => {
     render(
-        <Course
-            data={{
-                ...defaultCourse,
-                permissions: {
-                    ...defaultCourse.permissions,
-                    canEdit: true
-                }
-            }}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={undefined}
-        />
+        <MemoryRouter>
+            <Course
+                data={{
+                    ...defaultCourse,
+                    permissions: {
+                        ...defaultCourse.permissions,
+                        canEdit: true
+                    }
+                }}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={undefined}
+            />
+        </MemoryRouter>
     );
 
     const testButton = screen.getByText('Edit');
@@ -51,18 +57,20 @@ test('shows edit button with permission', () => {
 
 test('hides edit button without permission', () => {
     render(
-        <Course
-            data={{
-                ...defaultCourse,
-                permissions: {
-                    ...defaultCourse.permissions,
-                    canEdit: false
-                }
-            }}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={undefined}
-        />
+        <MemoryRouter>
+            <Course
+                data={{
+                    ...defaultCourse,
+                    permissions: {
+                        ...defaultCourse.permissions,
+                        canEdit: false
+                    }
+                }}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={undefined}
+            />
+        </MemoryRouter>
     );
 
     const testButton = screen.queryByText('Edit');
@@ -72,18 +80,20 @@ test('hides edit button without permission', () => {
 
 test('shows enroll button with permissions', () => {
     render(
-        <Course
-            data={{
-                ...defaultCourse,
-                permissions: {
-                    ...defaultCourse.permissions,
-                    canEnroll: true
-                }
-            }}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={undefined}
-        />
+        <MemoryRouter>
+            <Course
+                data={{
+                    ...defaultCourse,
+                    permissions: {
+                        ...defaultCourse.permissions,
+                        canEnroll: true
+                    }
+                }}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={undefined}
+            />
+        </MemoryRouter>
     );
 
     const testButton = screen.getByText('Enroll');
@@ -93,18 +103,20 @@ test('shows enroll button with permissions', () => {
 
 test('hides enroll button without permissions', () => {
     render(
-        <Course
-            data={{
-                ...defaultCourse,
-                permissions: {
-                    ...defaultCourse.permissions,
-                    canEnroll: false
-                }
-            }}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={undefined}
-        />
+        <MemoryRouter>
+            <Course
+                data={{
+                    ...defaultCourse,
+                    permissions: {
+                        ...defaultCourse.permissions,
+                        canEnroll: false
+                    }
+                }}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={undefined}
+            />
+        </MemoryRouter>
     );
 
     const testButton = screen.queryByText('Enroll');
@@ -114,18 +126,20 @@ test('hides enroll button without permissions', () => {
 
 test('shows error message when enrollment fails', () => {
     render(
-        <Course
-            data={{
-                ...defaultCourse,
-                permissions: {
-                    ...defaultCourse.permissions,
-                    canEnroll: false
-                }
-            }}
-            enroll={jest.fn()}
-            enrollLoading={false}
-            enrollSuccess={false}
-        />
+        <MemoryRouter>
+            <Course
+                data={{
+                    ...defaultCourse,
+                    permissions: {
+                        ...defaultCourse.permissions,
+                        canEnroll: false
+                    }
+                }}
+                enroll={jest.fn()}
+                enrollLoading={false}
+                enrollSuccess={false}
+            />
+        </MemoryRouter>
     );
 
     const errorMessage = screen.queryByText('You cannot enroll in this course!');

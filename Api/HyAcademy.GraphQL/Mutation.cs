@@ -35,6 +35,19 @@ public class Mutation
         var userId = userIdAccessor.Get();
         return new EnrollResult(await mutation.ExecuteAsync(input.courseId, userId));
     }
+
+    [Authorize]
+    public async Task<AddLessonResult> AddLesson(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IAddLessonMutation addLessonMutation,
+        AddLessonInput input
+    )
+    {
+        var userId = userIdAccessor.Get();
+        return new AddLessonResult(
+            await addLessonMutation.ExecuteAsync(userId, input.courseId, input.title.Trim(), input.description.Trim())
+        );
+    }
 }
 
 public record AddCourseInput(
@@ -54,3 +67,13 @@ public record EditCourseInput(
 
 public record EnrollInput(Guid courseId);
 public record EnrollResult(Enrollment enrollment);
+
+public record AddLessonInput(
+    Guid courseId,
+    string title,
+    string description
+);
+
+public record AddLessonResult(
+    Lesson lesson
+);
