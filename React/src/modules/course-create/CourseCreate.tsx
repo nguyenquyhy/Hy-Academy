@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Button, Notification } from 'controls';
+import { Button, Input, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
 import { GetCoursesDocument, useAddCourseMutation } from 'types';
 
@@ -9,35 +9,6 @@ const Layout = ({ children, title }: { children: ReactNode, title: string | Reac
         <h1 className="title">{title}</h1>
         {children}
     </section>
-);
-
-interface InputProps {
-    label: string
-    name: string
-    placeholder: string
-    loading?: boolean
-    required?: boolean
-    value: string
-    onChange: (name: string, value: string) => void
-}
-
-const Input = ({ label, name, placeholder, loading, required, value, onChange }: InputProps) => (
-    <div className="field">
-        <label htmlFor={name} className="label">{label}</label>
-        <p className="control">
-            <input
-                name={name}
-                className="input"
-                type="text"
-                title={label}
-                placeholder={placeholder}
-                disabled={!!loading}
-                required={required}
-                value={value}
-                onChange={e => onChange(name, e.target.value)}
-            />
-        </p>
-    </div>
 );
 
 const CourseCreatePage = () => {

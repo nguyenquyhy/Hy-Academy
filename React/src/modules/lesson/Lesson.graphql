@@ -6,6 +6,17 @@ query GetLesson($courseId: UUID!, $lessonId: UUID!) {
         course {
             id
             title
+            permissions {
+                canEdit
+            }
+        }
+    }
+}
+
+mutation EditLesson($input: EditLessonInput!) {
+    editLesson(input: $input) {
+        lesson {
+            id
         }
     }
 }

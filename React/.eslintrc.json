@@ -1,5 +1,8 @@
 {
-    "ignorePatterns": "src/types.ts",
+    "ignorePatterns": [
+        "src/types.ts",
+        "src/setupTests.tsx"
+    ],
     "env": {
         "browser": true,
         "es2021": true
