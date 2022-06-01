@@ -70,7 +70,7 @@ jobs:
         # Specifies the name of the resource group deployment to create.
         #deploymentName: # optional
         # Supply deployment parameter values.
-        parameters: environmentName="${{ secrets.CONTAINER_APP_NAME }}" logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" appName="${{ secrets.CONTAINER_APP_NAME }}" dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" databaseConnectionString="${{ secrets.DATABASE_CONNECTION_STRING }}"
+        parameters: environmentName="${{ secrets.CONTAINER_APP_NAME }}" logAnalyticsSKU="${{ secrets.LOG_ANALYTICS_SKU }}" appName="${{ secrets.CONTAINER_APP_NAME }}" dockerImage="docker.io/${{ secrets.DOCKER_TAG }}" databaseConnectionString="${{ secrets.DATABASE_CONNECTION_STRING }}" customDomain="${{ secrets.API_DOMAIN }}"
         # Specify whether to fail the action if some data is written to stderr stream of az cli. Valid values are: true, false
         #failOnStdErr: # optional, default is true
         # Specify any additional arguments for the deployment.
