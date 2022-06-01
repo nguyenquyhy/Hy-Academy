@@ -2,7 +2,7 @@ import { InteractionRequiredAuthError, IPublicClientApplication } from '@azure/m
 import { loginRequest, loginSilentRequest } from './authConfig';
 
 const lookupTokenAsync = async (instance: IPublicClientApplication, inProgress: string) => {
-    const accounts = await instance.getAllAccounts();
+    const accounts = instance.getAllAccounts();
 
     const account = accounts[0];
     if (inProgress === 'none') {

@@ -39,7 +39,7 @@ const ApolloApp = () => {
         <ApolloProvider client={apollo}>
             {inProgress === 'none' || <LoaderBlocking message="Please wait..." />}
             {!!message && <Dialog title="Account" message={message} />}
-            <App />
+            {inProgress === 'none' && <App />}
         </ApolloProvider>
     );
 };
