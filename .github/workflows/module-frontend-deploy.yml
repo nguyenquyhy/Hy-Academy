@@ -100,10 +100,10 @@ jobs:
       - name: Upload to blob storage
         id: upload
         continue-on-error: true
-        uses: azure/CLI@1.0.4
+        uses: azure/CLI@v1.0.6
         with:
           inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
+            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web' --overwrite
 
       - name: Sleep for 10 seconds (Retry)
         if: steps.upload.outcome == 'failure'
@@ -112,10 +112,10 @@ jobs:
 
       - name: Upload to blob storage (Retry)
         if: steps.upload.outcome == 'failure'
-        uses: azure/CLI@1.0.4
+        uses: azure/CLI@v1.0.6
         with:
           inlineScript: |
-            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web'
+            az storage blob upload-batch --subscription '${{ secrets.deploymentSpSubscriptionId }}' --account-name ${{ inputs.storageAccountName }} --auth-mode key -s './build' -d '$web' --overwrite
 
       - name: Azure logout
         run: |
