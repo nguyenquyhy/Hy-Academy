@@ -8,10 +8,11 @@ public class CoursePermissionResolver
 {
     public async Task<CoursePermission> LoadAsync([Parent] Course course, [Service] IUserIdAccessor userIdAccessor, [Service] ICourseEnrollPolicy policy)
     {
+        var userId = userIdAccessor.GetOrDefault();
         return new CoursePermission
         (
             canEdit: false,
-            canEnroll: await policy.AllowAsync(course.Id, userIdAccessor.Get())
+            canEnroll: userId == null ? false : await policy.AllowAsync(course.Id, userId)
         );
     }
 }
