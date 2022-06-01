@@ -10,6 +10,8 @@ import About from 'modules/about';
 import CoursePage from 'modules/course';
 import CoursesPage from 'modules/courses';
 import CourseCreatePage from 'modules/course-create';
+import LessonPage from 'modules/lesson';
+import LessonCreatePage from 'modules/lesson-create';
 import { loginRequest } from 'auth/authConfig';
 
 const Authentication = ({ children }: { children: ReactNode }) => (
@@ -25,7 +27,13 @@ const App = () => (
                 <Route path="courses">
                     <Route index element={<CoursesPage />} />
                     <Route path="create" element={<Authentication><CourseCreatePage /></Authentication>} />
-                    <Route path=":id" element={<CoursePage />} />
+                    <Route path=":courseId">
+                        <Route index element={<CoursePage />} />
+                        <Route path="lessons">
+                            <Route path="create" element={<LessonCreatePage />} />
+                            <Route path=":lessonId" element={<LessonPage />} />
+                        </Route>
+                    </Route>
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Route>

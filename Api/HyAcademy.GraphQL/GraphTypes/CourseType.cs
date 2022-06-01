@@ -11,7 +11,7 @@ public class CourseType : ObjectType<Course>
         descriptor
             .Field("permissions")
             .Type<NonNullType<ObjectType<CoursePermission>>>()
-            .ResolveWith<CoursePermissionResolver>(r => r.LoadAsync(default!, default!, default!));
+            .ResolveWith<CoursePermissionResolver>(r => r.LoadAsync(default!, default!, default!, default!));
 
         descriptor
             .Field(o => o.Visibility)

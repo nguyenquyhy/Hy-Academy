@@ -7,6 +7,10 @@ type AddCourseResult {
   course: Course!
 }
 
+type AddLessonResult {
+  lesson: Lesson!
+}
+
 "A connection to a list of items."
 type AttendingCoursesConnection {
   "Information to aid in pagination."
@@ -37,6 +41,7 @@ type Course {
   description: String!
   roleAssignments: [RoleAssignment!]!
   enrollments: [Enrollment!]!
+  lessons: [Lesson!]!
   id: UUID!
   added: DateTime!
   updated: DateTime!
@@ -77,10 +82,20 @@ type Enrollment {
   updated: DateTime!
 }
 
+type Lesson {
+  course: Course!
+  title: String!
+  description: String!
+  id: UUID!
+  added: DateTime!
+  updated: DateTime!
+}
+
 type Mutation {
   addCourse(input: AddCourseInput!): AddCourseResult!
   editCourse(input: EditCourseInput!): Course!
   enroll(input: EnrollInput!): EnrollResult!
+  addLesson(input: AddLessonInput!): AddLessonResult!
 }
 
 "Information about pagination in a connection."
@@ -109,6 +124,7 @@ type Query {
   teachingCourses("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): TeachingCoursesConnection
   attendingCourses("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): AttendingCoursesConnection
   course(id: UUID!): Course
+  lesson(courseId: UUID! lessonId: UUID!): Lesson
 }
 
 type RoleAssignment {
@@ -139,6 +155,12 @@ type TeachingCoursesEdge {
 }
 
 input AddCourseInput {
+  title: String!
+  description: String!
+}
+
+input AddLessonInput {
+  courseId: UUID!
   title: String!
   description: String!
 }

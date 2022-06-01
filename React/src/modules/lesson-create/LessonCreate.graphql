@@ -1,0 +1,16 @@
+query GetCourseForLesson($id: UUID!) {
+    course(id: $id) {
+        id
+        title
+    }
+}
+
+mutation AddLesson($input: AddLessonInput!) {
+    addLesson(input: $input) {
+        lesson {
+            id
+            title
+            description
+        }
+    }
+}
