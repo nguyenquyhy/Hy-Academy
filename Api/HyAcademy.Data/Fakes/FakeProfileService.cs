@@ -2,7 +2,7 @@ namespace HyAcademy.Data;
 
 public class FakeProfileService : IProfileService
 {
-    public Task<Profile> CreateOrGetAsync(string userId)
+    public Task<Profile> LoginAsync(string userId, string displayName)
     {
         var profile = FakeData.Profiles.FirstOrDefault(o => o.UserId == userId);
         if (profile == null)
@@ -12,7 +12,8 @@ public class FakeProfileService : IProfileService
                 Id = Guid.NewGuid(),
                 Added = DateTime.UtcNow,
                 Updated = DateTime.UtcNow,
-                UserId = userId
+                UserId = userId,
+                DisplayName = displayName,
             };
             FakeData.Profiles.Add(profile);
         }

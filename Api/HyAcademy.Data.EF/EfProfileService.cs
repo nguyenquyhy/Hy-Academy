@@ -9,7 +9,7 @@ public class EfProfileService : IProfileService
         this.context = context;
     }
 
-    public async Task<Profile> CreateOrGetAsync(string userId)
+    public async Task<Profile> LoginAsync(string userId, string displayName)
     {
         using var transaction = context.Database.BeginTransaction();
 
@@ -21,9 +21,15 @@ public class EfProfileService : IProfileService
                 Id = Guid.NewGuid(),
                 Added = DateTime.UtcNow,
                 Updated = DateTime.UtcNow,
-                UserId = userId
+                UserId = userId,
+                DisplayName = displayName,
             };
             context.Profiles.Add(profile);
+            await context.SaveChangesAsync();
+        }
+        else
+        {
+            profile.DisplayName = displayName;
             await context.SaveChangesAsync();
         }
 
