@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AuthError, EventMessage, EventType, IPublicClientApplication } from '@azure/msal-browser';
 import last from 'lodash/last';
-import { resetPasswordRequest } from './authConfig';
+import { editProfileRequest, loginRequest, resetPasswordRequest } from './authConfig';
 
 const useMsalEvents = (instance: IPublicClientApplication) => {
     const [message, setMessage] = useState<string | null>(null);
@@ -31,21 +31,35 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                 }
             }
 
-            if (event.eventType === EventType.LOGIN_SUCCESS) {
-                if (event?.payload && ('idTokenClaims' in event.payload)) {
-                    /**
-                     * We need to reject id tokens that were not issued with the default sign-in policy.
-                     * "acr" claim in the token tells us what policy is used (NOTE: for new policies (v2.0), use "tfp" instead of "acr").
-                     * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
-                     */
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any,prefer-destructuring
-                    const idTokenClaims: any = event.payload.idTokenClaims;
-                    const resetPasswordPolicyId = last(resetPasswordRequest.authority.split('/'));
-                    if (idTokenClaims && idTokenClaims.tfp === resetPasswordPolicyId) {
-                        instance.logout({
-                            postLogoutRedirectUri: '/?reason=AADB2C90118'
-                        });
-                    }
+            if (event?.payload && ('idTokenClaims' in event.payload) && event.payload.idTokenClaims && ('tfp' in event.payload.idTokenClaims)) {
+                /**
+                 * We need to reject id tokens that were not issued with the default sign-in policy.
+                 * "acr" claim in the token tells us what policy is used (NOTE: for new policies (v2.0), use "tfp" instead of "acr").
+                 * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
+                 */
+                switch (event.eventType) {
+                    case EventType.LOGIN_SUCCESS:
+                        switch (event.payload.idTokenClaims.tfp) {
+                            case last(resetPasswordRequest.authority.split('/')):
+                                instance.logout({
+                                    postLogoutRedirectUri: '/?reason=AADB2C90118'
+                                });
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case EventType.ACQUIRE_TOKEN_SUCCESS:
+                        switch (event.payload.idTokenClaims.tfp) {
+                            case last(editProfileRequest.authority.split('/')):
+                                instance.loginRedirect(loginRequest);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -57,7 +71,7 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
         };
     }, [instance, setMessage]);
 
-    return { message, setMessage };
+    return { message };
 };
 
 export default useMsalEvents;

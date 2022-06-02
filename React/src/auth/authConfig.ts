@@ -28,8 +28,9 @@ export const logoutRequest = {
     postLogoutRedirectUri: '/'
 };
 
-export const editProfile = {
+export const editProfileRequest = {
     authority: process.env.REACT_APP_B2C_EDIT_PROFILE,
+    redirectUri: process.env.REACT_APP_B2C_REDIRECT_URL || '/',
     scopes: []
 };
 

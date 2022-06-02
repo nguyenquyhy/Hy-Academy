@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import classNames from 'classnames';
 import Icon from 'images/icon-95x56.png';
 import SignInButton from 'layouts/SignInButton';
 import SignOutButton from 'layouts/SignOutButton';
 import EditProfileButton from 'layouts/EditProfileButton';
+import { useAccount } from 'auth';
 
 const menu = [
     {
@@ -43,7 +44,7 @@ const DropDownItem = ({ text, link }: { text: string, link?: string }) => {
 
 const TopMenu = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const { accounts } = useMsal();
+    const account = useAccount();
 
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -94,7 +95,7 @@ const TopMenu = () => {
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
                         <div className="navbar-item">
-                            <h2>{accounts && accounts.length > 0 ? `Welcome ${accounts[0].name}` : 'Welcome!'}</h2>
+                            <h2>{account ? `Welcome ${account.name}` : 'Welcome!'}</h2>
                         </div>
                         <div className="navbar-item">
                             <div className="buttons">
