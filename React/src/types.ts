@@ -206,6 +206,7 @@ export type PageInfo = {
 export type Profile = {
   __typename?: 'Profile';
   added: Scalars['DateTime'];
+  displayName?: Maybe<Scalars['String']>;
   enrollments: Array<Enrollment>;
   id: Scalars['UUID'];
   roleAssignments: Array<RoleAssignment>;

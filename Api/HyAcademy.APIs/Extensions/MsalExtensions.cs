@@ -17,11 +17,12 @@ public static class MsalExtensions
                     OnTokenValidated = async (context) =>
                     {
                         // Automatically create a profile on logged in
-                        var userId = context.Principal?.GetUserId();
+                        var userId = context.Principal?.GetNameIdentifierId();
+                        var displayName = context.Principal?.GetDisplayName();
                         var profileService = context.HttpContext.RequestServices.GetRequiredService<IProfileService>();
                         if (userId != null)
                         {
-                            var profile = await profileService.CreateOrGetAsync(userId);
+                            var profile = await profileService.LoginAsync(userId, displayName);
                         }
                     }
                 };

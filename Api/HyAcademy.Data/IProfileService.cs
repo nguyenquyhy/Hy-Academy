@@ -2,5 +2,5 @@ namespace HyAcademy.Data;
 
 public interface IProfileService
 {
-    Task<Profile> CreateOrGetAsync(string userId);
+    Task<Profile> LoginAsync(string userId, string displayName);
 }

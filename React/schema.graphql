@@ -117,6 +117,7 @@ type PageInfo {
 
 type Profile {
   userId: String!
+  displayName: String
   roleAssignments: [RoleAssignment!]!
   enrollments: [Enrollment!]!
   id: UUID!

@@ -17,10 +17,11 @@ public class ProfileServiceTest : BaseTest
 
         var service = new EfProfileService(context);
 
-        var profile = await service.CreateOrGetAsync("test_id");
+        var profile = await service.LoginAsync("test_id", "Test Name");
 
         profile.Should().NotBeNull();
         profile.UserId.Should().Be("test_id");
+        profile.DisplayName.Should().Be("Test Name");
 
         existingProfile = context.Profiles.FirstOrDefault(o => o.UserId == "test_id");
 
@@ -37,17 +38,19 @@ public class ProfileServiceTest : BaseTest
         context.Profiles.Add(new Profile
         {
             Id = new Guid("86fb9ccb-1476-44d2-bf46-615a77ab6b23"),
-            UserId = "test_id"
+            UserId = "test_id",
+            DisplayName = "Test Name",
         });
         await context.SaveChangesAsync();
 
         var service = new EfProfileService(context);
 
-        var profile = await service.CreateOrGetAsync("test_id");
+        var profile = await service.LoginAsync("test_id", "Test New Name");
 
         profile.Should().NotBeNull();
         profile.Id.Should().Be(new Guid("86fb9ccb-1476-44d2-bf46-615a77ab6b23"));
-        profile!.UserId.Should().Be("test_id");
+        profile.UserId.Should().Be("test_id");
+        profile.DisplayName.Should().Be("Test New Name");
     }
 
     [TestMethod]
@@ -57,14 +60,15 @@ public class ProfileServiceTest : BaseTest
         using var context = contextFactory.CreateDbContext();
         var service = new EfProfileService(context);
 
-        var profile = await service.CreateOrGetAsync("test_id");
+        var profile = await service.LoginAsync("test_id", "Test Name");
 
         profile.Should().NotBeNull();
 
-        var secondProfile = await service.CreateOrGetAsync("test_id");
+        var secondProfile = await service.LoginAsync("test_id", "Test Name");
 
         secondProfile.Should().NotBeNull();
         profile.Id.Should().Be(secondProfile.Id);
         secondProfile.UserId.Should().Be("test_id");
+        secondProfile.DisplayName.Should().Be("Test Name");
     }
 }
