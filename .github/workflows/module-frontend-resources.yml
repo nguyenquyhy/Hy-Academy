@@ -67,7 +67,7 @@ jobs:
         uses: azure/CLI@1.0.4
         with:
           inlineScript: |
-            echo "::set-output name=url::`az storage account show --name ${{ inputs.storageAccountName }} --query 'primaryEndpoints.web' --output tsv`"
+            echo "::set-output name=url::`az storage account show -n ${{ inputs.storageAccountName }} -g '${{ secrets.resourceGroupName }}' --query 'primaryEndpoints.web' --output tsv`"
       
       - name: Check static site URL
         if: ${{ steps.geturl.outputs.url == '' }}
