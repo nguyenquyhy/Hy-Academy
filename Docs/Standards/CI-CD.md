@@ -18,4 +18,4 @@ Once the PR is merged or closed, another workflow [main-pr-close-ci-cd](/.github
 
 Code merged to `main` is automatically built and deployed to production environment by the following workflow in GitHub Actions:
 - Front-end [main-ci-cd-frontend](/.github/workflows/main-ci-cd-frontend.yml): This includes infrastructure and code run the React application.
-- Back-end [main-ci-cd-backend](/.github/workflows/main-ci-cd-backend.yml): This includes infrastructure and code to run the GraphQL API.
+- Back-end [main-ci-cd-backend](/.github/workflows/main-ci-cd-backend.yml): This includes infrastructure and code to run the GraphQL API (in Container app) and the Azure AD B2C Connector (in Function app).
