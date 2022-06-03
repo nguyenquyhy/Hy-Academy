@@ -37,10 +37,10 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                  * "acr" claim in the token tells us what policy is used (NOTE: for new policies (v2.0), use "tfp" instead of "acr").
                  * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
                  */
-                switch (event.eventType) {
-                    case EventType.LOGIN_SUCCESS:
-                        switch (event.payload.idTokenClaims.tfp) {
-                            case last(resetPasswordRequest.authority.split('/')):
+                switch (event.payload.idTokenClaims.tfp) {
+                    case last(resetPasswordRequest.authority.split('/')):
+                        switch (event.eventType) {
+                            case EventType.LOGIN_SUCCESS:
                                 instance.logout({
                                     postLogoutRedirectUri: '/?reason=AADB2C90118'
                                 });
@@ -49,9 +49,11 @@ const useMsalEvents = (instance: IPublicClientApplication) => {
                                 break;
                         }
                         break;
-                    case EventType.ACQUIRE_TOKEN_SUCCESS:
-                        switch (event.payload.idTokenClaims.tfp) {
-                            case last(editProfileRequest.authority.split('/')):
+                    case last(editProfileRequest.authority.split('/')):
+                        switch (event.eventType) {
+                            case EventType.LOGIN_SUCCESS:
+                            case EventType.ACQUIRE_TOKEN_SUCCESS:
+                                // Note: msal:loginSuccess occurs for the first edit, and msal:acquireTokenSuccess for subsequent ones
                                 instance.loginRedirect(loginRequest);
                                 break;
                             default:
