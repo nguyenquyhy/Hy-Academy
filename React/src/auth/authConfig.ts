@@ -28,9 +28,11 @@ export const logoutRequest = {
     postLogoutRedirectUri: '/'
 };
 
-export const editProfile = {
+export const editProfileRequest = {
     authority: process.env.REACT_APP_B2C_EDIT_PROFILE,
-    scopes: []
+    scopes: [],
+    redirectUri: process.env.REACT_APP_B2C_REDIRECT_URL || '/',
+    state: process.env.REACT_APP_B2C_STATE
 };
 
 export const resetPasswordRequest = {
