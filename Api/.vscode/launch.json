@@ -39,6 +39,17 @@
             },
             "type": "coreclr",
             "request": "attach"
+        },
+        {
+            "name": ".NET Functions",
+            "presentation": {
+                "hidden": false,
+                "group": "1",
+                "order": 1
+            },
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
         }
     ]
 }
