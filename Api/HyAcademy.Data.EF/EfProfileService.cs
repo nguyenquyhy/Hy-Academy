@@ -9,11 +9,13 @@ public class EfProfileService : IProfileService
         this.context = context;
     }
 
-    public async Task<Profile> LoginAsync(string userId, string displayName)
+    public async Task<(bool isNew, Profile profile)> LoginAsync(string userId, string displayName)
     {
         using var transaction = context.Database.BeginTransaction();
 
         var profile = context.Profiles.FirstOrDefault(o => o.UserId == userId);
+        var isNew = profile == null;
+
         if (profile == null)
         {
             profile = new Profile
@@ -35,6 +37,6 @@ public class EfProfileService : IProfileService
 
         await transaction.CommitAsync();
 
-        return profile;
+        return (isNew, profile);
     }
 }

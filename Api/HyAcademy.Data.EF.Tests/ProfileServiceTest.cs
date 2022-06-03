@@ -17,8 +17,9 @@ public class ProfileServiceTest : BaseTest
 
         var service = new EfProfileService(context);
 
-        var profile = await service.LoginAsync("test_id", "Test Name");
+        var (isNew, profile) = await service.LoginAsync("test_id", "Test Name");
 
+        isNew.Should().BeTrue();
         profile.Should().NotBeNull();
         profile.UserId.Should().Be("test_id");
         profile.DisplayName.Should().Be("Test Name");
@@ -45,8 +46,9 @@ public class ProfileServiceTest : BaseTest
 
         var service = new EfProfileService(context);
 
-        var profile = await service.LoginAsync("test_id", "Test New Name");
+        var (isNew, profile) = await service.LoginAsync("test_id", "Test New Name");
 
+        isNew.Should().BeFalse();
         profile.Should().NotBeNull();
         profile.Id.Should().Be(new Guid("86fb9ccb-1476-44d2-bf46-615a77ab6b23"));
         profile.UserId.Should().Be("test_id");
@@ -60,12 +62,14 @@ public class ProfileServiceTest : BaseTest
         using var context = contextFactory.CreateDbContext();
         var service = new EfProfileService(context);
 
-        var profile = await service.LoginAsync("test_id", "Test Name");
+        var (isNew, profile) = await service.LoginAsync("test_id", "Test Name");
 
+        isNew.Should().BeTrue();
         profile.Should().NotBeNull();
 
-        var secondProfile = await service.LoginAsync("test_id", "Test Name");
+        var (isSecondNew, secondProfile) = await service.LoginAsync("test_id", "Test Name");
 
+        isSecondNew.Should().BeFalse();
         secondProfile.Should().NotBeNull();
         profile.Id.Should().Be(secondProfile.Id);
         secondProfile.UserId.Should().Be("test_id");

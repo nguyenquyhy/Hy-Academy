@@ -7,7 +7,10 @@ using Microsoft.Identity.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCustomMicrosoftIdentityWebApi(builder.Configuration.GetSection(Constants.AzureAd));
+builder.Services.AddCustomMicrosoftIdentityWebApi(
+    builder.Configuration.GetSection(Constants.AzureAd),
+    builder.Environment.IsDevelopment()
+);
 
 builder.Services.AddCors();
 builder.Services.AddAuthorization();

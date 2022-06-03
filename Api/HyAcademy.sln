@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data.EF", "HyAcad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data.EF.MySql", "HyAcademy.Data.EF.MySql\HyAcademy.Data.EF.MySql.csproj", "{CBE3CEB3-34C6-4B46-8788-E23C97A65F5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyAcademy.Data.EF.Tests", "HyAcademy.Data.EF.Tests\HyAcademy.Data.EF.Tests.csproj", "{462439E8-E616-45CA-9220-15419061D614}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyAcademy.Data.EF.Tests", "HyAcademy.Data.EF.Tests\HyAcademy.Data.EF.Tests.csproj", "{462439E8-E616-45CA-9220-15419061D614}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyAcademy.Functions.AADConnector", "HyAcademy.Functions.AADConnector\HyAcademy.Functions.AADConnector.csproj", "{FC07E94C-62D9-4106-B5BB-65D459612506}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{462439E8-E616-45CA-9220-15419061D614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{462439E8-E616-45CA-9220-15419061D614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{462439E8-E616-45CA-9220-15419061D614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC07E94C-62D9-4106-B5BB-65D459612506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC07E94C-62D9-4106-B5BB-65D459612506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC07E94C-62D9-4106-B5BB-65D459612506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC07E94C-62D9-4106-B5BB-65D459612506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

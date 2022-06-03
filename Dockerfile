@@ -12,6 +12,7 @@ COPY Api/HyAcademy.Data.EF.Tests/*.csproj Api/HyAcademy.Data.EF.Tests/
 COPY Api/HyAcademy.GraphQL/*.csproj Api/HyAcademy.GraphQL/
 COPY Api/HyAcademy.GraphQL.Extensions/*.csproj Api/HyAcademy.GraphQL.Extensions/
 COPY Api/HyAcademy.GraphQL.Tools/*.csproj Api/HyAcademy.GraphQL.Tools/
+COPY Api/HyAcademy.Functions.AADConnector/*.csproj Api/HyAcademy.Functions.AADConnector/
 COPY Api/HyAcademy.sln Api/
 COPY React/*.esproj React/
 RUN dotnet restore Api/HyAcademy.sln

@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace HyAcademy.Data;
 
+[Index(nameof(UserId), IsUnique = true)]
 public class Profile : Base
 {
     public string UserId { get; set; } = null!;
