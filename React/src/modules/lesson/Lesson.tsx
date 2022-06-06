@@ -69,7 +69,7 @@ export const Lesson = ({ data }: LessonProps) => {
             )}
 
             {!editMode ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{data.description}</ReactMarkdown>
+                <ReactMarkdown className="content" remarkPlugins={[remarkGfm]}>{data.description}</ReactMarkdown>
             ) : (
                 <Input
                     label="Description" name="description" hideHeader
