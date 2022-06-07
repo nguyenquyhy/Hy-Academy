@@ -53,7 +53,7 @@ jobs:
         uses: azure/CLI@1.0.4
         with:
           inlineScript: |
-            az storage account create -n ${{ inputs.storageAccountName }} -g '${{ secrets.resourceGroupName }}' -l SoutheastAsia --sku Standard_LRS --kind StorageV2
+            az storage account create -n ${{ inputs.storageAccountName }} -g '${{ secrets.resourceGroupName }}' --sku Standard_LRS --kind StorageV2
 
       - name: Enable Static Site
         if: ${{ steps.checkAccountExist.outputs.isNew == 'true'}}
