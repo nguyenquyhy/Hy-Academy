@@ -2,7 +2,7 @@ import { FormEvent, ReactNode, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button, Input, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
-import { GetCoursesDocument, useAddCourseMutation } from 'types';
+import { GetCoursesDocument, GetTeachingCoursesDocument, useAddCourseMutation } from 'types';
 
 const Layout = ({ children, title }: { children: ReactNode, title: string | ReactNode }) => (
     <section className="section">
@@ -15,7 +15,8 @@ const CourseCreatePage = () => {
     const [data, setData] = useState({ title: '', description: '' });
     const [addCourse, { loading, error, data: addData }] = useAddCourseMutation({
         refetchQueries: [
-            { query: GetCoursesDocument }
+            { query: GetCoursesDocument },
+            { query: GetTeachingCoursesDocument }
         ]
     });
 
