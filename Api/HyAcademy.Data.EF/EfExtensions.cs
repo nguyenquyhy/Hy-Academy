@@ -18,6 +18,7 @@ public static class EfExtensions
             .AddTransient<IGetCourseQuery, EfGetCourseQuery>()
 
             .AddTransient<IAddCourseMutation, EfAddCourseMutation>()
+            .AddTransient<IEditCourseMutation, EfEditCourseMutation>()
             .AddTransient<IEnrollCourseMutation, EfEnrollCourseMutation>()
 
             .AddTransient<IGetLessonQuery, EfGetLessonQuery>()

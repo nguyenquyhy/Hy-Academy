@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthenticatedTemplate } from '@azure/msal-react';
-import { useGetCoursesQuery, useGetAttendingCoursesQuery, useGetTeachingCoursesQuery, CourseFieldFragment } from 'types';
+import { useGetCoursesQuery, useGetAttendingCoursesQuery, useGetTeachingCoursesQuery, CourseFieldsFragment, CourseVisibility } from 'types';
 import { ApolloError } from '@apollo/client';
 
 const Layout = ({ children, title }: { children: ReactNode, title: string | ReactNode }) => (
@@ -11,11 +11,41 @@ const Layout = ({ children, title }: { children: ReactNode, title: string | Reac
     </section>
 );
 
+const VisibilityLabel = ({ visibility } : { visibility: CourseVisibility}) => {
+    switch (visibility) {
+        case CourseVisibility.Unlisted:
+            return <div className="tag is-warning">Unlisted</div>;
+        case CourseVisibility.Private:
+            return <div className="tag is-danger">Private</div>;
+        default:
+            return null;
+    }
+};
+
+const CourseItem = ({ course }: { course: CourseFieldsFragment }) => (
+    <div className="column is-6">
+        <div className="card">
+            <VisibilityLabel visibility={course.visibility} />
+            <div className="card-content">
+                <div className="media">
+                    <p className="title">{course.title}</p>
+                </div>
+                <div className="content">
+                    <p>{course.description}</p>
+                </div>
+            </div>
+            <div className="card-footer">
+                <Link to={`/courses/${course.id}`} className="card-footer-item">Read More</Link>
+            </div>
+        </div>
+    </div>
+);
+
 interface CourseListProps {
     title: ReactNode
     loading: boolean
     error?: ApolloError
-    courses?: CourseFieldFragment[] | null
+    courses?: CourseFieldsFragment[] | null
 }
 
 const CourseList = ({ title, loading, error, courses }: CourseListProps) => {
@@ -38,23 +68,7 @@ const CourseList = ({ title, loading, error, courses }: CourseListProps) => {
     return (
         <Layout title={title}>
             <div className="columns is-multiline">
-                {courses.map(course => (
-                    <div key={course.id} className="column is-6">
-                        <div className="card">
-                            <div className="card-content">
-                                <div className="media">
-                                    <p className="title">{course.title}</p>
-                                </div>
-                                <div className="content">
-                                    <p>{course.description}</p>
-                                </div>
-                            </div>
-                            <div className="card-footer">
-                                <Link to={`/courses/${course.id}`} className="card-footer-item">Read More</Link>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                {courses.map(course => <CourseItem key={course.id} course={course} />)}
             </div>
         </Layout>
     );

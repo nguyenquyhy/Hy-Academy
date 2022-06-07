@@ -20,9 +20,15 @@ public class Mutation
     }
 
     [Authorize]
-    public Course EditCourse(EditCourseInput input)
+    public async Task<EditCourseResult> EditCourse(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IEditCourseMutation mutation,
+        EditCourseInput input)
     {
-        return null!;
+        var userId = userIdAccessor.Get();
+        return new EditCourseResult(
+            await mutation.ExecuteAsync(userId, input.courseId, input.title.Trim(), input.description.Trim(), input.visibility)
+        );
     }
 
     [Authorize]
@@ -75,7 +81,12 @@ public record AddCourseResult(
 public record EditCourseInput(
     Guid courseId,
     string title,
-    string description
+    string description,
+    CourseVisibility visibility
+);
+
+public record EditCourseResult(
+    Course course
 );
 
 public record EnrollInput(Guid courseId);

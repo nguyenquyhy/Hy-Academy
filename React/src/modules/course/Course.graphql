@@ -1,8 +1,13 @@
+fragment CourseFields on Course {
+    id
+    title
+    description
+    visibility
+}
+
 query GetCourse($id: UUID!) {
     course(id: $id) {
-        id
-        title
-        description
+        ...CourseFields
         permissions {
             canEdit
             canEnroll
@@ -10,6 +15,14 @@ query GetCourse($id: UUID!) {
         lessons {
             id
             title
+        }
+    }
+}
+
+mutation EditCourse($input: EditCourseInput!) {
+    editCourse(input: $input) {
+        course {
+            ...CourseFields
         }
     }
 }

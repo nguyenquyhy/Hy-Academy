@@ -1,13 +1,14 @@
-fragment CourseField on Course {
+fragment CourseFields on Course {
     id
     title
     description
+    visibility
 }
 
 query GetCourses {
     courses {
         nodes {
-            ...CourseField
+            ...CourseFields
         }
     }
 }
@@ -15,7 +16,7 @@ query GetCourses {
 query GetAttendingCourses {
     attendingCourses {
         nodes {
-            ...CourseField
+            ...CourseFields
         }
     }
 }
@@ -23,7 +24,7 @@ query GetAttendingCourses {
 query GetTeachingCourses {
     teachingCourses {
         nodes {
-            ...CourseField
+            ...CourseFields
         }
     }
 }
