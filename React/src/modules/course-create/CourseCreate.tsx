@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useEffect, useState } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button, Input, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
@@ -19,12 +19,6 @@ const CourseCreatePage = () => {
         ]
     });
 
-    useEffect(() => {
-        if (addData) {
-            setData(addData.addCourse.course);
-        }
-    }, [addData]);
-
     const handleChange = (name: string, value: string) => setData({ ...data, [name]: value });
 
     const handleSubmit = (e: FormEvent) => {
@@ -37,7 +31,7 @@ const CourseCreatePage = () => {
     };
 
     if (addData?.addCourse?.course) {
-        return <Navigate to={`/courses/${addData.addCourse.course.id}`} />;
+        return <Navigate to={`/courses/${addData.addCourse.course.id}`} replace />;
     }
 
     return (
