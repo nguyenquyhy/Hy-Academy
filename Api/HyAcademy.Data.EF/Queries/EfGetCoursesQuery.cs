@@ -11,6 +11,6 @@ public class EfGetCoursesQuery : IGetCoursesQuery
 
     public Task<IQueryable<Course>> ExecuteAsync()
     {
-        return Task.FromResult(context.Courses.AsQueryable());
+        return Task.FromResult(context.Courses.Where(c => c.Visibility == CourseVisibility.Public).AsQueryable());
     }
 }

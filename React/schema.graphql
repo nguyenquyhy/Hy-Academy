@@ -39,6 +39,7 @@ type Course {
   permissions: CoursePermission!
   title: String!
   description: String!
+  visibility: CourseVisibility!
   roleAssignments: [RoleAssignment!]!
   enrollments: [Enrollment!]!
   lessons: [Lesson!]!
@@ -70,6 +71,10 @@ type CoursesEdge {
   node: Course!
 }
 
+type EditCourseResult {
+  course: Course!
+}
+
 type EditLessonResult {
   lesson: Lesson!
 }
@@ -97,7 +102,7 @@ type Lesson {
 
 type Mutation {
   addCourse(input: AddCourseInput!): AddCourseResult!
-  editCourse(input: EditCourseInput!): Course!
+  editCourse(input: EditCourseInput!): EditCourseResult!
   enroll(input: EnrollInput!): EnrollResult!
   addLesson(input: AddLessonInput!): AddLessonResult!
   editLesson(input: EditLessonInput!): EditLessonResult!
@@ -175,6 +180,7 @@ input EditCourseInput {
   courseId: UUID!
   title: String!
   description: String!
+  visibility: CourseVisibility!
 }
 
 input EditLessonInput {
@@ -191,6 +197,12 @@ input EnrollInput {
 enum ApplyPolicy {
   BEFORE_RESOLVER
   AFTER_RESOLVER
+}
+
+enum CourseVisibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
 }
 
 enum Role {

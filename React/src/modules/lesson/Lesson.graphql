@@ -1,8 +1,12 @@
+fragment LessonFields on Lesson {
+    id
+    title
+    description
+}
+
 query GetLesson($courseId: UUID!, $lessonId: UUID!) {
     lesson(courseId: $courseId, lessonId: $lessonId) {
-        id
-        title
-        description
+        ...LessonFields
         course {
             id
             title
@@ -16,7 +20,7 @@ query GetLesson($courseId: UUID!, $lessonId: UUID!) {
 mutation EditLesson($input: EditLessonInput!) {
     editLesson(input: $input) {
         lesson {
-            id
+            ...LessonFields
         }
     }
 }

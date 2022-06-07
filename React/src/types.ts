@@ -82,6 +82,7 @@ export type Course = {
   roleAssignments: Array<RoleAssignment>;
   title: Scalars['String'];
   updated: Scalars['DateTime'];
+  visibility: CourseVisibility;
 };
 
 export type CoursePermission = {
@@ -89,6 +90,12 @@ export type CoursePermission = {
   canEdit: Scalars['Boolean'];
   canEnroll: Scalars['Boolean'];
 };
+
+export enum CourseVisibility {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC',
+  Unlisted = 'UNLISTED'
+}
 
 /** A connection to a list of items. */
 export type CoursesConnection = {
@@ -114,6 +121,12 @@ export type EditCourseInput = {
   courseId: Scalars['UUID'];
   description: Scalars['String'];
   title: Scalars['String'];
+  visibility: CourseVisibility;
+};
+
+export type EditCourseResult = {
+  __typename?: 'EditCourseResult';
+  course: Course;
 };
 
 export type EditLessonInput = {
@@ -160,7 +173,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addCourse: AddCourseResult;
   addLesson: AddLessonResult;
-  editCourse: Course;
+  editCourse: EditCourseResult;
   editLesson: EditLessonResult;
   enroll: EnrollResult;
 };
@@ -300,12 +313,21 @@ export type AddCourseMutationVariables = Exact<{
 
 export type AddCourseMutation = { __typename?: 'Mutation', addCourse: { __typename?: 'AddCourseResult', course: { __typename?: 'Course', id: any, title: string, description: string } } };
 
+export type CourseFieldsFragment = { __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility };
+
 export type GetCourseQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean }, lessons: Array<{ __typename?: 'Lesson', id: any, title: string }> } | null };
+export type GetCourseQuery = { __typename?: 'Query', course?: { __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility, permissions: { __typename?: 'CoursePermission', canEdit: boolean, canEnroll: boolean }, lessons: Array<{ __typename?: 'Lesson', id: any, title: string }> } | null };
+
+export type EditCourseMutationVariables = Exact<{
+  input: EditCourseInput;
+}>;
+
+
+export type EditCourseMutation = { __typename?: 'Mutation', editCourse: { __typename?: 'EditCourseResult', course: { __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility } } };
 
 export type EnrollCourseMutationVariables = Exact<{
   input: EnrollInput;
@@ -314,22 +336,20 @@ export type EnrollCourseMutationVariables = Exact<{
 
 export type EnrollCourseMutation = { __typename?: 'Mutation', enroll: { __typename?: 'EnrollResult', enrollment: { __typename?: 'Enrollment', id: any, course: { __typename?: 'Course', id: any, permissions: { __typename?: 'CoursePermission', canEnroll: boolean } } } } };
 
-export type CourseFieldFragment = { __typename?: 'Course', id: any, title: string, description: string };
-
 export type GetCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCoursesQuery = { __typename?: 'Query', courses?: { __typename?: 'CoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+export type GetCoursesQuery = { __typename?: 'Query', courses?: { __typename?: 'CoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility }> | null } | null };
 
 export type GetAttendingCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAttendingCoursesQuery = { __typename?: 'Query', attendingCourses?: { __typename?: 'AttendingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+export type GetAttendingCoursesQuery = { __typename?: 'Query', attendingCourses?: { __typename?: 'AttendingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility }> | null } | null };
 
 export type GetTeachingCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTeachingCoursesQuery = { __typename?: 'Query', teachingCourses?: { __typename?: 'TeachingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string }> | null } | null };
+export type GetTeachingCoursesQuery = { __typename?: 'Query', teachingCourses?: { __typename?: 'TeachingCoursesConnection', nodes?: Array<{ __typename?: 'Course', id: any, title: string, description: string, visibility: CourseVisibility }> | null } | null };
 
 export type GetCourseForLessonQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -345,6 +365,8 @@ export type AddLessonMutationVariables = Exact<{
 
 export type AddLessonMutation = { __typename?: 'Mutation', addLesson: { __typename?: 'AddLessonResult', lesson: { __typename?: 'Lesson', id: any, title: string, description: string } } };
 
+export type LessonFieldsFragment = { __typename?: 'Lesson', id: any, title: string, description: string };
+
 export type GetLessonQueryVariables = Exact<{
   courseId: Scalars['UUID'];
   lessonId: Scalars['UUID'];
@@ -358,10 +380,18 @@ export type EditLessonMutationVariables = Exact<{
 }>;
 
 
-export type EditLessonMutation = { __typename?: 'Mutation', editLesson: { __typename?: 'EditLessonResult', lesson: { __typename?: 'Lesson', id: any } } };
+export type EditLessonMutation = { __typename?: 'Mutation', editLesson: { __typename?: 'EditLessonResult', lesson: { __typename?: 'Lesson', id: any, title: string, description: string } } };
 
-export const CourseFieldFragmentDoc = gql`
-    fragment CourseField on Course {
+export const CourseFieldsFragmentDoc = gql`
+    fragment CourseFields on Course {
+  id
+  title
+  description
+  visibility
+}
+    `;
+export const LessonFieldsFragmentDoc = gql`
+    fragment LessonFields on Lesson {
   id
   title
   description
@@ -407,9 +437,7 @@ export type AddCourseMutationOptions = Apollo.BaseMutationOptions<AddCourseMutat
 export const GetCourseDocument = gql`
     query GetCourse($id: UUID!) {
   course(id: $id) {
-    id
-    title
-    description
+    ...CourseFields
     permissions {
       canEdit
       canEnroll
@@ -420,7 +448,7 @@ export const GetCourseDocument = gql`
     }
   }
 }
-    `;
+    ${CourseFieldsFragmentDoc}`;
 
 /**
  * __useGetCourseQuery__
@@ -452,6 +480,41 @@ export type GetCourseQueryResult = Apollo.QueryResult<GetCourseQuery, GetCourseQ
 export function refetchGetCourseQuery(variables: GetCourseQueryVariables) {
       return { query: GetCourseDocument, variables: variables }
     }
+export const EditCourseDocument = gql`
+    mutation EditCourse($input: EditCourseInput!) {
+  editCourse(input: $input) {
+    course {
+      ...CourseFields
+    }
+  }
+}
+    ${CourseFieldsFragmentDoc}`;
+export type EditCourseMutationFn = Apollo.MutationFunction<EditCourseMutation, EditCourseMutationVariables>;
+
+/**
+ * __useEditCourseMutation__
+ *
+ * To run a mutation, you first call `useEditCourseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCourseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCourseMutation, { data, loading, error }] = useEditCourseMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditCourseMutation(baseOptions?: Apollo.MutationHookOptions<EditCourseMutation, EditCourseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditCourseMutation, EditCourseMutationVariables>(EditCourseDocument, options);
+      }
+export type EditCourseMutationHookResult = ReturnType<typeof useEditCourseMutation>;
+export type EditCourseMutationResult = Apollo.MutationResult<EditCourseMutation>;
+export type EditCourseMutationOptions = Apollo.BaseMutationOptions<EditCourseMutation, EditCourseMutationVariables>;
 export const EnrollCourseDocument = gql`
     mutation EnrollCourse($input: EnrollInput!) {
   enroll(input: $input) {
@@ -497,11 +560,11 @@ export const GetCoursesDocument = gql`
     query GetCourses {
   courses {
     nodes {
-      ...CourseField
+      ...CourseFields
     }
   }
 }
-    ${CourseFieldFragmentDoc}`;
+    ${CourseFieldsFragmentDoc}`;
 
 /**
  * __useGetCoursesQuery__
@@ -536,11 +599,11 @@ export const GetAttendingCoursesDocument = gql`
     query GetAttendingCourses {
   attendingCourses {
     nodes {
-      ...CourseField
+      ...CourseFields
     }
   }
 }
-    ${CourseFieldFragmentDoc}`;
+    ${CourseFieldsFragmentDoc}`;
 
 /**
  * __useGetAttendingCoursesQuery__
@@ -575,11 +638,11 @@ export const GetTeachingCoursesDocument = gql`
     query GetTeachingCourses {
   teachingCourses {
     nodes {
-      ...CourseField
+      ...CourseFields
     }
   }
 }
-    ${CourseFieldFragmentDoc}`;
+    ${CourseFieldsFragmentDoc}`;
 
 /**
  * __useGetTeachingCoursesQuery__
@@ -689,9 +752,7 @@ export type AddLessonMutationOptions = Apollo.BaseMutationOptions<AddLessonMutat
 export const GetLessonDocument = gql`
     query GetLesson($courseId: UUID!, $lessonId: UUID!) {
   lesson(courseId: $courseId, lessonId: $lessonId) {
-    id
-    title
-    description
+    ...LessonFields
     course {
       id
       title
@@ -701,7 +762,7 @@ export const GetLessonDocument = gql`
     }
   }
 }
-    `;
+    ${LessonFieldsFragmentDoc}`;
 
 /**
  * __useGetLessonQuery__
@@ -738,11 +799,11 @@ export const EditLessonDocument = gql`
     mutation EditLesson($input: EditLessonInput!) {
   editLesson(input: $input) {
     lesson {
-      id
+      ...LessonFields
     }
   }
 }
-    `;
+    ${LessonFieldsFragmentDoc}`;
 export type EditLessonMutationFn = Apollo.MutationFunction<EditLessonMutation, EditLessonMutationVariables>;
 
 /**
