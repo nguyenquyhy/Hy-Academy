@@ -33,6 +33,16 @@ const VisibilityLabel = ({ visibility } : { visibility: CourseVisibility}) => {
     }
 };
 
+const LessonItem = ({ courseId, lesson }: { courseId: string, lesson: QueriedCourse['lessons'][0] }) => (
+    <div className="card">
+        <header className="card-header">
+            <div className="card-header-title">
+                <Link to={`/courses/${courseId}/lessons/${lesson.id}`}>{lesson.title}</Link>
+            </div>
+        </header>
+    </div>
+);
+
 interface CourseProps {
     data: QueriedCourse,
     enroll: () => void,
@@ -146,13 +156,14 @@ export const Course = ({ data, enroll, enrollLoading, enrollSuccess }: CoursePro
 
             {!editMode && (
                 <>
+                    <hr />
                     <h2 className="title is-4">Lessons</h2>
-                    {data.permissions.canEdit && <Link to={`/courses/${data.id}/lessons/create`} className="button is-primary">Add lesson</Link>}
-                    {data.lessons.length === 0 ? <p>There is no lesson in this course.</p> : (
-                        <ul>
-                            {data.lessons.map(lesson => <li key={lesson.id}><Link to={`/courses/${data.id}/lessons/${lesson.id}`}>{lesson.title}</Link></li>)}
-                        </ul>
+                    {data.lessons.length === 0 ? <p className="has-text-centered is-italic">There is no lesson in this course.</p> : (
+                        <>
+                            {data.lessons.map(lesson => <LessonItem key={lesson.id} courseId={data.id} lesson={lesson} />)}
+                        </>
                     )}
+                    {data.permissions.canEdit && <Link to={`/courses/${data.id}/lessons/create`} className="button is-primary is-fullwidth">Add lesson</Link>}
                 </>
             )}
         </Layout>
