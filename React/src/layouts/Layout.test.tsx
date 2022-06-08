@@ -1,3 +1,4 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Layout from './Layout';
@@ -5,7 +6,9 @@ import Layout from './Layout';
 test('renders nav', () => {
     render(
         <MemoryRouter>
-            <Layout />
+            <MockedProvider>
+                <Layout />
+            </MockedProvider>
         </MemoryRouter>
     );
 

@@ -1,0 +1,9 @@
+query SearchCourses($input: SearchCoursesInput!) {
+    searchCourses(input: $input) {
+        query
+        nodes {
+            id
+            title
+        }
+    }
+}

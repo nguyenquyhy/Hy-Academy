@@ -1,6 +1,7 @@
 import { MsalProvider } from '@azure/msal-react';
 import { act, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { MockedProvider } from '@apollo/client/testing';
 import ApolloApp from 'ApolloApp';
 import { setupMsalAuth, setupMsalNoAuth } from 'tests';
 import TopMenu from './TopMenu';
@@ -8,7 +9,9 @@ import TopMenu from './TopMenu';
 test('renders brand link', () => {
     render(
         <MemoryRouter>
-            <TopMenu />
+            <MockedProvider>
+                <TopMenu />
+            </MockedProvider>
         </MemoryRouter>
     );
 
@@ -21,7 +24,9 @@ test('renders brand link', () => {
 test('renders about link', () => {
     render(
         <MemoryRouter>
-            <TopMenu />
+            <MockedProvider>
+                <TopMenu />
+            </MockedProvider>
         </MemoryRouter>
     );
 

@@ -131,6 +131,7 @@ type Profile {
 }
 
 type Query {
+  searchCourses(input: SearchCoursesInput!): SearchCoursesResult!
   courses("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): CoursesConnection
   teachingCourses("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): TeachingCoursesConnection
   attendingCourses("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): AttendingCoursesConnection
@@ -145,6 +146,11 @@ type RoleAssignment {
   id: UUID!
   added: DateTime!
   updated: DateTime!
+}
+
+type SearchCoursesResult {
+  query: String!
+  nodes: [Course!]!
 }
 
 "A connection to a list of items."
@@ -192,6 +198,10 @@ input EditLessonInput {
 
 input EnrollInput {
   courseId: UUID!
+}
+
+input SearchCoursesInput {
+  query: String!
 }
 
 enum ApplyPolicy {

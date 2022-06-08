@@ -7,6 +7,12 @@ namespace HyAcademy.GraphQL;
 
 public class Query
 {
+    public async Task<SearchCoursesResult> SearchCourses(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] ISearchCoursesQuery query,
+        SearchCoursesInput input
+    ) => new(input.query, await query.ExecuteAsync(userIdAccessor.GetOrDefault(), input.query));
+
     [UsePaging]
     public Task<IQueryable<Course>> GetCourses([Service] IGetCoursesQuery query) => query.ExecuteAsync();
 
@@ -49,3 +55,12 @@ public class Query
         return query.ExecuteAsync(courseId, lessonId);
     }
 }
+
+public record SearchCoursesInput(
+    string query
+);
+
+public record SearchCoursesResult(
+    string query,
+    IQueryable<Course> nodes
+);

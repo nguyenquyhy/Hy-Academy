@@ -12,6 +12,8 @@ public static class EfExtensions
         => services
             .AddTransient<IProfileService, EfProfileService>()
 
+            .AddTransient<ISearchCoursesQuery, EfSearchCoursesQuery>()
+
             .AddTransient<IGetCoursesQuery, EfGetCoursesQuery>()
             .AddTransient<IGetAttendingCoursesQuery, EfGetAttendingCoursesQuery>()
             .AddTransient<IGetTeachingCoursesQuery, EfGetTeachingCoursesQuery>()
