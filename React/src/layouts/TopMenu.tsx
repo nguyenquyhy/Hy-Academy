@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 import classNames from 'classnames';
 import Icon from 'images/icon-95x56.png';
+import { useAccount } from 'auth';
 import SignInButton from 'layouts/SignInButton';
 import SignOutButton from 'layouts/SignOutButton';
 import EditProfileButton from 'layouts/EditProfileButton';
-import { useAccount } from 'auth';
+import SearchBar from './SearchBar';
 
 const menu = [
     {
@@ -85,6 +86,9 @@ const TopMenu = () => {
                             </Link>
                         )
                     ))}
+                    <div className="navbar-item">
+                        <SearchBar />
+                    </div>
                 </div>
 
                 <div className="navbar-end">

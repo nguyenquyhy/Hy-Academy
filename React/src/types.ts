@@ -233,6 +233,7 @@ export type Query = {
   course?: Maybe<Course>;
   courses?: Maybe<CoursesConnection>;
   lesson?: Maybe<Lesson>;
+  searchCourses: SearchCoursesResult;
   teachingCourses?: Maybe<TeachingCoursesConnection>;
 };
 
@@ -264,6 +265,11 @@ export type QueryLessonArgs = {
 };
 
 
+export type QuerySearchCoursesArgs = {
+  input: SearchCoursesInput;
+};
+
+
 export type QueryTeachingCoursesArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -286,6 +292,16 @@ export type RoleAssignment = {
   updated: Scalars['DateTime'];
 };
 
+export type SearchCoursesInput = {
+  query: Scalars['String'];
+};
+
+export type SearchCoursesResult = {
+  __typename?: 'SearchCoursesResult';
+  nodes: Array<Course>;
+  query: Scalars['String'];
+};
+
 /** A connection to a list of items. */
 export type TeachingCoursesConnection = {
   __typename?: 'TeachingCoursesConnection';
@@ -305,6 +321,13 @@ export type TeachingCoursesEdge = {
   /** The item at the end of the edge. */
   node: Course;
 };
+
+export type SearchCoursesQueryVariables = Exact<{
+  input: SearchCoursesInput;
+}>;
+
+
+export type SearchCoursesQuery = { __typename?: 'Query', searchCourses: { __typename?: 'SearchCoursesResult', query: string, nodes: Array<{ __typename?: 'Course', id: any, title: string }> } };
 
 export type AddCourseMutationVariables = Exact<{
   input: AddCourseInput;
@@ -397,6 +420,48 @@ export const LessonFieldsFragmentDoc = gql`
   description
 }
     `;
+export const SearchCoursesDocument = gql`
+    query SearchCourses($input: SearchCoursesInput!) {
+  searchCourses(input: $input) {
+    query
+    nodes {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchCoursesQuery__
+ *
+ * To run a query within a React component, call `useSearchCoursesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchCoursesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchCoursesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSearchCoursesQuery(baseOptions: Apollo.QueryHookOptions<SearchCoursesQuery, SearchCoursesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchCoursesQuery, SearchCoursesQueryVariables>(SearchCoursesDocument, options);
+      }
+export function useSearchCoursesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchCoursesQuery, SearchCoursesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchCoursesQuery, SearchCoursesQueryVariables>(SearchCoursesDocument, options);
+        }
+export type SearchCoursesQueryHookResult = ReturnType<typeof useSearchCoursesQuery>;
+export type SearchCoursesLazyQueryHookResult = ReturnType<typeof useSearchCoursesLazyQuery>;
+export type SearchCoursesQueryResult = Apollo.QueryResult<SearchCoursesQuery, SearchCoursesQueryVariables>;
+export function refetchSearchCoursesQuery(variables: SearchCoursesQueryVariables) {
+      return { query: SearchCoursesDocument, variables: variables }
+    }
 export const AddCourseDocument = gql`
     mutation AddCourse($input: AddCourseInput!) {
   addCourse(input: $input) {
