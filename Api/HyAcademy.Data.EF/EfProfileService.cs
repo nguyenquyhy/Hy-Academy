@@ -20,9 +20,6 @@ public class EfProfileService : IProfileService
         {
             profile = new Profile
             {
-                Id = Guid.NewGuid(),
-                Added = DateTime.UtcNow,
-                Updated = DateTime.UtcNow,
                 UserId = userId,
                 DisplayName = displayName,
             };

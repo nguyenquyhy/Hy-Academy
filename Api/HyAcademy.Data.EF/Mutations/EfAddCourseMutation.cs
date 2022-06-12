@@ -21,16 +21,12 @@ public class EfAddCourseMutation : IAddCourseMutation
 
         var course = new Course
         {
-            Id = Guid.NewGuid(),
-            Added = DateTime.UtcNow,
-            Updated = DateTime.UtcNow,
             Title = title,
             Description = description,
             Visibility = CourseVisibility.Private,
         };
         var roleAssignment = new RoleAssignment
         {
-            Id = Guid.NewGuid(),
             Course = course,
             Profile = profile,
         };
