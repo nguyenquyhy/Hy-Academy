@@ -26,9 +26,6 @@ public class EfEnrollCourseMutation : IEnrollCourseMutation
 
         var enrollment = new Enrollment
         {
-            Id = Guid.NewGuid(),
-            Added = DateTime.UtcNow,
-            Updated = DateTime.UtcNow,
             Course = course,
             Student = profile
         };

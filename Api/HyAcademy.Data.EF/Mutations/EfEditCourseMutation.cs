@@ -26,7 +26,6 @@ public class EfEditCourseMutation : IEditCourseMutation
         var course = await context.Courses.FindAsync(courseId);
         if (course == null) throw new ArgumentOutOfRangeException(nameof(courseId), courseId, $"Cannot find course with ID {courseId}!");
 
-        course.Updated = DateTime.UtcNow;
         course.Title = title;
         course.Description = description;
         course.Visibility = visibility;

@@ -29,7 +29,6 @@ public class EfEditLessonMutation : IEditLessonMutation
         var lesson = await context.Lessons.FindAsync(lessonId);
         if (lesson == null) throw new ArgumentOutOfRangeException(nameof(lessonId), lessonId, $"Cannot find lesson with ID {lessonId}!");
 
-        lesson.Updated = DateTime.UtcNow;
         lesson.Title = title;
         lesson.Description = description;
         await context.SaveChangesAsync();

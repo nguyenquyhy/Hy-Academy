@@ -28,10 +28,7 @@ public class EfAddLessonMutation : IAddLessonMutation
         
         var lesson = new Lesson
         {
-            Id = Guid.NewGuid(),
             Course = course,
-            Added = DateTime.UtcNow,
-            Updated = DateTime.UtcNow,
             Title = title,
             Description = description,
         };
