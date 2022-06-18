@@ -9,8 +9,8 @@ public class EfGetTeachingCoursesQuery : IGetTeachingCoursesQuery
         this.context = context;
     }
 
-    public async Task<IQueryable<Course>> ExecuteAsync(string userId)
+    public Task<IQueryable<Course>> ExecuteAsync(string userId)
     {
-        return context.Courses.Where(o => o.RoleAssignments.Any(r => r.Profile.UserId == userId)).AsQueryable();
+        return Task.FromResult(context.Courses.Where(o => o.RoleAssignments.Any(r => r.Profile.UserId == userId)).AsQueryable());
     }
 }
