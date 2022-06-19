@@ -67,6 +67,19 @@ public class Mutation
             await mutation.ExecuteAsync(userId, input.courseId, input.lessonId, input.title.Trim(), input.description.Trim())
         );
     }
+
+    [Authorize]
+    public async Task<EditLessonOrderResult> EditLessonOrder(
+        [Service] IUserIdAccessor userIdAccessor,
+        [Service] IEditLessonOrderMutation mutation,
+        EditLessonOrderInput input
+    )
+    {
+        var userId = userIdAccessor.Get();
+        return new EditLessonOrderResult(
+            await mutation.ExecuteAsync(userId, input.courseId, input.lessonId, input.lessonIdAfter)
+        );
+    }
 }
 
 public record AddCourseInput(
@@ -111,4 +124,14 @@ public record EditLessonInput(
 
 public record EditLessonResult(
     Lesson lesson
+);
+
+public record EditLessonOrderInput(
+    Guid courseId,
+    Guid lessonId,
+    Guid? lessonIdAfter
+);
+
+public record EditLessonOrderResult(
+    Course course
 );

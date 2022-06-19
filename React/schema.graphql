@@ -37,12 +37,12 @@ type AuthorizeDirective {
 
 type Course {
   permissions: CoursePermission!
+  lessons: [Lesson!]!
   title: String!
   description: String!
   visibility: CourseVisibility!
   roleAssignments: [RoleAssignment!]!
   enrollments: [Enrollment!]!
-  lessons: [Lesson!]!
   id: UUID!
   added: DateTime!
   updated: DateTime!
@@ -72,6 +72,10 @@ type CoursesEdge {
 }
 
 type EditCourseResult {
+  course: Course!
+}
+
+type EditLessonOrderResult {
   course: Course!
 }
 
@@ -106,6 +110,7 @@ type Mutation {
   enroll(input: EnrollInput!): EnrollResult!
   addLesson(input: AddLessonInput!): AddLessonResult!
   editLesson(input: EditLessonInput!): EditLessonResult!
+  editLessonOrder(input: EditLessonOrderInput!): EditLessonOrderResult!
 }
 
 "Information about pagination in a connection."
@@ -194,6 +199,12 @@ input EditLessonInput {
   lessonId: UUID!
   title: String!
   description: String!
+}
+
+input EditLessonOrderInput {
+  courseId: UUID!
+  lessonId: UUID!
+  lessonIdAfter: UUID
 }
 
 input EnrollInput {
