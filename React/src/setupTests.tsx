@@ -15,3 +15,6 @@ process.env.REACT_APP_B2C_RESET_PASSWORD = 'ResetPassword';
 // HACK: we have to mock react-markdown because Jest and CRA do not support ESM used by react-markdown yet
 jest.mock('react-markdown', () => (props: any) => <>{props.children}</>);
 jest.mock("remark-gfm", () => () => {});
+jest.mock('react-drag-reorder', () => {
+    Draggable: (props: any) => <>{props.children}</>
+});

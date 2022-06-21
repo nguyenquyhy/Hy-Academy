@@ -2,7 +2,9 @@ import { Button, Input, Notification } from 'controls';
 import { ButtonType } from 'controls/Button';
 import { NotificationType } from 'controls/Notification';
 import { ReactNode, useState } from 'react';
+import { Draggable } from 'react-drag-reorder';
 import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
     GetCourseQuery,
     useGetCourseQuery,
@@ -12,9 +14,11 @@ import {
     GetCoursesDocument,
     GetAttendingCoursesDocument,
     CourseVisibility,
+    useEditLessonOrderMutation,
 } from 'types';
 
 type QueriedCourse = NonNullable<GetCourseQuery['course']>;
+type QueriedLesson = QueriedCourse['lessons'][0];
 
 const Layout = ({ children }: { children: ReactNode }) => (
     <section className="section">{children}</section>
@@ -33,7 +37,7 @@ const VisibilityLabel = ({ visibility } : { visibility: CourseVisibility}) => {
     }
 };
 
-const LessonItem = ({ courseId, lesson }: { courseId: string, lesson: QueriedCourse['lessons'][0] }) => (
+const LessonItem = ({ courseId, lesson }: { courseId: string, lesson: QueriedLesson }) => (
     <div className="card">
         <header className="card-header">
             <div className="card-header-title">
@@ -42,6 +46,47 @@ const LessonItem = ({ courseId, lesson }: { courseId: string, lesson: QueriedCou
         </header>
     </div>
 );
+
+interface LessonListProps {
+    courseId: string
+    lessons: QueriedLesson[]
+    canEdit: boolean
+    onOrderChange?: (currentPosition: number, newPosition: number) => void
+    isLoading: boolean
+}
+
+const LessonListWrapper = styled.div`
+position: relative;
+`;
+
+const LessonListCover = styled.div`
+background: rgba(0, 0, 0, 0.4);
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+cursor: wait;
+`;
+
+const LessonList = ({ courseId, lessons, canEdit, onOrderChange, isLoading }: LessonListProps) => {
+    if (lessons.length === 0) {
+        return <p className="has-text-centered is-italic">There is no lesson in this course.</p>;
+    }
+
+    return canEdit ? (
+        <LessonListWrapper>
+            <Draggable onPosChange={onOrderChange}>
+                {lessons.map(lesson => <LessonItem key={lesson.id} courseId={courseId} lesson={lesson} />)}
+            </Draggable>
+            {isLoading && <LessonListCover />}
+        </LessonListWrapper>
+    ) : (
+        <>
+            {lessons.map(lesson => <LessonItem key={lesson.id} courseId={courseId} lesson={lesson} />)}
+        </>
+    );
+};
 
 interface CourseProps {
     data: QueriedCourse,
@@ -62,6 +107,21 @@ export const Course = ({ data, enroll, enrollLoading, enrollSuccess }: CoursePro
             { query: GetCoursesDocument }
         ]
     });
+
+    const [editLessonOrder, { loading: loadingOrders }] = useEditLessonOrderMutation();
+
+    const handleOrderChange = (currentPos: number, newPos: number) => {
+        const calculatedPos = (currentPos < newPos) ? newPos + 1 : newPos;
+        editLessonOrder({
+            variables: {
+                input: {
+                    courseId: data.id,
+                    lessonId: data.lessons[currentPos].id,
+                    lessonIdAfter: calculatedPos < data.lessons.length ? data.lessons[calculatedPos].id : null
+                }
+            }
+        });
+    };
 
     const handleSave = async () => {
         await editCourse({
@@ -158,11 +218,7 @@ export const Course = ({ data, enroll, enrollLoading, enrollSuccess }: CoursePro
                 <>
                     <hr />
                     <h2 className="title is-4">Lessons</h2>
-                    {data.lessons.length === 0 ? <p className="has-text-centered is-italic">There is no lesson in this course.</p> : (
-                        <>
-                            {data.lessons.map(lesson => <LessonItem key={lesson.id} courseId={data.id} lesson={lesson} />)}
-                        </>
-                    )}
+                    <LessonList courseId={data.id} lessons={data.lessons} canEdit={data.permissions.canEdit} onOrderChange={handleOrderChange} isLoading={loadingOrders} />
                     {data.permissions.canEdit && <Link to={`/courses/${data.id}/lessons/create`} className="button is-primary is-fullwidth">Add lesson</Link>}
                 </>
             )}

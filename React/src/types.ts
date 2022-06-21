@@ -136,6 +136,17 @@ export type EditLessonInput = {
   title: Scalars['String'];
 };
 
+export type EditLessonOrderInput = {
+  courseId: Scalars['UUID'];
+  lessonId: Scalars['UUID'];
+  lessonIdAfter?: InputMaybe<Scalars['UUID']>;
+};
+
+export type EditLessonOrderResult = {
+  __typename?: 'EditLessonOrderResult';
+  course: Course;
+};
+
 export type EditLessonResult = {
   __typename?: 'EditLessonResult';
   lesson: Lesson;
@@ -175,6 +186,7 @@ export type Mutation = {
   addLesson: AddLessonResult;
   editCourse: EditCourseResult;
   editLesson: EditLessonResult;
+  editLessonOrder: EditLessonOrderResult;
   enroll: EnrollResult;
 };
 
@@ -196,6 +208,11 @@ export type MutationEditCourseArgs = {
 
 export type MutationEditLessonArgs = {
   input: EditLessonInput;
+};
+
+
+export type MutationEditLessonOrderArgs = {
+  input: EditLessonOrderInput;
 };
 
 
@@ -358,6 +375,13 @@ export type EnrollCourseMutationVariables = Exact<{
 
 
 export type EnrollCourseMutation = { __typename?: 'Mutation', enroll: { __typename?: 'EnrollResult', enrollment: { __typename?: 'Enrollment', id: any, course: { __typename?: 'Course', id: any, permissions: { __typename?: 'CoursePermission', canEnroll: boolean } } } } };
+
+export type EditLessonOrderMutationVariables = Exact<{
+  input: EditLessonOrderInput;
+}>;
+
+
+export type EditLessonOrderMutation = { __typename?: 'Mutation', editLessonOrder: { __typename?: 'EditLessonOrderResult', course: { __typename?: 'Course', id: any, lessons: Array<{ __typename?: 'Lesson', id: any }> } } };
 
 export type GetCoursesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -621,6 +645,44 @@ export function useEnrollCourseMutation(baseOptions?: Apollo.MutationHookOptions
 export type EnrollCourseMutationHookResult = ReturnType<typeof useEnrollCourseMutation>;
 export type EnrollCourseMutationResult = Apollo.MutationResult<EnrollCourseMutation>;
 export type EnrollCourseMutationOptions = Apollo.BaseMutationOptions<EnrollCourseMutation, EnrollCourseMutationVariables>;
+export const EditLessonOrderDocument = gql`
+    mutation EditLessonOrder($input: EditLessonOrderInput!) {
+  editLessonOrder(input: $input) {
+    course {
+      id
+      lessons {
+        id
+      }
+    }
+  }
+}
+    `;
+export type EditLessonOrderMutationFn = Apollo.MutationFunction<EditLessonOrderMutation, EditLessonOrderMutationVariables>;
+
+/**
+ * __useEditLessonOrderMutation__
+ *
+ * To run a mutation, you first call `useEditLessonOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditLessonOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editLessonOrderMutation, { data, loading, error }] = useEditLessonOrderMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditLessonOrderMutation(baseOptions?: Apollo.MutationHookOptions<EditLessonOrderMutation, EditLessonOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditLessonOrderMutation, EditLessonOrderMutationVariables>(EditLessonOrderDocument, options);
+      }
+export type EditLessonOrderMutationHookResult = ReturnType<typeof useEditLessonOrderMutation>;
+export type EditLessonOrderMutationResult = Apollo.MutationResult<EditLessonOrderMutation>;
+export type EditLessonOrderMutationOptions = Apollo.BaseMutationOptions<EditLessonOrderMutation, EditLessonOrderMutationVariables>;
 export const GetCoursesDocument = gql`
     query GetCourses {
   courses {

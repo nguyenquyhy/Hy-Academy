@@ -40,3 +40,14 @@ mutation EnrollCourse($input: EnrollInput!) {
         }
     }
 }
+
+mutation EditLessonOrder($input: EditLessonOrderInput!) {
+    editLessonOrder(input: $input) {
+        course {
+            id
+            lessons {
+                id
+            }
+        }
+    }
+}

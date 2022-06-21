@@ -12,6 +12,12 @@ public class CourseType : ObjectType<Course>
             .Field("permissions")
             .Type<NonNullType<ObjectType<CoursePermission>>>()
             .ResolveWith<CoursePermissionResolver>(r => r.LoadAsync(default!, default!, default!, default!));
+        descriptor
+            .Field(o => o.DisplayOrders)
+            .Ignore();
+        descriptor
+            .Field(o => o.Lessons)
+            .ResolveWith<CourseLessonsResolver>(r => r.LoadAsync(default!));
     }
 }
 
